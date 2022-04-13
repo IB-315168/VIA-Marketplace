@@ -22,6 +22,24 @@ class UserTest
 
   @Test void setZero() {
     assertThrows(IllegalArgumentException.class, () -> {
+      test = new User("", "", false);
+    });
+  }
+
+  @Test void setOne() {
+    System.out.println("--> Id");
+    assertThrows(IllegalArgumentException.class, () -> {
+      test = new User("315168", "", false);
+    });
+
+    System.out.println("--> fullname");
+    assertThrows(IllegalArgumentException.class, () -> {
+      test = new User("", "Igor Bulinski", false);
+    });
+  }
+
+  @Test void setExceptions() {
+    assertThrows(IllegalArgumentException.class, () -> {
       test = new User(null, null, false);
     });
   }

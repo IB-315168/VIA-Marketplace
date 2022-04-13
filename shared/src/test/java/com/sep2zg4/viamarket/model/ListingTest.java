@@ -21,16 +21,47 @@ class ListingTest
 
   @Test void setZero() {
     assertThrows(IllegalArgumentException.class, () -> {
-      test.set(null,null,0, null, null,null);
-    });
-    assertThrows(IllegalArgumentException.class, () -> {
       test.set("","",0, "", "",null);
     });
   }
 
   @Test void setOne() {
+    System.out.println("--> title");
     assertThrows(IllegalArgumentException.class, () -> {
+      test.set("Example title","",0, "", "",null);
+    });
 
+    System.out.println("--> desc");
+    assertThrows(IllegalArgumentException.class, () -> {
+      test.set("","Example description",0, "", "",null);
+    });
+
+    System.out.println("--> condition");
+    assertThrows(IllegalArgumentException.class, () -> {
+      test.set("","",0, "", "Example condition",null);
+    });
+
+    System.out.println("--> seller");
+    assertThrows(IllegalArgumentException.class, () -> {
+      test.set("","",0, "", "",new User("315168", "Igor Bulinski", false));
+    });
+  }
+
+  @Test void setBoundary() {
+    System.out.println("--> price");
+    assertThrows(IllegalArgumentException.class, () -> {
+      test.set("Example title","Example description",-1, "", "New",new User("315168", "Igor Bulinski", false));
+    });
+
+    System.out.println("--> condition");
+    assertThrows(IllegalArgumentException.class, () -> {
+      test.set("Example title","Example description",0, "", "ner",new User("315168", "Igor Bulinski", false));
+    });
+  }
+
+  @Test void setException() {
+    assertThrows(IllegalArgumentException.class, () -> {
+      test.set(null,null,0, null, null,null);
     });
   }
 }

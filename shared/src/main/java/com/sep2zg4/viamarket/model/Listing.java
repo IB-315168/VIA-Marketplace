@@ -46,12 +46,12 @@ public class Listing implements Serializable
    */
   public void set(String title, String description, double price, String city,
       String condition, User seller) throws IllegalArgumentException {
-    if(title.isBlank()) {
+    if(title == null || title.isBlank()) {
       throw new IllegalArgumentException("Title cannot be empty.");
     }
     this.title = title;
 
-    if(description.isBlank()) {
+    if(description == null || description.isBlank()) {
       throw new IllegalArgumentException("Description cannot be empty");
     }
     this.description = description;
@@ -63,7 +63,7 @@ public class Listing implements Serializable
 
     this.city = city;
 
-    if(!(condition.toLowerCase(Locale.ROOT).equals("new") || condition.toLowerCase(Locale.ROOT).equals("used") || condition.toLowerCase(
+    if(condition == null || !(condition.toLowerCase(Locale.ROOT).equals("new") || condition.toLowerCase(Locale.ROOT).equals("used") || condition.toLowerCase(
         Locale.ROOT).equals("defective"))) {
       throw new IllegalArgumentException("Condition must be either New, Used or Defective");
     }

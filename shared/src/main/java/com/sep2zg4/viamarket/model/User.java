@@ -23,12 +23,12 @@ public class User implements Serializable
    */
   public User(String id, String fullName, boolean isModerator) throws IllegalArgumentException
   {
-    if(id.isBlank()) {
+    if(id == null || id.isBlank()) {
       throw new IllegalArgumentException("Email cannot be empty");
     }
     this.id = id;
 
-    if(fullName.isBlank()) {
+    if(fullName == null || fullName.isBlank()) {
       throw new IllegalArgumentException("Full name cannot be empty.");
     }
     this.fullName = fullName;
