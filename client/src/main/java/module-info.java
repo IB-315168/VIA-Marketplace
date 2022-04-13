@@ -3,8 +3,8 @@ module client {
   requires javafx.fxml;
   requires javafx.controls;
   requires java.desktop;
-
-  opens com.sep2zg4.viamarket.client.view to javafx.fxml;
+  requires java.rmi;
+  requires shared;
 
   exports com.sep2zg4.viamarket.client.view;
 }
