@@ -11,7 +11,7 @@ class ListingTest
   @org.junit.jupiter.api.BeforeEach void setUp()
   {
     System.out.println("--> setUp()");
-    test = new Listing("none", "none", 1.00, "none", "New", new User("315168", "Igor Bulinski", false));
+    test = new Listing(1, "none", "none", 1.00, "none", "New", new User("315168", "Igor Bulinski", false));
   }
 
   @org.junit.jupiter.api.AfterEach void tearDown()
@@ -21,47 +21,52 @@ class ListingTest
 
   @Test void setZero() {
     assertThrows(IllegalArgumentException.class, () -> {
-      test.set("","",0, "", "",null);
+      test.set(1, "","",0, "", "",null);
     });
   }
 
   @Test void setOne() {
     System.out.println("--> title");
     assertThrows(IllegalArgumentException.class, () -> {
-      test.set("Example title","",0, "", "",null);
+      test.set(1, "Example title","",0, "", "",null);
     });
 
     System.out.println("--> desc");
     assertThrows(IllegalArgumentException.class, () -> {
-      test.set("","Example description",0, "", "",null);
+      test.set(1,"","Example description",0, "", "",null);
     });
 
     System.out.println("--> condition");
     assertThrows(IllegalArgumentException.class, () -> {
-      test.set("","",0, "", "Example condition",null);
+      test.set(1,"","",0, "", "Example condition",null);
     });
 
     System.out.println("--> seller");
     assertThrows(IllegalArgumentException.class, () -> {
-      test.set("","",0, "", "",new User("315168", "Igor Bulinski", false));
+      test.set(1,"","",0, "", "",new User("315168", "Igor Bulinski", false));
     });
   }
 
   @Test void setBoundary() {
+    System.out.println("--> id");
+    assertThrows(IllegalArgumentException.class, () -> {
+      test.set(0,"Example title","Example description",-1, "", "New",new User("315168", "Igor Bulinski", false));
+    });
+
     System.out.println("--> price");
     assertThrows(IllegalArgumentException.class, () -> {
-      test.set("Example title","Example description",-1, "", "New",new User("315168", "Igor Bulinski", false));
+      test.set(1,"Example title","Example description",-1, "", "New",new User("315168", "Igor Bulinski", false));
     });
 
     System.out.println("--> condition");
     assertThrows(IllegalArgumentException.class, () -> {
-      test.set("Example title","Example description",0, "", "ner",new User("315168", "Igor Bulinski", false));
+      test.set(1,"Example title","Example description",0, "", "ner",new User("315168", "Igor Bulinski", false));
     });
   }
 
   @Test void setException() {
     assertThrows(IllegalArgumentException.class, () -> {
-      test.set(null,null,0, null, null,null);
+      test.set(0, null,null,0, null, null,null);
     });
   }
 }

@@ -11,6 +11,7 @@ import java.util.Locale;
  */
 public class Listing implements Serializable
 {
+  private int id;
   private String title;
   private String description;
   private double price;
@@ -19,7 +20,8 @@ public class Listing implements Serializable
   private User seller;
 
   /**
-   * 6-argument constructor with constraints from {@link com.sep2zg4.viamarket.model.Listing#set(String, String, double, String, String, User)} method
+   * 7-argument constructor with constraints from {@link com.sep2zg4.viamarket.model.Listing#set(int, String, String, double, String, String, User)} method
+   * @param id listings id, required bigger than 0
    * @param title listings title, required not-blank
    * @param description listings description, required not-blank
    * @param price listings price, required bigger than 0.0
@@ -28,14 +30,15 @@ public class Listing implements Serializable
    * @param seller {@link com.sep2zg4.viamarket.model.User} listings owner
    * @throws IllegalArgumentException if argument conditions are not met
    */
-  public Listing(String title, String description, double price, String city,
+  public Listing(int id, String title, String description, double price, String city,
       String condition, User seller) throws IllegalArgumentException
   {
-    set(title, description, price, city, condition, seller);
+    set(id, title, description, price, city, condition, seller);
   }
 
   /**
-   * 6-argument method for setting listings properties
+   * 7-argument method for setting listings properties
+   * @param id listings id, required bigger than 0
    * @param title listings title, required not-blank
    * @param description listings description, required not-blank
    * @param price listings price, required bigger than 0.0
@@ -44,8 +47,13 @@ public class Listing implements Serializable
    * @param seller {@link com.sep2zg4.viamarket.model.User} listings owner
    * @throws IllegalArgumentException if argument conditions are not met
    */
-  public void set(String title, String description, double price, String city,
+  public void set(int id, String title, String description, double price, String city,
       String condition, User seller) throws IllegalArgumentException {
+    if(id < 1) {
+      throw new IllegalArgumentException("Id cannot be lower than zero");
+    }
+    this.id = id;
+
     if(title == null || title.isBlank()) {
       throw new IllegalArgumentException("Title cannot be empty.");
     }
