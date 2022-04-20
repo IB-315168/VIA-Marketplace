@@ -9,6 +9,6 @@ public class Start
   public static void main(String[] args) throws RemoteException
   {
     MarketplaceModelManager model = new MarketplaceModelManager();
-    model.login();
+    model.login("admin", "admin");
   }
 }

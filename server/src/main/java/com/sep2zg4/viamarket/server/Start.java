@@ -1,5 +1,7 @@
 package com.sep2zg4.viamarket.server;
 
+import com.sep2zg4.viamarket.servermodel.RemoteMarketplace;
+
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
