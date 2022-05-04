@@ -18,6 +18,8 @@ import java.rmi.server.UnicastRemoteObject;
 public class ClientMarketplaceCommunicator extends UnicastRemoteObject
 {
   private RemoteMarketplace communicator;
+  private String host;
+  private int port;
 
   /**
    * 2-argument constructor creating a ClientMarketplaceCommunicator object and establishing connection to the server
@@ -28,21 +30,15 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject
   public ClientMarketplaceCommunicator(String host, int port) throws
       RemoteException
   {
-    try {
-      connect(host, port);
-    } catch (Exception e) {
-      close();
-    }
+    this.host = host;
+    this.port = port;
   }
 
   /**
    * 2-argument method for establishing connection to the server and locating the remote object
-   * @param host address of the server
-   * @param port port of the server-app
-   * @throws RemoteException
    * @throws NotBoundException
    */
-  private void connect(String host, int port)
+  private void connect()
       throws RemoteException, NotBoundException
   {
     Registry registry = LocateRegistry.getRegistry(host, port);
@@ -56,8 +52,15 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject
    * @return result of {@link com.sep2zg4.viamarket.servermodel.RemoteMarketplace#login(String, String)}
    * @throws RemoteException
    */
-  public boolean login(String username, String password) throws RemoteException
+  public boolean login(String username, String password)
+      throws RemoteException, NotBoundException
   {
+    try {
+      connect();
+    } catch (Exception e) {
+      close();
+      throw e;
+    }
     return communicator.login(username, password);
   }
 

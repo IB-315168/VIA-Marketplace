@@ -2,6 +2,7 @@ package com.sep2zg4.viamarket.client.view;
 
 import com.sep2zg4.viamarket.client.viewmodel.LoginViewModel;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
@@ -45,10 +46,21 @@ public class LoginViewController
    */
   @FXML public void logIn()
   {
-    viewModel.login();
-    viewHandler.openView(ViewHandler.LISTINGS);
-    userNameTextField.getText();
-    userPasswordTextField.getText();
+    Alert alert = new Alert(Alert.AlertType.ERROR);
+    try {
+      if(viewModel.login()) {
+        viewHandler.openView(ViewHandler.LISTINGS);
+      } else {
+        alert.setContentText("Incorrect username and/or password");
+        alert.show();
+      }
+    } catch (Exception e) {
+      alert.setContentText(e.getMessage());
+      alert.show();
+    }
+
+//    userNameTextField.getText();
+//    userPasswordTextField.getText();
   }
 
   /**

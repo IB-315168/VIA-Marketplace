@@ -1,9 +1,12 @@
 package com.sep2zg4.viamarket.client.view;
 
 import com.sep2zg4.viamarket.client.viewmodel.ViewModelFactory;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * An MVVM pattern class used for managing different stages of the application
@@ -41,6 +44,13 @@ public class ViewHandler
   {
     this.primaryStage = primaryStage;
     openView(LOGIN);
+    primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+      @Override
+      public void handle(WindowEvent t) {
+        Platform.exit();
+        System.exit(0);
+      }
+    });
   }
 
   /**

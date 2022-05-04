@@ -4,6 +4,9 @@ import com.sep2zg4.viamarket.client.model.MarketplaceModel;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+
 /**
  * A viewmodel for Login view
  *
@@ -39,7 +42,8 @@ public class LoginViewModel
     return password;
   }
 
-  public void login()
+  public boolean login() throws RemoteException, NotBoundException
   {
+    return model.login(username.get(), password.get());
   }
 }
