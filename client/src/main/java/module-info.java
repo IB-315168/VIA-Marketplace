@@ -6,5 +6,7 @@ module client {
   requires java.rmi;
   requires shared;
 
-  exports com.sep2zg4.viamarket.client.view;
+  opens com.sep2zg4.viamarket.client.view to javafx.fxml;
+
+  exports com.sep2zg4.viamarket.client to javafx.graphics;
 }

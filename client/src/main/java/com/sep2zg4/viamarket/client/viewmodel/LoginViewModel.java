@@ -1,7 +1,8 @@
 package com.sep2zg4.viamarket.client.viewmodel;
 
 import com.sep2zg4.viamarket.client.model.MarketplaceModel;
-import javafx.beans.property.Property;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  * A viewmodel for Login view
@@ -12,7 +13,7 @@ import javafx.beans.property.Property;
 
 public class LoginViewModel
 {
-  private Property<String> username, password;
+  private StringProperty username, password;
   private MarketplaceModel model;
 
   /**
@@ -23,24 +24,17 @@ public class LoginViewModel
   public LoginViewModel(MarketplaceModel model)
   {
     this.model = model;
+
+    this.username = new SimpleStringProperty("");
+    this.password = new SimpleStringProperty("");
   }
 
-  public void setUsername(Property<String> username)
-  {
-    this.username = username;
-  }
-
-  public void setPassword(Property<String> password)
-  {
-    this.password = password;
-  }
-
-  public Property<String> getUserName()
+  public StringProperty getUserName()
   {
     return username;
   }
 
-  public Property<String> getUserPassword()
+  public StringProperty getUserPassword()
   {
     return password;
   }

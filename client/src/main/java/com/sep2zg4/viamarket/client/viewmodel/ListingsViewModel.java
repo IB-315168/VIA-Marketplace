@@ -1,7 +1,11 @@
 package com.sep2zg4.viamarket.client.viewmodel;
 
 import com.sep2zg4.viamarket.client.model.MarketplaceModel;
+import com.sep2zg4.viamarket.model.Listing;
 import javafx.beans.property.Property;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.collections.ObservableList;
 
 /**
  * A viewmodel for Listings view
@@ -12,8 +16,9 @@ import javafx.beans.property.Property;
 public class ListingsViewModel
 {
   private MarketplaceModel model;
-  private Property categoryList, listingsList;
-  private Property<String> userType;
+  private ObservableList<Listing> listingsList;
+  private ObservableList<String> categoryList;
+  private StringProperty userType;
   private Object categoryName;
 
   /**
@@ -24,39 +29,21 @@ public class ListingsViewModel
   public ListingsViewModel(MarketplaceModel model)
   {
     this.model = model;
+
+    this.userType = new SimpleStringProperty("");
   }
 
-  public void setModel(MarketplaceModel model)
-  {
-    this.model = model;
-  }
-
-  public void setCategoryName(Object categoryName)
-  {
-    this.categoryName = categoryName;
-  }
-
-  public void setListingsList(Property listingsList)
-  {
-    this.listingsList = listingsList;
-  }
-
-  public void setUserType(Property<String> userType)
-  {
-    this.userType = userType;
-  }
-
-  public Property getCategoryList()
+  public ObservableList<String> getCategoryList()
   {
     return categoryList;
   }
 
-  public Property getListingsList()
+  public ObservableList<Listing> getListingsList()
   {
     return listingsList;
   }
 
-  public Property<String> getUserType()
+  public StringProperty getUserType()
   {
     return userType;
   }

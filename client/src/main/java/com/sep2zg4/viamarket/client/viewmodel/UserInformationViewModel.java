@@ -1,7 +1,8 @@
 package com.sep2zg4.viamarket.client.viewmodel;
 
 import com.sep2zg4.viamarket.client.model.MarketplaceModel;
-import javafx.beans.property.Property;
+import com.sep2zg4.viamarket.model.Listing;
+import javafx.collections.ObservableList;
 
 /**
  * A viewmodel for user information
@@ -13,7 +14,7 @@ import javafx.beans.property.Property;
 public class UserInformationViewModel
 {
   private MarketplaceModel model;
-  private Property userListings;
+  private ObservableList<Listing> userListings;
 
   /**
    * Constructor for UserInformationViewModel taking Model as an argument
@@ -25,12 +26,7 @@ public class UserInformationViewModel
     this.model = model;
   }
 
-  public void setUserListings(Property userListings)
-  {
-    this.userListings = userListings;
-  }
-
-  public Property getUserListings()
+  public ObservableList<Listing> getUserListings()
   {
     return userListings;
   }
