@@ -19,6 +19,7 @@ public class ViewFactory
   private LoginViewController loginViewController;
   private ListingsViewController listingsViewController;
   private UserInformationViewController userInformationViewController;
+  private ListingFormViewController listingFormViewController;
 
   /**
    * Constructor function for ViewFactory
@@ -33,6 +34,7 @@ public class ViewFactory
     this.loginViewController = null;
     this.listingsViewController = null;
     this.userInformationViewController = null;
+    this.listingFormViewController = null;
   }
 
   /**
@@ -111,5 +113,30 @@ public class ViewFactory
       }
     }
     return userInformationViewController.getRoot();
+  }
+  /**
+   * Function used for booting up ListingFormView and ListingFormViewController and returning the root of the controller
+   *
+   * @return
+   */
+  public Region loadListingFormView()
+  {
+    if (listingFormViewController == null)
+    {
+      FXMLLoader loader = new FXMLLoader();
+      loader.setLocation(getClass().getResource("ListingFormView.fxml"));
+      try
+      {
+        Region root = loader.load();
+        listingFormViewController = loader.getController();
+        listingFormViewController.init(viewHandler,
+            viewModelFactory.getListingFormViewModel(), root);
+      }
+      catch (IOException e)
+      {
+        e.printStackTrace();
+      }
+    }
+    return listingFormViewController.getRoot();
   }
 }
