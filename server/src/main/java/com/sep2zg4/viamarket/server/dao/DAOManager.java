@@ -51,8 +51,25 @@ public class DAOManager
     }
   }
 
+  // Our version of the Function
+  public Dao getDao(String table) throws SQLException
+  {
+    if(connection == null || connection.isClosed()) {
+      this.open();
+    }
+
+    switch (table) {
+      case "Listing":
+        return new ListingDAO(connection);
+      case "User":
+        //        return new UserDao(connection);
+      default:
+        throw new SQLException("Table does not exist");
+    }
+  }
+
   // Function responsible for retrieving Object-specific DAO, to be implemented once aforementioned are implemented
-/*  public Dao getDao(Table t) throws SQLException
+  /*public Dao getDao(Table t) throws SQLException
   {
     if(connection == null || connection.isClosed()) {
       this.open();
@@ -60,11 +77,11 @@ public class DAOManager
 
     switch (t) {
       case Listing:
-//        return new ListingDao(connection);
+        return new ListingDAO(connection);
       case User:
 //        return new UserDao(connection);
       default:
         throw new SQLException("Table does not exist");
     }
-  }*/
+  } */
 }

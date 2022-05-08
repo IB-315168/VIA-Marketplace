@@ -7,7 +7,9 @@ public interface Dao<Type>
 {
   Type getById(String id) throws SQLException; //Reason why ID is a string is because user ID's are a string.
   List<Type> getAll() throws SQLException;
-  void save(Type type) throws SQLException;
+  //Create/Type of object to be saved
+  void create(Type type) throws SQLException;
+  //Update(Type, ID of Item to be Saved)
   void update(Type type, String id) throws SQLException;
-  void delete(Type type);
+  void delete(Type type) throws SQLException;
 }
