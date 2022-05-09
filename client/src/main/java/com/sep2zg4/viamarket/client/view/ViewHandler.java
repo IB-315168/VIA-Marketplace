@@ -20,6 +20,7 @@ public class ViewHandler
   public static final String LOGIN = "login";
   public static final String LISTINGS = "listings";
   public static final String USERINFO = "userInfo";
+  public static final String LISTINGFORM = "listingForm";
   private Scene currentScene;
   private Stage primaryStage;
   private final ViewFactory viewFactory;
@@ -65,6 +66,7 @@ public class ViewHandler
           case LOGIN -> viewFactory.loadLogInView();
           case LISTINGS -> viewFactory.loadListingsView();
           case USERINFO -> viewFactory.loadUserInformationView();
+          case LISTINGFORM -> viewFactory.loadListingFormView();
           default -> throw new IllegalArgumentException("Unknown bruh.view");
         };
     currentScene.setRoot(root);

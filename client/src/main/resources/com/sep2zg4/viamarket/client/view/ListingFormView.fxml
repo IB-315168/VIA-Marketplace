@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="450.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="450.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sep2zg4.viamarket.client.view.ListingFormViewController">
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="436.0" prefWidth="640.0" VBox.vgrow="ALWAYS">
          <children>
@@ -18,26 +18,27 @@
                   <Font name="Agency FB Bold" size="72.0" />
                </font>
             </Label>
-            <Label layoutX="57.0" layoutY="121.0" text="Title:" />
-            <Label layoutX="351.0" layoutY="121.0" text="Price:" />
-            <Label layoutX="58.0" layoutY="182.0" text="City:" />
-            <Label layoutX="350.0" layoutY="182.0" text="Condition:" />
+            <Label layoutX="57.0" layoutY="104.0" text="Title:" />
+            <Label layoutX="344.0" layoutY="104.0" text="Price:" />
+            <Label layoutX="58.0" layoutY="148.0" text="City:" />
+            <Label layoutX="344.0" layoutY="148.0" text="Condition:" />
             <Label layoutX="348.0" layoutY="241.0" text="Contacts:" />
-            <Label layoutX="58.0" layoutY="241.0" text="Description:" />
-            <TextField layoutX="58.0" layoutY="139.0" prefHeight="26.0" prefWidth="218.0" />
-            <TextField layoutX="351.0" layoutY="139.0" prefHeight="26.0" prefWidth="218.0" />
-            <TextField layoutX="57.0" layoutY="200.0" prefHeight="26.0" prefWidth="218.0" />
+            <Label layoutX="58.0" layoutY="191.0" text="Description:" />
+            <TextField fx:id="title" layoutX="57.0" layoutY="122.0" prefHeight="26.0" prefWidth="218.0" promptText="Type title here..." />
+            <TextField fx:id="price" layoutX="347.0" layoutY="122.0" prefHeight="26.0" prefWidth="218.0" promptText="Type price here..." />
+            <TextField fx:id="city" layoutX="57.0" layoutY="165.0" prefHeight="26.0" prefWidth="218.0" promptText="Type city here..." />
             <Label layoutX="347.0" layoutY="259.0" text="Phone number:" />
             <Label layoutX="347.0" layoutY="348.0" text="Social media and username:" />
-            <TextArea layoutX="57.0" layoutY="259.0" prefHeight="134.0" prefWidth="218.0" />
-            <TextField layoutX="347.0" layoutY="277.0" prefHeight="26.0" prefWidth="218.0" />
+            <TextArea fx:id="description" layoutX="57.0" layoutY="209.0" prefHeight="184.0" prefWidth="218.0" promptText="Type description here..." />
+            <TextField fx:id="phoneNumber" layoutX="347.0" layoutY="277.0" prefHeight="26.0" prefWidth="218.0" promptText="Type phone number here..." />
             <Label layoutX="347.0" layoutY="304.0" text="E-mail:" />
-            <TextField layoutX="347.0" layoutY="322.0" prefHeight="26.0" prefWidth="218.0" />
-            <TextField layoutX="347.0" layoutY="366.0" prefHeight="26.0" prefWidth="218.0" />
-            <RadioButton layoutX="344.0" layoutY="205.0" mnemonicParsing="false" text="New" />
-            <RadioButton layoutX="421.0" layoutY="204.0" mnemonicParsing="false" text="Used" />
-            <RadioButton layoutX="493.0" layoutY="204.0" mnemonicParsing="false" text="Defective" />
-            <Button layoutX="549.0" layoutY="410.0" mnemonicParsing="false" text="Save" />
+            <TextField fx:id="email" layoutX="347.0" layoutY="322.0" prefHeight="26.0" prefWidth="218.0" promptText="Type email here..." />
+            <TextField fx:id="socialMediaAndUserName" layoutX="347.0" layoutY="366.0" prefHeight="26.0" prefWidth="218.0" promptText="Type social media and username here..." />
+            <RadioButton fx:id="conditionNew" layoutX="342.0" layoutY="169.0" mnemonicParsing="false" onAction="#getCondition" text="New" />
+            <RadioButton fx:id="conditionUsed" layoutX="421.0" layoutY="169.0" mnemonicParsing="false" onAction="#getCondition" text="Used" />
+            <RadioButton fx:id="conditionDefective" layoutX="495.0" layoutY="169.0" mnemonicParsing="false" onAction="#getCondition" text="Defective" />
+            <Button fx:id="saveButton" layoutX="549.0" layoutY="410.0" mnemonicParsing="false" onAction="#save" text="Save" />
+            <Label fx:id="condition" alignment="CENTER" layoutX="420.0" layoutY="200.0" prefHeight="18.0" prefWidth="71.0" />
          </children>
     </AnchorPane>
       <AnchorPane layoutX="10.0" layoutY="10.0" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" />
