@@ -10,6 +10,6 @@ public interface Dao<Type>
   //Create/Type of object to be saved
   void create(Type type) throws SQLException;
   //Update(Type, ID of Item to be Saved)
-  void update(Type type, String id) throws SQLException;
+  void update(Type type) throws SQLException;
   void delete(Type type) throws SQLException;
 }

@@ -56,9 +56,8 @@ public class ListingDAO implements Dao<Listing>
     insertStatement.executeUpdate();
   }
 
-  @Override public void update(Listing listing, String id) throws SQLException
+  @Override public void update(Listing listing) throws SQLException
   {
-    int idInt = Integer.parseInt(id);
     String query = "UPDATE listing SET title=?,description=?,price=?,city=?,condition=?,studentNumber=? WHERE id=? ;";
     PreparedStatement updateStatement = connection.prepareStatement(query);
     updateStatement.setString(1,listing.getTitle());
@@ -67,7 +66,7 @@ public class ListingDAO implements Dao<Listing>
     updateStatement.setString(4,listing.getCity());
     updateStatement.setString(5,listing.getCondition());
     updateStatement.setString(6,listing.getSeller().getId());
-    updateStatement.setInt(7,idInt);
+    updateStatement.setInt(7,listing.getId());
     updateStatement.executeUpdate();
   }
 
