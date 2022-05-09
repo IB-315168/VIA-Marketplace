@@ -66,7 +66,7 @@ public class ListingFormViewController
   }
 
   /**
-   * A function used to save a listing and open the previous (User Information) window upon pushing a button on the screen
+   * A function used to save a listing and open the previous (UserInformation) window upon pushing a button on the screen
    */
   @FXML public void save()
   {
