@@ -42,6 +42,12 @@ public class LoginViewModel
     return password;
   }
 
+  /** 0-argument method for logging in
+   *
+   * @return result of {@link com.sep2zg4.viamarket.client.model.MarketplaceModel#login(String, String)}
+   * @throws RemoteException
+   * @throws NotBoundException
+   */
   public boolean login() throws RemoteException, NotBoundException
   {
     return model.login(username.get(), password.get());
