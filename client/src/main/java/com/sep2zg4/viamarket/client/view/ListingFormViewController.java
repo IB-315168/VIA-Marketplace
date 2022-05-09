@@ -1,5 +1,6 @@
 package com.sep2zg4.viamarket.client.view;
 
+import com.sep2zg4.viamarket.client.viewmodel.ListingFormViewModel;
 import com.sep2zg4.viamarket.client.viewmodel.ListingsViewModel;
 import com.sep2zg4.viamarket.model.Listing;
 import javafx.fxml.FXML;

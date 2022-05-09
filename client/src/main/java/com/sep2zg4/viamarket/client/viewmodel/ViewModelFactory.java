@@ -13,6 +13,7 @@ public class ViewModelFactory
   private final ListingsViewModel listingsViewModel;
   private final LoginViewModel loginViewModel;
   private final UserInformationViewModel userInformationViewModel;
+  private final ListingFormViewModel listingFormViewModel;
 
   /**
    * Constructor for ViewModelFactory, initializing 3 viewmodels
@@ -24,6 +25,7 @@ public class ViewModelFactory
     listingsViewModel = new ListingsViewModel(model);
     loginViewModel = new LoginViewModel(model);
     userInformationViewModel = new UserInformationViewModel(model);
+    listingFormViewModel=new ListingFormViewModel(model);
   }
 
   public ListingsViewModel getListingsViewModel()
@@ -39,5 +41,10 @@ public class ViewModelFactory
   public UserInformationViewModel getUserInformationViewModel()
   {
     return userInformationViewModel;
+  }
+
+  public ListingFormViewModel getListingFormViewModel()
+  {
+    return listingFormViewModel;
   }
 }
