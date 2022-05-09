@@ -28,7 +28,7 @@ public class ListingFormViewController
   private Region root;
 
   /**
-   * A constructor/function of ListingFormViewController containing actions to be made by the system upon initialization
+   * A gay constructor/function of ListingFormViewController containing actions to be made by the system upon initialization
    *
    * @param viewHandler
    * @param viewModel
