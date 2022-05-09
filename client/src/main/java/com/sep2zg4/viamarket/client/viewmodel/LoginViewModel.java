@@ -42,7 +42,7 @@ public class LoginViewModel
     return password;
   }
 
-  /** 0-argument method for logging in
+  /** 0-argument method used for logging in
    *
    * @return result of {@link com.sep2zg4.viamarket.client.model.MarketplaceModel#login(String, String)}
    * @throws RemoteException
