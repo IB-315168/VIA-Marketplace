@@ -39,8 +39,8 @@ public class DAOManager
   public void open() throws SQLException
   {
     if(connection == null || connection.isClosed()) {
-      connection = DriverManager.getConnection("url",
-          "user", "password");
+      connection = DriverManager.getConnection("abul.db.elephantsql.com",
+          "unnmkiby", "9rQAlABdHOKbbTS46V662goUMd2IjnKZ");
     }
   }
 
