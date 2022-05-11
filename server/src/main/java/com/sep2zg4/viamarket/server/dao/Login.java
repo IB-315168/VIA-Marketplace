@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class Login
 {
 
-  Connection connection;
+  private Connection connection;
 
   public Login(Connection connection){
     this.connection = connection;
