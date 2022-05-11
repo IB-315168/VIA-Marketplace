@@ -52,7 +52,7 @@ public class ListingDAO implements Dao<Listing>
     insertStatement.setDouble(4,listing.getPrice());
     insertStatement.setString(5,listing.getCity());
     insertStatement.setString(6,listing.getCondition());
-    insertStatement.setString(7,listing.getSeller().getId());
+    insertStatement.setInt(7,listing.getSeller().getId());
     insertStatement.executeUpdate();
   }
 
@@ -65,7 +65,7 @@ public class ListingDAO implements Dao<Listing>
     updateStatement.setDouble(3,listing.getPrice());
     updateStatement.setString(4,listing.getCity());
     updateStatement.setString(5,listing.getCondition());
-    updateStatement.setString(6,listing.getSeller().getId());
+    updateStatement.setInt(6,listing.getSeller().getId());
     updateStatement.setInt(7,listing.getId());
     updateStatement.executeUpdate();
   }

@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO implements Dao<User>
@@ -17,6 +18,7 @@ public class UserDAO implements Dao<User>
   public UserDAO(Connection connection) throws SQLException
   {
     this.connection = connection;
+    listOfUser = new ArrayList<>();
   }
 
   @Override public User getById(String id) throws SQLException
@@ -24,10 +26,12 @@ public class UserDAO implements Dao<User>
     int idInt = Integer.parseInt(id);
     String query = "SELECT * FROM person WHERE id = ?";
     PreparedStatement selectStatemenet = connection.prepareStatement(query);
-    selectStatemenet.setInt(1,idInt);
+    selectStatemenet.setInt(1, idInt);
     ResultSet res = selectStatemenet.executeQuery();
     res.next();
-    return new User(res.getString("studentNumber"),res.getString("fullName"),res.getString("phoneNumber"), res.getString("email"), res.getBoolean("isModerator"));
+    return new User(res.getInt("studentNumber"), res.getString("fullName"),
+        res.getString("phoneNumber"), res.getString("email"),
+        res.getBoolean("isModerator"));
   }
 
   @Override public List<User> getAll() throws SQLException
@@ -35,8 +39,12 @@ public class UserDAO implements Dao<User>
     String query = "SELECT * FROM person";
     PreparedStatement selectStatement = connection.prepareStatement(query);
     ResultSet res = selectStatement.executeQuery();
-    while(res.next()){
-      listOfUser.add(new User(res.getString("studentNumber"),res.getString("fullName"),res.getString("phoneNumber"), res.getString("email"), res.getBoolean("isModerator")))));
+    while (res.next())
+    {
+      listOfUser.add(
+          new User(res.getInt("studentNumber"), res.getString("fullName"),
+              res.getString("phoneNumber"), res.getString("email"),
+              res.getBoolean("isModerator")));
     }
     return listOfUser;
   }
@@ -45,11 +53,11 @@ public class UserDAO implements Dao<User>
   {
     String query = "INSERT INTO person (studentNumber, fullName, phoneNumber, email, isModerator) VALUES ?,?,?,?,?";
     PreparedStatement insertStatement = connection.prepareStatement(query);
-    insertStatement.setString(1,user.getStudentNumber());
-    insertStatement.setString(2,user.getFullName());
-    insertStatement.setString(3,user.getPhoneNumber());
-    insertStatement.setString(4,user.getEmail());
-    insertStatement.setBoolean(5,user.getIsModerator());
+    insertStatement.setInt(1, user.getId());
+    insertStatement.setString(2, user.getFullName());
+    insertStatement.setString(3, user.getPhoneNumber());
+    insertStatement.setString(4, user.getEmail());
+    insertStatement.setBoolean(5, user.isModerator());
     insertStatement.executeUpdate();
   }
 
@@ -57,12 +65,12 @@ public class UserDAO implements Dao<User>
   {
     String query = "UPDATE person SET studentNumber=?,fullName=?,phoneNumber=?,email=?,isModerator=? WHERE studentNumber=? ;";
     PreparedStatement updateStatement = connection.prepareStatement(query);
-    updateStatement.setString(1,user.getStudentNumber());
-    updateStatement.setString(2,user.getFullName());
-    updateStatement.setString(3,user.getPhoneNumber());
-    updateStatement.setString(4,user.getEmail());
-    updateStatement.setBoolean(5,user.getIsModerator());
-    updateStatement.setString(6,user.getStudentNumber());
+    updateStatement.setInt(1, user.getId());
+    updateStatement.setString(2, user.getFullName());
+    updateStatement.setString(3, user.getPhoneNumber());
+    updateStatement.setString(4, user.getEmail());
+    updateStatement.setBoolean(5, user.isModerator());
+    updateStatement.setInt(6, user.getId());
     updateStatement.executeUpdate();
   }
 
@@ -70,12 +78,7 @@ public class UserDAO implements Dao<User>
   {
     String query = "DELETE FROM person WHERE studentNumber=?";
     PreparedStatement deleteStatement = connection.prepareStatement(query);
-    deleteStatement.setString(1,user.getStudentNumber());
+    deleteStatement.setInt(1, user.getId());
     deleteStatement.executeUpdate();
   }
-
-  public void login() {
-    return;
-  }
-
 }

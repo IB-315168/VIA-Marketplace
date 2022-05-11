@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public final class DAOManager
 {
-  public enum Table {Listing, User, Category, Super}
+  public enum Table {Listing, User, Category}
   private static ThreadLocal<DAOManager> INSTANCE;
   private Connection connection;
 
