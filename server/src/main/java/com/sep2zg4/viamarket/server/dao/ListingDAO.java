@@ -1,6 +1,7 @@
 package com.sep2zg4.viamarket.server.dao;
 
 import com.sep2zg4.viamarket.model.Listing;
+import com.sep2zg4.viamarket.model.User;
 
 import javax.xml.transform.Result;
 import java.sql.Connection;
@@ -14,9 +15,12 @@ public class ListingDAO implements Dao<Listing>
   private DAOManager manager = DAOManager.getInstance();
   private List<Listing> listOfListing;
   private Connection connection;
+  private UserDAO userDAO;
 
-  public ListingDAO(Connection connection) throws SQLException{
+  public ListingDAO(Connection connection) throws SQLException
+  {
     this.connection = connection;
+    this.userDAO = (UserDAO) manager.getDao(DAOManager.Table.User);
   }
 
   @Override public Listing getById(String id) throws SQLException
@@ -25,10 +29,13 @@ public class ListingDAO implements Dao<Listing>
     int idInt = Integer.parseInt(id);
     String query = "SELECT * FROM listing WHERE id = ?";
     PreparedStatement selectStatemenet = connection.prepareStatement(query);
-    selectStatemenet.setInt(1,idInt);
+    selectStatemenet.setInt(1, idInt);
     ResultSet res = selectStatemenet.executeQuery();
     res.next();
-    return new Listing(res.getInt("id"),res.getString("title"),res.getString("description"),res.getDouble("price"),res.getString("city"),res.getString("condition"),UserDAO.getById(res.getString("studentNumber")));
+    return new Listing(res.getInt("id"), res.getString("title"),
+        res.getString("description"), res.getDouble("price"),
+        res.getString("city"), res.getString("condition"),
+        userDAO.getById(res.getString("studentNumber")));
   }
 
   @Override public List<Listing> getAll() throws SQLException
@@ -36,8 +43,12 @@ public class ListingDAO implements Dao<Listing>
     String query = "SELECT * FROM listing";
     PreparedStatement selectStatement = connection.prepareStatement(query);
     ResultSet res = selectStatement.executeQuery();
-    while(res.next()){
-      listOfListing.add(new Listing(res.getInt("id"),res.getString("title"),res.getString("description"),res.getDouble("price"),res.getString("city"),res.getString("condition"),UserDAO.getById(res.getString("studentNumber"))));
+    while (res.next())
+    {
+      listOfListing.add(new Listing(res.getInt("id"), res.getString("title"),
+          res.getString("description"), res.getDouble("price"),
+          res.getString("city"), res.getString("condition"),
+          userDAO.getById(res.getString("studentNumber"))));
     }
     return listOfListing;
   }
@@ -46,13 +57,13 @@ public class ListingDAO implements Dao<Listing>
   {
     String query = "INSERT INTO listing (id,title,description,price,city,condition,studentNumber) VALUES ?,?,?,?,?,?,?";
     PreparedStatement insertStatement = connection.prepareStatement(query);
-    insertStatement.setInt(1,listing.getId());
-    insertStatement.setString(2,listing.getTitle());
-    insertStatement.setString(3,listing.getDescription());
-    insertStatement.setDouble(4,listing.getPrice());
-    insertStatement.setString(5,listing.getCity());
-    insertStatement.setString(6,listing.getCondition());
-    insertStatement.setInt(7,listing.getSeller().getId());
+    insertStatement.setInt(1, listing.getId());
+    insertStatement.setString(2, listing.getTitle());
+    insertStatement.setString(3, listing.getDescription());
+    insertStatement.setDouble(4, listing.getPrice());
+    insertStatement.setString(5, listing.getCity());
+    insertStatement.setString(6, listing.getCondition());
+    insertStatement.setInt(7, listing.getSeller().getId());
     insertStatement.executeUpdate();
   }
 
@@ -60,13 +71,13 @@ public class ListingDAO implements Dao<Listing>
   {
     String query = "UPDATE listing SET title=?,description=?,price=?,city=?,condition=?,studentNumber=? WHERE id=? ;";
     PreparedStatement updateStatement = connection.prepareStatement(query);
-    updateStatement.setString(1,listing.getTitle());
-    updateStatement.setString(2,listing.getDescription());
-    updateStatement.setDouble(3,listing.getPrice());
-    updateStatement.setString(4,listing.getCity());
-    updateStatement.setString(5,listing.getCondition());
-    updateStatement.setInt(6,listing.getSeller().getId());
-    updateStatement.setInt(7,listing.getId());
+    updateStatement.setString(1, listing.getTitle());
+    updateStatement.setString(2, listing.getDescription());
+    updateStatement.setDouble(3, listing.getPrice());
+    updateStatement.setString(4, listing.getCity());
+    updateStatement.setString(5, listing.getCondition());
+    updateStatement.setInt(6, listing.getSeller().getId());
+    updateStatement.setInt(7, listing.getId());
     updateStatement.executeUpdate();
   }
 
@@ -74,7 +85,7 @@ public class ListingDAO implements Dao<Listing>
   {
     String query = "DELETE FROM listing WHERE id=?";
     PreparedStatement deleteStatement = connection.prepareStatement(query);
-    deleteStatement.setInt(1,listing.getId());
+    deleteStatement.setInt(1, listing.getId());
     deleteStatement.executeUpdate();
   }
 

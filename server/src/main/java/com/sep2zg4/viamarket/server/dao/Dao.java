@@ -5,7 +5,8 @@ import java.util.List;
 
 public interface Dao<Type>
 {
-  Type getById(String id) throws SQLException; //Reason why ID is a string is because user ID's are a string.
+  Type getById(String id) throws
+      SQLException; //Reason why ID is a string is because user ID's are a string.
   List<Type> getAll() throws SQLException;
   //Create/Type of object to be saved
   void create(Type type) throws SQLException;

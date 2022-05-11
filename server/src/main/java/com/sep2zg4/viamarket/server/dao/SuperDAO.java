@@ -9,16 +9,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class SuperDAO implements Runnable
+public final class SuperDAO implements Runnable
 {
+  private static SuperDAO INSTANCE;
   private ListingDAO listingDAO;
   private UserDAO userDAO;
   private CategoryDAO categoryDAO;
   private Connection connection;
   private ConcurrentHashMap<String, ArrayList<Listing>> listingsReference;
 
-  public SuperDAO(Connection connection, ListingDAO listingDAO, UserDAO userDAO,
-      CategoryDAO categoryDAO,
+  private SuperDAO(Connection connection, ListingDAO listingDAO,
+      UserDAO userDAO, CategoryDAO categoryDAO,
       ConcurrentHashMap<String, ArrayList<Listing>> listingsReference)
   {
     this.listingDAO = listingDAO;
@@ -26,6 +27,20 @@ public class SuperDAO implements Runnable
     this.categoryDAO = categoryDAO;
     this.connection = connection;
     this.listingsReference = listingsReference;
+  }
+
+  public static SuperDAO getInstance(Connection connection,
+      ListingDAO listingDAO, UserDAO userDAO, CategoryDAO categoryDAO,
+      ConcurrentHashMap<String, ArrayList<Listing>> listingsReference)
+      throws SQLException
+  {
+    if (INSTANCE == null)
+    {
+      INSTANCE = new SuperDAO(connection, listingDAO, userDAO, categoryDAO,
+          listingsReference);
+    }
+
+    return INSTANCE;
   }
 
   @Override public void run()
@@ -52,9 +67,9 @@ public class SuperDAO implements Runnable
       for (Listing listing : listingDAO.getAll())
       {
         String query = "SELECT name FROM category WHERE id = (SELECT idCategory FROM listing WHERE id = ?)";
-        PreparedStatement selectStatemenet = connection.prepareStatement(query);
-        selectStatemenet.setInt(1, listing.getId());
-        ResultSet res = selectStatemenet.executeQuery();
+        PreparedStatement selectStatement = connection.prepareStatement(query);
+        selectStatement.setInt(1, listing.getId());
+        ResultSet res = selectStatement.executeQuery();
         if (res.next())
         {
           listingsReference.get(res.getString(1)).add(listing);
