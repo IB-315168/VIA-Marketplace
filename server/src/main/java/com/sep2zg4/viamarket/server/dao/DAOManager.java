@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public final class DAOManager
 {
-  public enum Table {Listing, User, Category}
+  public enum Table {Listing, User, Category, Super}
   private static ThreadLocal<DAOManager> INSTANCE;
   private Connection connection;
 
@@ -39,7 +39,7 @@ public final class DAOManager
   public void open() throws SQLException
   {
     if(connection == null || connection.isClosed()) {
-      connection = DriverManager.getConnection("abul.db.elephantsql.com",
+      connection = DriverManager.getConnection("jdbc:postgresql://abul.db.elephantsql.com/unnmkiby",
           "unnmkiby", "9rQAlABdHOKbbTS46V662goUMd2IjnKZ");
     }
   }

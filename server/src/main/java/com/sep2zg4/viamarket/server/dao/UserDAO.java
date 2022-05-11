@@ -74,4 +74,8 @@ public class UserDAO implements Dao<User>
     deleteStatement.executeUpdate();
   }
 
+  public void login() {
+    return;
+  }
+
 }

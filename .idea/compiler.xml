@@ -12,7 +12,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="client" target="16" />
+      <module name="client" target="17" />
       <module name="server" target="16" />
       <module name="shared" target="16" />
     </bytecodeTargetLevel>
