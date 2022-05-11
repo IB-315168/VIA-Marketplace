@@ -13,7 +13,7 @@ import javafx.beans.property.StringProperty;
 public class ListingFormViewModel
 {
   private MarketplaceModel model;
-  private StringProperty title,city,price,condition,phoneNumber, email, socialMediaAndUsername;
+  private StringProperty title,city,price,condition,phoneNumber, email, socialMediaAndUsername,description;
 
   /** Constructor for ListingForm view model
    *
@@ -29,6 +29,7 @@ public class ListingFormViewModel
     this.phoneNumber= new SimpleStringProperty("");
     this.email= new SimpleStringProperty("");
     this.socialMediaAndUsername= new SimpleStringProperty("");
+    this.description=new SimpleStringProperty("");
   }
 
   public StringProperty getListingTitle()
@@ -66,7 +67,20 @@ public class ListingFormViewModel
     return socialMediaAndUsername;
   }
 
+  public StringProperty getListingDescription()
+  {
+    return description;
+  }
+
+  //set(id, title, description, price, city, condition, seller);
+
+  //there is , no make new id method
+  //how do i assign seller without any User object reference?
   public void createListing(){
     //idk what this should do to save, ill ask on meeting
+    model.createListing(new Listing(1, getListingTitle().get(),
+        getListingDescription().get(), Double.parseDouble(
+        getListingPrice().get()), getListingCity().get(),
+        getListingCondition().get(), User ));
   }
 }
