@@ -16,7 +16,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public interface RemoteMarketplace extends Remote
 {
-  boolean login(String username, String password) throws RemoteException;
+  boolean login(String username, String password)
+      throws RemoteException, SQLException;
 
   Listing getListingById(String id) throws SQLException;
   ConcurrentHashMap<String, ArrayList<Listing>> getAllListing()

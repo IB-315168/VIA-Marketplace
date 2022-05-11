@@ -24,7 +24,7 @@ public class UserDAO implements Dao<User>
   @Override public User getById(String id) throws SQLException
   {
     int idInt = Integer.parseInt(id);
-    String query = "SELECT * FROM person WHERE id = ?";
+    String query = "SELECT * FROM person WHERE studentNumber = ?";
     PreparedStatement selectStatemenet = connection.prepareStatement(query);
     selectStatemenet.setInt(1, idInt);
     ResultSet res = selectStatemenet.executeQuery();

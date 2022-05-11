@@ -46,19 +46,19 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
   /**
    * 2-argument method checking credentials with which user is trying to log in
    *
-   * @param username username sent by the client
+   * @param studentNumber student identification sent by the client
    * @param password password sent by the client
    * @return <ul><li>true - if credentials are correct</li><li>false - otherwise</li></ul>
    * @throws RemoteException
    */
-  public boolean login(String username, String password) throws RemoteException
+  public boolean login(int studentNumber, String password)
+      throws RemoteException, SQLException
   {
-    if (username.equals("admin") && password.equals("admin"))
-    {
-      return true;
-    }
-
-    return false;
+    daoManager.open();
+    Login login = new Login(daoManager.getConnection());//Im not sure if it would be safe to have a get connection but I honestly dont know any other way to get connection through this.
+    Boolean status = login.doLogin(studentNumber,password);
+    daoManager.close();
+    return status;
   }
 
   @Override public Listing getListingById(String id) throws SQLException
