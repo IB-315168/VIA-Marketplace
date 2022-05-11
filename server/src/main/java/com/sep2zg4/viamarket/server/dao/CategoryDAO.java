@@ -9,7 +9,6 @@ import java.util.List;
 
 public class CategoryDAO implements Dao<String>
 {
-  private DAOManager manager = DAOManager.getInstance();
   private Connection connection;
 
   public CategoryDAO(Connection connection) throws SQLException
