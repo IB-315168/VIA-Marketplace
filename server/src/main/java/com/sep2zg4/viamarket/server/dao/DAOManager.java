@@ -4,9 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DAOManager
+public final class DAOManager
 {
-  public enum Table {Listing, User}
+  public enum Table {Listing, User, Category}
   private static ThreadLocal<DAOManager> INSTANCE;
   private Connection connection;
 
@@ -51,7 +51,7 @@ public class DAOManager
     }
   }
 
-  // Our version of the Function
+  /*// Our version of the Function
   public Dao getDao(String table) throws SQLException
   {
     if(connection == null || connection.isClosed()) {
@@ -66,10 +66,10 @@ public class DAOManager
       default:
         throw new SQLException("Table does not exist");
     }
-  }
+  }*/
 
   // Function responsible for retrieving Object-specific DAO, to be implemented once aforementioned are implemented
-  /*public Dao getDao(Table t) throws SQLException
+  public Dao getDao(Table t) throws SQLException
   {
     if(connection == null || connection.isClosed()) {
       this.open();
@@ -79,9 +79,11 @@ public class DAOManager
       case Listing:
         return new ListingDAO(connection);
       case User:
-//        return new UserDao(connection);
+        return new UserDAO(connection);
+      case Category:
+        return new CategoryDAO(connection);
       default:
         throw new SQLException("Table does not exist");
     }
-  } */
+  }
 }

@@ -48,27 +48,27 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject impleme
 
   @Override public Listing getListingById(String id) throws SQLException
   {
-    return (Listing) daoManager.getDao("Listing").getById(id);
+    return (Listing) daoManager.getDao(DAOManager.Table.Listing).getById(id);
   }
 
   @Override public List getAllListing() throws SQLException
   {
-    return daoManager.getDao("Listing").getAll();
+    return daoManager.getDao(DAOManager.Table.Listing).getAll();
   }
 
   @Override public void createListing(Listing listing) throws SQLException
   {
-    daoManager.getDao("Listing").create(listing);
+    daoManager.getDao(DAOManager.Table.Listing).create(listing);
   }
 
   @Override public void updateListing(Listing listing, String id) throws SQLException
   {
-    daoManager.getDao("Listing").update(listing,id);
+    daoManager.getDao(DAOManager.Table.Listing).update(listing,id);
   }
 
   @Override public void deleteListing(Listing listing) throws SQLException
   {
-    daoManager.getDao("Listing").delete(listing);
+    daoManager.getDao(DAOManager.Table.Listing).delete(listing);
   }
 
 }
