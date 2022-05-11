@@ -5,6 +5,7 @@ import com.sep2zg4.viamarket.model.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Login
 {
@@ -15,7 +16,8 @@ public class Login
     this.connection = connection;
   }
 
-  public boolean doLogin(int studentNumber, String password){
+  public boolean doLogin(int studentNumber, String password) throws SQLException
+  {
     String query = "SELECT * FROM person WHERE studentNumber = ? AND password = ?";
     PreparedStatement selectStatemenet = connection.prepareStatement(query);
     selectStatemenet.setInt(1, studentNumber);
