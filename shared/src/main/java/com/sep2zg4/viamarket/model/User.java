@@ -35,4 +35,19 @@ public class User implements Serializable
 
     this.isModerator = isModerator;
   }
+
+  public String getId()
+  {
+    return id;
+  }
+
+  public String getFullName()
+  {
+    return fullName;
+  }
+
+  public boolean isModerator()
+  {
+    return isModerator;
+  }
 }

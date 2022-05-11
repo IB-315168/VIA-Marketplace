@@ -19,7 +19,7 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject impleme
     RemoteMarketplace
 {
 
-  DAOManager daoManager = DAOManager.getInstance();
+  private DAOManager daoManager = DAOManager.getInstance();
 
   /**
    * Class constructor

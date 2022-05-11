@@ -51,8 +51,7 @@ public class ListingsViewController
     this.loggedAs.textProperty().bindBidirectional(viewModel.getUserType());
     viewModel.getListingProperties();
 
-    /*
-    Only for debug/testing purposes - open USERINFO View
+/*//    Only for debug/testing purposes - open USERINFO View
     this.listingsList.setOnKeyPressed(new EventHandler<KeyEvent>()
     {
       @Override public void handle(KeyEvent event)

@@ -46,7 +46,7 @@ public class ListingDAO implements Dao<Listing>
   {
     String query = "INSERT INTO listing (id,title,description,price,city,condition,studentNumber) VALUES ?,?,?,?,?,?,?";
     PreparedStatement insertStatement = connection.prepareStatement(query);
-    insertStatement.setInt(1,listing.getID());
+    insertStatement.setInt(1,listing.getId());
     insertStatement.setString(2,listing.getTitle());
     insertStatement.setString(3,listing.getDescription());
     insertStatement.setDouble(4,listing.getPrice());
