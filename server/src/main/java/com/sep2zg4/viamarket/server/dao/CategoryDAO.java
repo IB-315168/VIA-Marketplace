@@ -42,16 +42,26 @@ public class CategoryDAO implements Dao<String>
 
   @Override public void create(String s) throws SQLException
   {
-
+    String query = "INSERT INTO category (name) VALUES ?";
+    PreparedStatement insertStatement = connection.prepareStatement(query);
+    insertStatement.setString(1, s);
+    insertStatement.executeUpdate();
   }
 
   @Override public void update(String s) throws SQLException
   {
-
+    String query = "UPDATE category SET name=? WHERE name=? ;";
+    PreparedStatement updateStatement = connection.prepareStatement(query);
+    updateStatement.setString(1, s);
+    updateStatement.setString(2, s);
+    updateStatement.executeUpdate();
   }
 
   @Override public void delete(String s) throws SQLException
   {
-
+    String query = "DELETE FROM category WHERE name=?";
+    PreparedStatement deleteStatement = connection.prepareStatement(query);
+    deleteStatement.setString(1, s);
+    deleteStatement.executeUpdate();
   }
 }
