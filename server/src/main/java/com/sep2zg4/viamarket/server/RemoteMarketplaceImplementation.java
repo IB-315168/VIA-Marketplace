@@ -2,12 +2,18 @@ package com.sep2zg4.viamarket.server;
 
 import com.sep2zg4.viamarket.model.Listing;
 import com.sep2zg4.viamarket.server.dao.*;
+import com.sep2zg4.viamarket.server.listingaccess.MapAccess;
+import com.sep2zg4.viamarket.server.listingaccess.RMIListingsReader;
+import com.sep2zg4.viamarket.server.listingaccess.ReadWriteAccess;
+import com.sep2zg4.viamarket.server.listingaccess.WriteMap;
 import com.sep2zg4.viamarket.servermodel.RemoteMarketplace;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -17,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @version 1.0 - April 2022
  */
 public class RemoteMarketplaceImplementation extends UnicastRemoteObject
-    implements RemoteMarketplace
+    implements RemoteMarketplace, WriteMap
 {
 
   private DAOManager daoManager = DAOManager.getInstance();
@@ -25,7 +31,8 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
   private UserDAO userDAO;
   private CategoryDAO categoryDAO;
   private ListingDAO listingDAO;
-  private Thread superDAO;
+  private final Thread superDAO;
+  private ReadWriteAccess lock;
 
   /**
    * Class constructor
@@ -34,12 +41,13 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
    */
   public RemoteMarketplaceImplementation() throws RemoteException, SQLException
   {
+    lock = new MapAccess(this);
     listings = new ConcurrentHashMap<>();
     userDAO = (UserDAO) daoManager.getDao(DAOManager.Table.User);
     categoryDAO = (CategoryDAO) daoManager.getDao(DAOManager.Table.Category);
     listingDAO = (ListingDAO) daoManager.getDao(DAOManager.Table.Listing);
     superDAO = new Thread(
-        daoManager.getSuperDao(listingDAO, userDAO, categoryDAO, listings));
+        daoManager.getRMIListingsWriter(lock, listingDAO, userDAO, categoryDAO, listings));
     superDAO.start();
   }
 
@@ -63,10 +71,13 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
     return listingDAO.getById(id);
   }
 
-  @Override public ConcurrentHashMap<String, ArrayList<Listing>> getAllListing()
+  @Override public HashMap<String, ArrayList<Listing>> getAllListing()
       throws SQLException, RemoteException
   {
-    return listings;
+    HashMap<String, ArrayList<Listing>> listingsCopy = new HashMap<>();
+    Thread t = new Thread(new RMIListingsReader(lock, listingsCopy));
+    t.start();
+    return listingsCopy;
   }
 
   @Override public void createListing(Listing listing)
@@ -102,5 +113,16 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
     synchronized (superDAO) {
       superDAO.notify();
     }
+  }
+
+  @Override public ConcurrentHashMap<String, ArrayList<Listing>> getListings()
+  {
+    return listings;
+  }
+
+  @Override public void write(
+      ConcurrentHashMap<String, ArrayList<Listing>> listingsReference)
+  {
+    this.listings = listingsReference;
   }
 }

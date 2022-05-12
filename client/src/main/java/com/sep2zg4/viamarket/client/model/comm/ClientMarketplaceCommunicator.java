@@ -8,6 +8,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.SQLException;
 
 /**
  * Communicator class for handling connection
@@ -49,11 +50,11 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject
    * 2-argument method for logging in
    * @param username username of the user
    * @param password matching password
-   * @return result of {@link com.sep2zg4.viamarket.servermodel.RemoteMarketplace#login(String, String)}
+   * @return result of {@link com.sep2zg4.viamarket.servermodel.RemoteMarketplace#login(int, String)}
    * @throws RemoteException
    */
-  public boolean login(String username, String password)
-      throws RemoteException, NotBoundException
+  public boolean login(int username, String password)
+      throws RemoteException, NotBoundException, SQLException
   {
     try {
       connect();

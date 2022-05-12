@@ -1,6 +1,8 @@
 package com.sep2zg4.viamarket.server.dao;
 
 import com.sep2zg4.viamarket.model.Listing;
+import com.sep2zg4.viamarket.server.listingaccess.RMIListingsWriter;
+import com.sep2zg4.viamarket.server.listingaccess.ReadWriteAccess;
 
 import java.rmi.RemoteException;
 import java.sql.Connection;
@@ -99,13 +101,12 @@ public final class DAOManager
     }
   }*/
 
-  public SuperDAO getSuperDao(ListingDAO listingDAO, UserDAO userDAO,
+  public RMIListingsWriter getRMIListingsWriter(ReadWriteAccess lock, ListingDAO listingDAO, UserDAO userDAO,
       CategoryDAO categoryDAO,
       ConcurrentHashMap<String, ArrayList<Listing>> listingsReference)
       throws SQLException
   {
-    return SuperDAO.getInstance(connection, listingDAO, userDAO, categoryDAO,
-        listingsReference);
+    return RMIListingsWriter.getInstance(lock, connection, listingDAO, userDAO, categoryDAO);
   }
 
   public boolean attemptLogin(int studentNumber, String password)

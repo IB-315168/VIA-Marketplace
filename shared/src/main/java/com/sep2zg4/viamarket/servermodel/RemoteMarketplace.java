@@ -6,7 +6,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
 
 /**
  * Remote interface for RMI
@@ -20,7 +20,7 @@ public interface RemoteMarketplace extends Remote
       throws RemoteException, SQLException;
 
   Listing getListingById(String id) throws SQLException, RemoteException;
-  ConcurrentHashMap<String, ArrayList<Listing>> getAllListing()
+  HashMap<String, ArrayList<Listing>> getAllListing()
       throws SQLException, RemoteException;
   void createListing(Listing listing) throws SQLException, RemoteException;
   void updateListing(Listing listing) throws SQLException, RemoteException;

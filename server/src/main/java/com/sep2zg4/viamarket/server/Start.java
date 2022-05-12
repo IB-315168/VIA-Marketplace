@@ -19,10 +19,12 @@ public class Start
     RemoteMarketplace comm = new RemoteMarketplaceImplementation();
     registry.bind("comm", comm);
     System.out.println("Server running on " + Registry.REGISTRY_PORT);
-    //    test(comm);
-    Thread.sleep(3000);
-    comm.exampleMethod();
     test(comm);
+    if(comm.login(315236,"derciofernandes")) {
+      System.out.println("success");
+    } else {
+      System.out.println("fail");
+    }
   }
 
   private static void test(RemoteMarketplace comm)

@@ -2,6 +2,7 @@ package com.sep2zg4.viamarket.client.model;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 
 /**
  * Interface for the model
@@ -11,6 +12,6 @@ import java.rmi.RemoteException;
  */
 public interface MarketplaceModel
 {
-  boolean login(String username, String password)
-      throws RemoteException, NotBoundException;
+  boolean login(int username, String password)
+      throws RemoteException, NotBoundException, SQLException;
 }

@@ -19,14 +19,10 @@ public class LoginHandler
       throws SQLException
   {
     String query = "SELECT * FROM person WHERE studentNumber = ? AND password = ?";
-    PreparedStatement selectStatemenet = connection.prepareStatement(query);
-    selectStatemenet.setInt(1, studentNumber);
-    selectStatemenet.setString(2, password);
-    ResultSet res = selectStatemenet.executeQuery();
-    res.next();
-    if (!res.isBeforeFirst())
-      return false;
-    else
-      return true;
+    PreparedStatement selectStatement = connection.prepareStatement(query);
+    selectStatement.setInt(1, studentNumber);
+    selectStatement.setString(2, password);
+    ResultSet res = selectStatement.executeQuery();
+    return res.next();
   }
 }
