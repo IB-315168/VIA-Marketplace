@@ -1,6 +1,7 @@
 package com.sep2zg4.viamarket.server;
 
 import com.sep2zg4.viamarket.model.Listing;
+import com.sep2zg4.viamarket.model.User;
 import com.sep2zg4.viamarket.server.dao.*;
 import com.sep2zg4.viamarket.server.listingaccess.MapAccess;
 import com.sep2zg4.viamarket.server.listingaccess.RMIListingsReader;
@@ -13,6 +14,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -107,6 +109,35 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
     }
     notify();
   }
+
+  @Override
+  public void createUser(User user) throws SQLException, RemoteException {
+    userDAO.create(user);
+    notify();
+  }
+
+  @Override
+  public void updateUser(User user) throws SQLException, RemoteException {
+    userDAO.update(user);
+    notify();
+  }
+
+  @Override
+  public void deleteUser(User user) throws SQLException, RemoteException {
+    try {
+      userDAO.delete(user);
+    }
+    catch (RemoteException e){
+      throw new RuntimeException(e);
+    }
+    notify();
+  }
+
+  @Override
+  public User getUserById(String id) throws SQLException, RemoteException {
+    return userDAO.getById(id);
+  }
+
 
   //Debug purpose, showing issues with reading
   public void exampleMethod() {
