@@ -72,12 +72,14 @@ public class ListingFormViewModel
     return description;
   }
 
+  /**
+   * Method used for creating a Listing
+   */
   //set(id, title, description, price, city, condition, seller);
-
   //there is , no make new id method
   //how do i assign seller without any User object reference?
   public void createListing(){
-    //idk what this should do to save, ill ask on meeting
+
     model.createListing(new Listing(1, getListingTitle().get(),
         getListingDescription().get(), Double.parseDouble(
         getListingPrice().get()), getListingCity().get(),

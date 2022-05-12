@@ -1,5 +1,6 @@
 package com.sep2zg4.viamarket.client.model.comm;
 
+import com.sep2zg4.viamarket.model.Listing;
 import com.sep2zg4.viamarket.servermodel.RemoteMarketplace;
 
 import java.rmi.NoSuchObjectException;
@@ -13,7 +14,7 @@ import java.sql.SQLException;
 /**
  * Communicator class for handling connection
  *
- * @author Igor Bulinski
+ * @author Igor Bulinski, Wojtek Rusinski
  * @version 1.0 - April 2022
  */
 public class ClientMarketplaceCommunicator extends UnicastRemoteObject
@@ -72,5 +73,41 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject
   public void close() throws NoSuchObjectException
   {
     UnicastRemoteObject.unexportObject(this, true);
+  }
+
+  /**
+   * Method used for creating a listing
+   * @param listing Listing that is being created
+   * @throws RemoteException
+   * @throws SQLException
+   */
+  public void createListing(Listing listing)
+      throws RemoteException, SQLException
+  {
+      communicator.createListing(listing);
+  }
+
+  /**
+   * Method used for updating a listing
+   * @param listing Listing that is being updated
+   * @throws RemoteException
+   * @throws SQLException
+   */
+  public void updateListing(Listing listing)
+      throws RemoteException, SQLException
+  {
+      communicator.updateListing(listing);
+  }
+
+  /**
+   * Method used for deleting a listing
+   * @param listing Listing that is being deleted
+   * @throws RemoteException
+   * @throws SQLException
+   */
+  public void deleteListing(Listing listing)
+      throws RemoteException, SQLException
+  {
+      communicator.deleteListing(listing);
   }
 }
