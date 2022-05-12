@@ -10,8 +10,10 @@ import java.io.Serializable;
  */
 public class User implements Serializable
 {
-  private String id;
+  private int id;
   private String fullName;
+  private String phoneNumber;
+  private String email;
   private boolean isModerator;
 
   /**
@@ -21,10 +23,11 @@ public class User implements Serializable
    * @param isModerator parameter stating user privileges <ul><li>false - user has standard access</li><li>true - user has moderator privileges</li></ul>
    * @throws IllegalArgumentException if argument conditions are not met
    */
-  public User(String id, String fullName, boolean isModerator) throws IllegalArgumentException
+  public User(int id, String fullName, String phoneNumber, String email,
+      boolean isModerator) throws IllegalArgumentException
   {
-    if(id == null || id.isBlank()) {
-      throw new IllegalArgumentException("Email cannot be empty");
+    if(id < 0 || id > 999999) {
+      throw new IllegalArgumentException("Incorrect id");
     }
     this.id = id;
 
@@ -33,6 +36,34 @@ public class User implements Serializable
     }
     this.fullName = fullName;
 
+    this.phoneNumber = phoneNumber;
+    this.email = email;
+
     this.isModerator = isModerator;
+  }
+
+  public int getId()
+  {
+    return id;
+  }
+
+  public String getFullName()
+  {
+    return fullName;
+  }
+
+  public String getPhoneNumber()
+  {
+    return phoneNumber;
+  }
+
+  public String getEmail()
+  {
+    return email;
+  }
+
+  public boolean isModerator()
+  {
+    return isModerator;
   }
 }

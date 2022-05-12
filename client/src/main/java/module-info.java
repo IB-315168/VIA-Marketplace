@@ -5,6 +5,7 @@ module client {
   requires java.desktop;
   requires java.rmi;
   requires shared;
+  requires java.sql;
 
   opens com.sep2zg4.viamarket.client.view to javafx.fxml;
 

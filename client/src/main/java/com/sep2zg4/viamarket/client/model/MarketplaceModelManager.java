@@ -5,6 +5,7 @@ import com.sep2zg4.viamarket.client.model.comm.ClientMarketplaceCommunicator;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
+import java.sql.SQLException;
 
 /**
  * Implementation of the {@link MarketplaceModel}
@@ -26,15 +27,15 @@ public class MarketplaceModelManager implements MarketplaceModel
   }
 
   /**
-   * 2-argument method for passing credentials to the {@link ClientMarketplaceCommunicator#login(String, String)} method and handling the result
+   * 2-argument method for passing credentials to the {@link ClientMarketplaceCommunicator#login(int, String)} method and handling the result
    *
    * @param username username of the user
    * @param password matching password
-   * @return result of {@link com.sep2zg4.viamarket.client.model.comm.ClientMarketplaceCommunicator#login(String, String)}
+   * @return result of {@link com.sep2zg4.viamarket.client.model.comm.ClientMarketplaceCommunicator#login(int, String)}
    * @throws RemoteException
    */
-  public boolean login(String username, String password)
-      throws RemoteException, NotBoundException
+  public boolean login(int username, String password)
+      throws RemoteException, NotBoundException, SQLException
   {
     return client.login(username, password);
   }

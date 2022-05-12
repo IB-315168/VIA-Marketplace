@@ -1,13 +1,22 @@
 package com.sep2zg4.viamarket.server;
 
 import com.sep2zg4.viamarket.model.Listing;
-import com.sep2zg4.viamarket.server.dao.DAOManager;
+import com.sep2zg4.viamarket.model.User;
+import com.sep2zg4.viamarket.server.dao.*;
+import com.sep2zg4.viamarket.server.listingaccess.MapAccess;
+import com.sep2zg4.viamarket.server.listingaccess.RMIListingsReader;
+import com.sep2zg4.viamarket.server.listingaccess.ReadWriteAccess;
+import com.sep2zg4.viamarket.server.listingaccess.WriteMap;
 import com.sep2zg4.viamarket.servermodel.RemoteMarketplace;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Implementation of the Remote interface {@link RemoteMarketplace}
@@ -15,60 +24,136 @@ import java.util.List;
  * @author Igor Bulinski
  * @version 1.0 - April 2022
  */
-public class RemoteMarketplaceImplementation extends UnicastRemoteObject implements
-    RemoteMarketplace
+public class RemoteMarketplaceImplementation extends UnicastRemoteObject
+    implements RemoteMarketplace, WriteMap
 {
 
-  DAOManager daoManager = DAOManager.getInstance();
+  private DAOManager daoManager = DAOManager.getInstance();
+  private ConcurrentHashMap<String, ArrayList<Listing>> listings;
+  private UserDAO userDAO;
+  private CategoryDAO categoryDAO;
+  private ListingDAO listingDAO;
+  private final Thread superDAO;
+  private ReadWriteAccess lock;
 
   /**
    * Class constructor
+   *
    * @throws RemoteException
    */
   public RemoteMarketplaceImplementation() throws RemoteException, SQLException
   {
-
+    lock = new MapAccess(this);
+    listings = new ConcurrentHashMap<>();
+    userDAO = (UserDAO) daoManager.getDao(DAOManager.Table.User);
+    categoryDAO = (CategoryDAO) daoManager.getDao(DAOManager.Table.Category);
+    listingDAO = (ListingDAO) daoManager.getDao(DAOManager.Table.Listing);
+    superDAO = new Thread(
+        daoManager.getRMIListingsWriter(lock, listingDAO, userDAO, categoryDAO, listings));
+    superDAO.start();
   }
 
   /**
    * 2-argument method checking credentials with which user is trying to log in
-   * @param username username sent by the client
+   *
+   * @param studentNumber student identification sent by the client
    * @param password password sent by the client
    * @return <ul><li>true - if credentials are correct</li><li>false - otherwise</li></ul>
    * @throws RemoteException
    */
-  public boolean login(String username, String password) throws RemoteException
+  public boolean login(int studentNumber, String password)
+      throws RemoteException, SQLException
   {
-    if(username.equals("admin") && password.equals("admin")) {
-      return true;
+    return daoManager.attemptLogin(studentNumber, password);
+  }
+
+  @Override public Listing getListingById(String id)
+      throws SQLException, RemoteException
+  {
+    return listingDAO.getById(id);
+  }
+
+  @Override public HashMap<String, ArrayList<Listing>> getAllListing()
+      throws SQLException, RemoteException
+  {
+    HashMap<String, ArrayList<Listing>> listingsCopy = new HashMap<>();
+    Thread t = new Thread(new RMIListingsReader(lock, listingsCopy));
+    t.start();
+    return listingsCopy;
+  }
+
+  @Override public void createListing(Listing listing)
+      throws SQLException, RemoteException
+  {
+    listingDAO.create(listing);
+    notify();
+  }
+
+  @Override public void updateListing(Listing listing)
+      throws SQLException, RemoteException
+  {
+    listingDAO.update(listing);
+    notify();
+  }
+
+  @Override public void deleteListing(Listing listing)
+      throws SQLException, RemoteException
+  {
+    try
+    {
+      listingDAO.delete(listing);
     }
-
-    return false;
+    catch (RemoteException e)
+    {
+      throw new RuntimeException(e);
+    }
+    notify();
   }
 
-  @Override public Listing getListingById(String id) throws SQLException
+  @Override
+  public void createUser(User user) throws SQLException, RemoteException {
+    userDAO.create(user);
+    notify();
+  }
+
+  @Override
+  public void updateUser(User user) throws SQLException, RemoteException {
+    userDAO.update(user);
+    notify();
+  }
+
+  @Override
+  public void deleteUser(User user) throws SQLException, RemoteException {
+    try {
+      userDAO.delete(user);
+    }
+    catch (RemoteException e){
+      throw new RuntimeException(e);
+    }
+    notify();
+  }
+
+  @Override
+  public User getUserById(String id) throws SQLException, RemoteException {
+    return userDAO.getById(id);
+  }
+
+
+  //Debug purpose, showing issues with reading
+  public void exampleMethod() {
+    synchronized (superDAO) {
+      superDAO.notify();
+    }
+  }
+
+  @Override public ConcurrentHashMap<String, ArrayList<Listing>> getListings()
   {
-    return (Listing) daoManager.getDao("Listing").getById(id);
+    return listings;
   }
 
-  @Override public List getAllListing() throws SQLException
+  @Override public void write(
+      ConcurrentHashMap<String, ArrayList<Listing>> listingsReference)
   {
-    return daoManager.getDao("Listing").getAll();
+    this.listings = listingsReference;
   }
-
-  @Override public void createListing(Listing listing) throws SQLException
-  {
-    daoManager.getDao("Listing").create(listing);
-  }
-
-  @Override public void updateListing(Listing listing, String id) throws SQLException
-  {
-    daoManager.getDao("Listing").update(listing,id);
-  }
-
-  @Override public void deleteListing(Listing listing) throws SQLException
-  {
-    daoManager.getDao("Listing").delete(listing);
-  }
-
 }

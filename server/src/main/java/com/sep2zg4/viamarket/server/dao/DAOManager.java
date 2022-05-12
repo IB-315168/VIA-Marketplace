@@ -1,14 +1,21 @@
 package com.sep2zg4.viamarket.server.dao;
 
+import com.sep2zg4.viamarket.model.Listing;
+import com.sep2zg4.viamarket.server.listingaccess.RMIListingsWriter;
+import com.sep2zg4.viamarket.server.listingaccess.ReadWriteAccess;
+
+import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class DAOManager
+public final class DAOManager
 {
-  public enum Table {Listing, User}
   private static ThreadLocal<DAOManager> INSTANCE;
   private Connection connection;
+  private LoginHandler loginHandler;
 
   private DAOManager() throws SQLException
   {
@@ -17,8 +24,10 @@ public class DAOManager
 
   public static DAOManager getInstance() throws SQLException
   {
-    if (INSTANCE == null) {
-      INSTANCE = new ThreadLocal<DAOManager>() {
+    if (INSTANCE == null)
+    {
+      INSTANCE = new ThreadLocal<DAOManager>()
+      {
         @Override protected DAOManager initialValue()
         {
           try
@@ -38,20 +47,44 @@ public class DAOManager
 
   public void open() throws SQLException
   {
-    if(connection == null || connection.isClosed()) {
-      connection = DriverManager.getConnection("url",
-          "user", "password");
+    if (connection == null || connection.isClosed())
+    {
+      connection = DriverManager.getConnection(
+          "jdbc:postgresql://abul.db.elephantsql.com/unnmkiby", "unnmkiby",
+          "9rQAlABdHOKbbTS46V662goUMd2IjnKZ");
     }
   }
 
   public void close() throws SQLException
   {
-    if(connection != null || !connection.isClosed()) {
+    if (connection != null || !connection.isClosed())
+    {
       connection.close();
     }
   }
 
-  // Our version of the Function
+  // Function responsible for retrieving Object-specific DAO, to be implemented once aforementioned are implemented
+  public Dao getDao(Table t) throws SQLException, RemoteException
+  {
+    if (connection == null || connection.isClosed())
+    {
+      this.open();
+    }
+
+    switch (t)
+    {
+      case Listing:
+        return new ListingDAO(connection);
+      case User:
+        return new UserDAO(connection);
+      case Category:
+        return new CategoryDAO(connection);
+      default:
+        throw new SQLException("Table does not exist");
+    }
+  }
+
+  /*// Our version of the Function
   public Dao getDao(String table) throws SQLException
   {
     if(connection == null || connection.isClosed()) {
@@ -66,22 +99,31 @@ public class DAOManager
       default:
         throw new SQLException("Table does not exist");
     }
+  }*/
+
+  public RMIListingsWriter getRMIListingsWriter(ReadWriteAccess lock, ListingDAO listingDAO, UserDAO userDAO,
+      CategoryDAO categoryDAO,
+      ConcurrentHashMap<String, ArrayList<Listing>> listingsReference)
+      throws SQLException
+  {
+    return RMIListingsWriter.getInstance(lock, connection, listingDAO, userDAO, categoryDAO);
   }
 
-  // Function responsible for retrieving Object-specific DAO, to be implemented once aforementioned are implemented
-  /*public Dao getDao(Table t) throws SQLException
+  public boolean attemptLogin(int studentNumber, String password)
+      throws SQLException
   {
-    if(connection == null || connection.isClosed()) {
+    if (connection == null || connection.isClosed())
+    {
       this.open();
     }
 
-    switch (t) {
-      case Listing:
-        return new ListingDAO(connection);
-      case User:
-//        return new UserDao(connection);
-      default:
-        throw new SQLException("Table does not exist");
+    if(loginHandler == null) {
+      loginHandler = new LoginHandler(connection);
     }
-  } */
+
+    return loginHandler.attemptLogin(studentNumber, password);
+  }
+
+  public enum Table
+  {Listing, User, Category}
 }

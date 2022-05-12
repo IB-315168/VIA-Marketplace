@@ -82,4 +82,39 @@ public class Listing implements Serializable
     }
     this.seller = seller;
   }
+
+  public int getId()
+  {
+    return id;
+  }
+
+  public String getTitle()
+  {
+    return title;
+  }
+
+  public String getDescription()
+  {
+    return description;
+  }
+
+  public double getPrice()
+  {
+    return price;
+  }
+
+  public String getCity()
+  {
+    return city;
+  }
+
+  public String getCondition()
+  {
+    return condition;
+  }
+
+  public User getSeller()
+  {
+    return seller;
+  }
 }

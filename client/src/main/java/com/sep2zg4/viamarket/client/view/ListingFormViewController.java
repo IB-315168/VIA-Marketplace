@@ -15,9 +15,8 @@ public class ListingFormViewController
   @FXML private TextField city;
   @FXML private TextField price;
   @FXML private Label condition;
-  @FXML private TextField phoneNumber;
-  @FXML private TextField email;
-  @FXML private TextField socialMediaAndUserName;
+  @FXML private TextField socialMedia;
+  @FXML private TextField username;
   @FXML private TextArea description;
   @FXML private Button saveButton;
   @FXML private RadioButton conditionDefective;
@@ -29,7 +28,7 @@ public class ListingFormViewController
   private Region root;
 
   /**
-   * A gay constructor/function of ListingFormViewController containing actions to be made by the system upon initialization
+   * A constructor/function of ListingFormViewController containing actions to be made by the system upon initialization
    *
    * @param viewHandler
    * @param viewModel
@@ -47,9 +46,8 @@ public class ListingFormViewController
     this.city.textProperty().bindBidirectional(viewModel.getListingCity());
     this.price.textProperty().bindBidirectional(viewModel.getListingPrice());
     this.condition.textProperty().bindBidirectional(viewModel.getListingCondition());
-    this.phoneNumber.textProperty().bindBidirectional(viewModel.getListingPhoneNumber());
-    this.email.textProperty().bindBidirectional(viewModel.getListingEmail());
-    this.socialMediaAndUserName.textProperty().bindBidirectional(viewModel.getListingSocialMediaAndUsername());
+    this.socialMedia.textProperty().bindBidirectional(viewModel.getListingSocialMedia());
+    this.username.textProperty().bindBidirectional(viewModel.getListingUsername());
   }
 
   /**
