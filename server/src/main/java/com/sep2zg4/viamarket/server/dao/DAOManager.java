@@ -2,6 +2,7 @@ package com.sep2zg4.viamarket.server.dao;
 
 import com.sep2zg4.viamarket.model.Listing;
 
+import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -12,6 +13,7 @@ public final class DAOManager
 {
   private static ThreadLocal<DAOManager> INSTANCE;
   private Connection connection;
+  private LoginHandler loginHandler;
 
   private DAOManager() throws SQLException
   {
@@ -60,7 +62,7 @@ public final class DAOManager
   }
 
   // Function responsible for retrieving Object-specific DAO, to be implemented once aforementioned are implemented
-  public Dao getDao(Table t) throws SQLException
+  public Dao getDao(Table t) throws SQLException, RemoteException
   {
     if (connection == null || connection.isClosed())
     {
@@ -104,6 +106,21 @@ public final class DAOManager
   {
     return SuperDAO.getInstance(connection, listingDAO, userDAO, categoryDAO,
         listingsReference);
+  }
+
+  public boolean attemptLogin(int studentNumber, String password)
+      throws SQLException
+  {
+    if (connection == null || connection.isClosed())
+    {
+      this.open();
+    }
+
+    if(loginHandler == null) {
+      loginHandler = new LoginHandler(connection);
+    }
+
+    return loginHandler.attemptLogin(studentNumber, password);
   }
 
   public enum Table

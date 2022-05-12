@@ -1,5 +1,6 @@
 package com.sep2zg4.viamarket.server.dao;
 
+import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,7 +31,7 @@ public class CategoryDAO implements Dao<String>
   @Override public List<String> getAll() throws SQLException
   {
     ArrayList<String> categories = new ArrayList<>();
-    String query = "SELECT * FROM category?";
+    String query = "SELECT * FROM category";
     PreparedStatement selectStatemenet = connection.prepareStatement(query);
     ResultSet res = selectStatemenet.executeQuery();
     while (res.next())
@@ -57,7 +58,7 @@ public class CategoryDAO implements Dao<String>
     updateStatement.executeUpdate();
   }
 
-  @Override public void delete(String s) throws SQLException
+  @Override public void delete(String s) throws SQLException, RemoteException
   {
     String query = "DELETE FROM category WHERE name=?";
     PreparedStatement deleteStatement = connection.prepareStatement(query);

@@ -1,13 +1,13 @@
 package com.sep2zg4.viamarket.server.dao;
 
 import com.sep2zg4.viamarket.model.Listing;
-import com.sep2zg4.viamarket.model.User;
 
-import javax.xml.transform.Result;
+import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListingDAO implements Dao<Listing>
@@ -17,10 +17,11 @@ public class ListingDAO implements Dao<Listing>
   private Connection connection;
   private UserDAO userDAO;
 
-  public ListingDAO(Connection connection) throws SQLException
+  public ListingDAO(Connection connection) throws SQLException, RemoteException
   {
     this.connection = connection;
     this.userDAO = (UserDAO) manager.getDao(DAOManager.Table.User);
+    this.listOfListing = new ArrayList<>();
   }
 
   @Override public Listing getById(String id) throws SQLException
@@ -81,7 +82,8 @@ public class ListingDAO implements Dao<Listing>
     updateStatement.executeUpdate();
   }
 
-  @Override public void delete(Listing listing) throws SQLException
+  @Override public void delete(Listing listing)
+      throws SQLException, RemoteException
   {
     String query = "DELETE FROM listing WHERE id=?";
     PreparedStatement deleteStatement = connection.prepareStatement(query);

@@ -19,10 +19,11 @@ public interface RemoteMarketplace extends Remote
   boolean login(int studentNumber, String password)
       throws RemoteException, SQLException;
 
-  Listing getListingById(String id) throws SQLException;
+  Listing getListingById(String id) throws SQLException, RemoteException;
   ConcurrentHashMap<String, ArrayList<Listing>> getAllListing()
-      throws SQLException;
-  void createListing(Listing listing) throws SQLException;
-  void updateListing(Listing listing) throws SQLException;
-  void deleteListing(Listing listing) throws SQLException;
+      throws SQLException, RemoteException;
+  void createListing(Listing listing) throws SQLException, RemoteException;
+  void updateListing(Listing listing) throws SQLException, RemoteException;
+  void deleteListing(Listing listing) throws SQLException, RemoteException;
+  void exampleMethod() throws RemoteException;
 }

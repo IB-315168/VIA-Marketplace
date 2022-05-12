@@ -54,36 +54,53 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
   public boolean login(int studentNumber, String password)
       throws RemoteException, SQLException
   {
-    daoManager.open();
-    Login login = new Login(daoManager.getConnection());//Im not sure if it would be safe to have a get connection but I honestly dont know any other way to get connection through this.
-    Boolean status = login.doLogin(studentNumber,password);
-    daoManager.close();
-    return status;
+    return daoManager.attemptLogin(studentNumber, password);
   }
 
-  @Override public Listing getListingById(String id) throws SQLException
+  @Override public Listing getListingById(String id)
+      throws SQLException, RemoteException
   {
     return listingDAO.getById(id);
   }
 
   @Override public ConcurrentHashMap<String, ArrayList<Listing>> getAllListing()
+      throws SQLException, RemoteException
   {
     return listings;
   }
 
-  @Override public void createListing(Listing listing) throws SQLException
+  @Override public void createListing(Listing listing)
+      throws SQLException, RemoteException
   {
     listingDAO.create(listing);
+    notify();
   }
 
-  @Override public void updateListing(Listing listing) throws SQLException
+  @Override public void updateListing(Listing listing)
+      throws SQLException, RemoteException
   {
     listingDAO.update(listing);
+    notify();
   }
 
-  @Override public void deleteListing(Listing listing) throws SQLException
+  @Override public void deleteListing(Listing listing)
+      throws SQLException, RemoteException
   {
-    listingDAO.delete(listing);
+    try
+    {
+      listingDAO.delete(listing);
+    }
+    catch (RemoteException e)
+    {
+      throw new RuntimeException(e);
+    }
+    notify();
   }
 
+  //Debug purpose, showing issues with reading
+  public void exampleMethod() {
+    synchronized (superDAO) {
+      superDAO.notify();
+    }
+  }
 }

@@ -2,6 +2,7 @@ package com.sep2zg4.viamarket.server.dao;
 
 import com.sep2zg4.viamarket.model.Listing;
 
+import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,7 +17,7 @@ public final class SuperDAO implements Runnable
   private UserDAO userDAO;
   private CategoryDAO categoryDAO;
   private Connection connection;
-  private ConcurrentHashMap<String, ArrayList<Listing>> listingsReference;
+  private final ConcurrentHashMap<String, ArrayList<Listing>> listingsReference;
 
   private SuperDAO(Connection connection, ListingDAO listingDAO,
       UserDAO userDAO, CategoryDAO categoryDAO,
@@ -48,25 +49,29 @@ public final class SuperDAO implements Runnable
     try
     {
       updateChanges();
-      wait();
     }
-    catch (Exception e)
+    catch (SQLException e)
     {
-      e.printStackTrace();
+      throw new RuntimeException(e);
+    }
+    catch (RemoteException e)
+    {
+      throw new RuntimeException(e);
     }
   }
 
-  private void updateChanges() throws SQLException
+  private void updateChanges() throws SQLException, RemoteException
   {
     while (true)
     {
       for (String category : categoryDAO.getAll())
       {
+        System.out.println(category);
         listingsReference.put(category, new ArrayList<>());
       }
       for (Listing listing : listingDAO.getAll())
       {
-        String query = "SELECT name FROM category WHERE id = (SELECT idCategory FROM listing WHERE id = ?)";
+        String query = "SELECT name FROM category WHERE idCategory = (SELECT idCategory FROM listing WHERE id = ?)";
         PreparedStatement selectStatement = connection.prepareStatement(query);
         selectStatement.setInt(1, listing.getId());
         ResultSet res = selectStatement.executeQuery();
@@ -74,6 +79,16 @@ public final class SuperDAO implements Runnable
         {
           listingsReference.get(res.getString(1)).add(listing);
         }
+      }
+      try
+      {
+        synchronized (INSTANCE) {
+          wait();
+        }
+      }
+      catch (InterruptedException e)
+      {
+        throw new RuntimeException(e);
       }
     }
   }

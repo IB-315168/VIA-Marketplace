@@ -2,6 +2,7 @@ package com.sep2zg4.viamarket.server.dao;
 
 import com.sep2zg4.viamarket.model.User;
 
+import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -74,7 +75,7 @@ public class UserDAO implements Dao<User>
     updateStatement.executeUpdate();
   }
 
-  @Override public void delete(User user) throws SQLException
+  @Override public void delete(User user) throws SQLException, RemoteException
   {
     String query = "DELETE FROM person WHERE studentNumber=?";
     PreparedStatement deleteStatement = connection.prepareStatement(query);
