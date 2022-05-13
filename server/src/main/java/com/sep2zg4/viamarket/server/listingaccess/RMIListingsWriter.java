@@ -44,6 +44,12 @@ public final class RMIListingsWriter implements Runnable
     return INSTANCE;
   }
 
+  public void pushUpdate() {
+    synchronized (this) {
+      notify();
+    }
+  }
+
   @Override public void run()
   {
     try
@@ -58,25 +64,37 @@ public final class RMIListingsWriter implements Runnable
 
   private synchronized void updateChanges() throws SQLException, RemoteException
   {
-    WriteMap write = lock.acquireWrite();
-    ConcurrentHashMap<String, ArrayList<Listing>> currentListings = new ConcurrentHashMap<>();
-    for (String category : categoryDAO.getAll())
-    {
-      System.out.println(category);
-      currentListings.put(category, new ArrayList<>());
-    }
-    for (Listing listing : listingDAO.getAll())
-    {
-      String query = "SELECT name FROM category WHERE idCategory = (SELECT idCategory FROM listing WHERE id = ?)";
-      PreparedStatement selectStatement = connection.prepareStatement(query);
-      selectStatement.setInt(1, listing.getId());
-      ResultSet res = selectStatement.executeQuery();
-      if (res.next())
+    while(true) {
+      WriteMap write = lock.acquireWrite();
+      ConcurrentHashMap<String, ArrayList<Listing>> currentListings = new ConcurrentHashMap<>();
+      for (String category : categoryDAO.getAll())
       {
-        currentListings.get(res.getString(1)).add(listing);
+        System.out.println(category);
+        currentListings.put(category, new ArrayList<>());
+      }
+      for (Listing listing : listingDAO.getAll())
+      {
+        String query = "SELECT name FROM category WHERE idCategory = (SELECT idCategory FROM listing WHERE id = ?)";
+        PreparedStatement selectStatement = connection.prepareStatement(query);
+        selectStatement.setInt(1, listing.getId());
+        ResultSet res = selectStatement.executeQuery();
+        if (res.next())
+        {
+          currentListings.get(res.getString(1)).add(listing);
+        }
+      }
+      write.write(currentListings);
+      lock.releaseWrite();
+      try
+      {
+        synchronized (this) {
+          wait();
+        }
+      }
+      catch (InterruptedException e)
+      {
+        throw new RuntimeException(e);
       }
     }
-    write.write(currentListings);
-    lock.releaseWrite();
   }
 }
