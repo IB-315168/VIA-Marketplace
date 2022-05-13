@@ -17,6 +17,7 @@ import java.sql.SQLException;
  */
 public class MarketplaceModelManager implements MarketplaceModel
 {
+  private User currentUserRef;
   private ClientMarketplaceCommunicator client;
   private User currentUser;
 

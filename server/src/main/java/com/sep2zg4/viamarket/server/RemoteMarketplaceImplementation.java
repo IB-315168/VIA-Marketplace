@@ -35,7 +35,6 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
   private ListingDAO listingDAO;
   private final Thread superDAO;
   private ReadWriteAccess lock;
-  private LoginHandler loginHandler;
 
   /**
    * Class constructor
@@ -52,7 +51,6 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
     superDAO = new Thread(
         daoManager.getRMIListingsWriter(lock, listingDAO, userDAO, categoryDAO, listings));
     superDAO.start();
-    loginHandler = daoManager.getLoginHandler();
   }
 
   /**
@@ -63,11 +61,10 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
    * @return <ul><li>true - if credentials are correct</li><li>false - otherwise</li></ul>
    * @throws RemoteException
    */
-  public User login(int studentNumber, String password)
+  public boolean login(int studentNumber, String password)
       throws RemoteException, SQLException
   {
-    return loginHandler.attemptLogin(studentNumber,password);
-
+    return daoManager.attemptLogin(studentNumber, password);
   }
 
   @Override public Listing getListingById(String id)
