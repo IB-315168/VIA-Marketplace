@@ -5,6 +5,9 @@ import com.sep2zg4.viamarket.model.Listing;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.rmi.RemoteException;
+import java.sql.SQLException;
+
 /** A view model for ListingForm
  *
  * @author Wojtek Rusinski
@@ -78,11 +81,12 @@ public class ListingFormViewModel
   //set(id, title, description, price, city, condition, seller);
   //there is , no make new id method
   //how do i assign seller without any User object reference?
-  public void createListing(){
+  public void createListing() throws SQLException, RemoteException
+  {
 
     model.createListing(new Listing(1, getListingTitle().get(),
         getListingDescription().get(), Double.parseDouble(
         getListingPrice().get()), getListingCity().get(),
-        getListingCondition().get(), User ));
+        getListingCondition().get(), model.getCurrentUser() ));
   }
 }

@@ -109,8 +109,7 @@ public final class DAOManager
     return RMIListingsWriter.getInstance(lock, connection, listingDAO, userDAO, categoryDAO);
   }
 
-  public boolean attemptLogin(int studentNumber, String password)
-      throws SQLException
+  public LoginHandler getLoginHandler() throws SQLException, RemoteException
   {
     if (connection == null || connection.isClosed())
     {
@@ -121,7 +120,7 @@ public final class DAOManager
       loginHandler = new LoginHandler(connection);
     }
 
-    return loginHandler.attemptLogin(studentNumber, password);
+    return loginHandler;
   }
 
   public enum Table

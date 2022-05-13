@@ -24,7 +24,8 @@ public class RMIListingsReader implements Runnable
   private void readToMap() {
     ReadMap read = lock.acquireRead();
     HashMap<String, ArrayList<Listing>> copy = new HashMap<>();
-    ConcurrentHashMap<String, ArrayList<Listing>> storage = read.getListings();
+    ConcurrentHashMap<String, ArrayList<Listing>> storage = read
+        .getListings();
     for(String s : storage.keySet()) {
       copy.put(s, storage.get(s));
     }

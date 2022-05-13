@@ -11,7 +11,7 @@ class ListingTest
   @org.junit.jupiter.api.BeforeEach void setUp()
   {
     System.out.println("--> setUp()");
-    test = new Listing(1, "none", "none", 1.00, "none", "New", new User("315168", "Igor Bulinski", false));
+    //test = new Listing(1, "none", "none", 1.00, "none", "New", new User("315168", "Igor Bulinski", false));
   }
 
   @org.junit.jupiter.api.AfterEach void tearDown()

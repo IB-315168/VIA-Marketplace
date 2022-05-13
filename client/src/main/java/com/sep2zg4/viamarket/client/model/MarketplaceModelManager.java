@@ -2,6 +2,7 @@ package com.sep2zg4.viamarket.client.model;
 
 import com.sep2zg4.viamarket.client.model.comm.ClientMarketplaceCommunicator;
 import com.sep2zg4.viamarket.model.Listing;
+import com.sep2zg4.viamarket.model.User;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -17,6 +18,7 @@ import java.sql.SQLException;
 public class MarketplaceModelManager implements MarketplaceModel
 {
   private ClientMarketplaceCommunicator client;
+  private User currentUser;
 
   /**
    * Constructor creating a {@link ClientMarketplaceCommunicator} object and establishing connection
@@ -38,8 +40,16 @@ public class MarketplaceModelManager implements MarketplaceModel
   public boolean login(int username, String password)
       throws RemoteException, NotBoundException, SQLException
   {
-    return client.login(username, password);
+    if(client.login(username,password)!=null){
+      currentUser = client.login(username,password);
+      return true;
+    }
+    return false;
   }
+
+  public User getCurrentUser(){
+    return currentUser;
+  };
 
   /**
    * Method used for creating a listing

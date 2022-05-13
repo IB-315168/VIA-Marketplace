@@ -9,6 +9,9 @@ import javafx.scene.layout.Region;
 
 import javafx.event.ActionEvent;
 
+import java.rmi.RemoteException;
+import java.sql.SQLException;
+
 public class ListingFormViewController
 {
   @FXML private TextField title;
@@ -46,8 +49,8 @@ public class ListingFormViewController
     this.city.textProperty().bindBidirectional(viewModel.getListingCity());
     this.price.textProperty().bindBidirectional(viewModel.getListingPrice());
     this.condition.textProperty().bindBidirectional(viewModel.getListingCondition());
-    this.socialMedia.textProperty().bindBidirectional(viewModel.getListingSocialMedia());
-    this.username.textProperty().bindBidirectional(viewModel.getListingUsername());
+    /*this.socialMedia.textProperty().bindBidirectional(viewModel.getListingSocialMedia());
+    this.username.textProperty().bindBidirectional(viewModel.getListingUsername());*/
   }
 
   /**
@@ -67,7 +70,7 @@ public class ListingFormViewController
   /**
    * A function used to save a listing and open the previous (UserInformation) window upon pushing a button on the screen
    */
-  @FXML public void save()
+  @FXML public void save() throws SQLException, RemoteException
   {
     viewModel.createListing();
     viewHandler.closeView();

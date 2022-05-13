@@ -1,6 +1,7 @@
 package com.sep2zg4.viamarket.client.model.comm;
 
 import com.sep2zg4.viamarket.model.Listing;
+import com.sep2zg4.viamarket.model.User;
 import com.sep2zg4.viamarket.servermodel.RemoteMarketplace;
 
 import java.rmi.NoSuchObjectException;
@@ -54,7 +55,7 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject
    * @return result of {@link com.sep2zg4.viamarket.servermodel.RemoteMarketplace#login(int, String)}
    * @throws RemoteException
    */
-  public boolean login(int username, String password)
+  public User login(int username, String password)
       throws RemoteException, NotBoundException, SQLException
   {
     try {

@@ -1,6 +1,7 @@
 package com.sep2zg4.viamarket.client.model;
 
 import com.sep2zg4.viamarket.model.Listing;
+import com.sep2zg4.viamarket.model.User;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -16,6 +17,9 @@ public interface MarketplaceModel
 {
   boolean login(int username, String password)
       throws RemoteException, NotBoundException, SQLException;
+
+  User getCurrentUser();
+
   void createListing(Listing listing)
       throws SQLException, RemoteException;
 
