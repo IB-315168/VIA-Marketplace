@@ -3,6 +3,7 @@ package com.sep2zg4.viamarket.client.model;
 import com.sep2zg4.viamarket.model.Listing;
 import com.sep2zg4.viamarket.model.User;
 
+import java.beans.PropertyChangeListener;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
@@ -34,4 +35,7 @@ public interface MarketplaceModel
   void setListings(HashMap<String, ArrayList<Listing>> listings);
   ArrayList<Listing> getAllListings();
   ArrayList<String> getAllCategories();
+  void addClientPropertyChangeListener(PropertyChangeListener listener);
+  void removeClientPropertyChangeListener(PropertyChangeListener listener);
+  void trigger();
 }

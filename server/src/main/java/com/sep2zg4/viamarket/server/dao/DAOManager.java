@@ -1,15 +1,13 @@
 package com.sep2zg4.viamarket.server.dao;
 
-import com.sep2zg4.viamarket.model.Listing;
 import com.sep2zg4.viamarket.server.listingaccess.RMIListingsWriter;
 import com.sep2zg4.viamarket.servermodel.ReadWriteAccess;
+import dk.via.remote.observer.RemotePropertyChangeSupport;
 
 import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.concurrent.ConcurrentHashMap;
 
 public final class DAOManager
 {
@@ -102,11 +100,10 @@ public final class DAOManager
   }*/
 
   public RMIListingsWriter getRMIListingsWriter(ReadWriteAccess lock, ListingDAO listingDAO, UserDAO userDAO,
-      CategoryDAO categoryDAO,
-      ConcurrentHashMap<String, ArrayList<Listing>> listingsReference)
+      CategoryDAO categoryDAO, RemotePropertyChangeSupport<String> support)
       throws SQLException
   {
-    return RMIListingsWriter.getInstance(lock, connection, listingDAO, userDAO, categoryDAO);
+    return RMIListingsWriter.getInstance(lock, connection, listingDAO, userDAO, categoryDAO, support);
   }
 
   public LoginHandler getLoginHandler() throws SQLException, RemoteException

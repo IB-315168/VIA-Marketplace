@@ -35,6 +35,10 @@ public class ListingsViewModel
     this.userType = new SimpleStringProperty("");
     this.listingsList = FXCollections.observableList(model.getAllListings());
     this.categoryList = FXCollections.observableList(model.getAllCategories());
+    model.addClientPropertyChangeListener(evt -> {
+      setListingsList();
+      setCategoryList();
+    });
   }
 
   public void setListingsList() {
@@ -66,5 +70,10 @@ public class ListingsViewModel
   public Object getNewCategoryName()
   {
     return categoryName;
+  }
+
+  public void trigger()
+  {
+    model.trigger();
   }
 }

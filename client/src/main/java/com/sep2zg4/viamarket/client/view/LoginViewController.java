@@ -55,6 +55,7 @@ public class LoginViewController
         alert.show();
       }
     } catch (Exception e) {
+      e.printStackTrace();
       alert.setContentText(e.getMessage());
       alert.show();
     }

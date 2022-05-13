@@ -2,6 +2,8 @@ package com.sep2zg4.viamarket.servermodel;
 
 import com.sep2zg4.viamarket.model.Listing;
 import com.sep2zg4.viamarket.model.User;
+import dk.via.remote.observer.RemotePropertyChangeListener;
+import dk.via.remote.observer.RemotePropertyChangeSupport;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -31,4 +33,6 @@ public interface RemoteMarketplace extends Remote
 
   void exampleMethod() throws RemoteException;
   ReadWriteAccess getLock() throws RemoteException;
+  void addRemotePropertyChangeListener(RemotePropertyChangeListener<String> listener) throws RemoteException;
+  void removeRemotePropertyChangeListener(RemotePropertyChangeListener<String> listener) throws RemoteException;
 }

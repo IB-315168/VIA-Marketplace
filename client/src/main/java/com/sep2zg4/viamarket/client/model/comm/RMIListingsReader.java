@@ -5,12 +5,13 @@ import com.sep2zg4.viamarket.model.Listing;
 import com.sep2zg4.viamarket.servermodel.ReadMap;
 import com.sep2zg4.viamarket.servermodel.ReadWriteAccess;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class RMIListingsReader implements Runnable
+public class RMIListingsReader implements Runnable, Serializable
 {
   private MarketplaceModel model;
   private ReadWriteAccess lock;

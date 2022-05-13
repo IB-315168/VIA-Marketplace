@@ -53,17 +53,17 @@ public class ListingsViewController
     viewModel.setListingsList();
     viewModel.setCategoryList();
 
-/*//    Only for debug/testing purposes - open USERINFO View
+//    Only for debug/testing purposes - open USERINFO View
     this.listingsList.setOnKeyPressed(new EventHandler<KeyEvent>()
     {
       @Override public void handle(KeyEvent event)
       {
         if (event.getCode() == KeyCode.A)
         {
-          viewHandler.openView(ViewHandler.USERINFO);
+          viewModel.trigger();
         }
       }
-    });*/
+    });
   }
 
   /**

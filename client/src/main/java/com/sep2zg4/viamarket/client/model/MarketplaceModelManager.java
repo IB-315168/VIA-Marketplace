@@ -4,6 +4,7 @@ import com.sep2zg4.viamarket.client.model.comm.ClientMarketplaceCommunicator;
 import com.sep2zg4.viamarket.model.Listing;
 import com.sep2zg4.viamarket.model.User;
 
+import java.beans.PropertyChangeListener;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
@@ -20,7 +21,6 @@ import java.util.Set;
  */
 public class MarketplaceModelManager implements MarketplaceModel
 {
-  private User currentUserRef;
   private HashMap<String, ArrayList<Listing>> listings;
   private ClientMarketplaceCommunicator client;
   private User currentUser;
@@ -115,5 +115,29 @@ public class MarketplaceModelManager implements MarketplaceModel
   @Override public ArrayList<String> getAllCategories()
   {
     return new ArrayList<>(listings.keySet());
+  }
+
+  @Override public void addClientPropertyChangeListener(
+      PropertyChangeListener listener)
+  {
+    client.addPropertyChangeListener(listener);
+  }
+
+  @Override public void removeClientPropertyChangeListener(
+      PropertyChangeListener listener)
+  {
+    client.removePropertyChangeListener(listener);
+  }
+
+  @Override public void trigger()
+  {
+    try
+    {
+      client.trigger();
+    }
+    catch (RemoteException e)
+    {
+      throw new RuntimeException(e);
+    }
   }
 }

@@ -6,6 +6,8 @@ import com.sep2zg4.viamarket.server.dao.ListingDAO;
 import com.sep2zg4.viamarket.server.dao.UserDAO;
 import com.sep2zg4.viamarket.servermodel.ReadWriteAccess;
 import com.sep2zg4.viamarket.servermodel.WriteMap;
+import dk.via.remote.observer.RemotePropertyChangeEvent;
+import dk.via.remote.observer.RemotePropertyChangeSupport;
 
 import java.rmi.RemoteException;
 import java.sql.Connection;
@@ -23,24 +25,26 @@ public final class RMIListingsWriter implements Runnable
   private CategoryDAO categoryDAO;
   private Connection connection;
   private ReadWriteAccess lock;
+  private RemotePropertyChangeSupport<String> support;
 
   private RMIListingsWriter(ReadWriteAccess lock, Connection connection, ListingDAO listingDAO,
-      UserDAO userDAO, CategoryDAO categoryDAO)
+      UserDAO userDAO, CategoryDAO categoryDAO, RemotePropertyChangeSupport<String> support)
   {
     this.lock = lock;
     this.listingDAO = listingDAO;
     this.userDAO = userDAO;
     this.categoryDAO = categoryDAO;
     this.connection = connection;
+    this.support = support;
   }
 
   public static RMIListingsWriter getInstance(ReadWriteAccess lock, Connection connection,
-      ListingDAO listingDAO, UserDAO userDAO, CategoryDAO categoryDAO)
+      ListingDAO listingDAO, UserDAO userDAO, CategoryDAO categoryDAO, RemotePropertyChangeSupport<String> support)
       throws SQLException
   {
     if (INSTANCE == null)
     {
-      INSTANCE = new RMIListingsWriter(lock, connection, listingDAO, userDAO, categoryDAO);
+      INSTANCE = new RMIListingsWriter(lock, connection, listingDAO, userDAO, categoryDAO, support);
     }
 
     return INSTANCE;
@@ -87,6 +91,7 @@ public final class RMIListingsWriter implements Runnable
       }
       write.write(currentListings);
       lock.releaseWrite();
+      support.firePropertyChange("dbupdate", "0", "1");
       try
       {
         synchronized (this) {

@@ -7,6 +7,8 @@ import com.sep2zg4.viamarket.server.listingaccess.*;
 import com.sep2zg4.viamarket.servermodel.ReadWriteAccess;
 import com.sep2zg4.viamarket.servermodel.RemoteMarketplace;
 import com.sep2zg4.viamarket.servermodel.WriteMap;
+import dk.via.remote.observer.RemotePropertyChangeListener;
+import dk.via.remote.observer.RemotePropertyChangeSupport;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -32,6 +34,7 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
   private final RMIListingsWriter writer;
   private ReadWriteAccess lock;
   private LoginHandler loginHandler;
+  private RemotePropertyChangeSupport<String> support;
 
   /**
    * Class constructor
@@ -46,7 +49,8 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
     userDAO = (UserDAO) daoManager.getDao(DAOManager.Table.User);
     categoryDAO = (CategoryDAO) daoManager.getDao(DAOManager.Table.Category);
     listingDAO = (ListingDAO) daoManager.getDao(DAOManager.Table.Listing);
-    writer = daoManager.getRMIListingsWriter(lock, listingDAO, userDAO, categoryDAO, listings);
+    support = new RemotePropertyChangeSupport<String>(this);
+    writer = daoManager.getRMIListingsWriter(lock, listingDAO, userDAO, categoryDAO, support);
     loginHandler = daoManager.getLoginHandler();
     Thread writerThread = new Thread(writer);
     writerThread.start();
@@ -60,7 +64,7 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
    * @return <ul><li>true - if credentials are correct</li><li>false - otherwise</li></ul>
    * @throws RemoteException
    */
-  public User login(int studentNumber, String password)
+  @Override public User login(int studentNumber, String password)
       throws RemoteException, SQLException
   {
     return loginHandler.attemptLogin(studentNumber, password);
@@ -143,6 +147,18 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
   @Override public ReadWriteAccess getLock() throws RemoteException
   {
     return lock;
+  }
+
+  @Override public void addRemotePropertyChangeListener(
+      RemotePropertyChangeListener<String> listener) throws RemoteException
+  {
+    support.addPropertyChangeListener(listener);
+  }
+
+  @Override public void removeRemotePropertyChangeListener(
+      RemotePropertyChangeListener<String> listener) throws RemoteException
+  {
+    support.removePropertyChangeListener(listener);
   }
 
   @Override public ConcurrentHashMap<String, ArrayList<Listing>> getListings()

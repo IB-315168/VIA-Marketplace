@@ -5,7 +5,12 @@ import com.sep2zg4.viamarket.model.Listing;
 import com.sep2zg4.viamarket.model.User;
 import com.sep2zg4.viamarket.servermodel.ReadWriteAccess;
 import com.sep2zg4.viamarket.servermodel.RemoteMarketplace;
+import dk.via.remote.observer.RemotePropertyChangeEvent;
+import dk.via.remote.observer.RemotePropertyChangeListener;
+import javafx.application.Platform;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -20,7 +25,8 @@ import java.sql.SQLException;
  * @author Igor Bulinski, Wojtek Rusinski
  * @version 1.0 - April 2022
  */
-public class ClientMarketplaceCommunicator extends UnicastRemoteObject
+public class ClientMarketplaceCommunicator extends UnicastRemoteObject implements
+    RemotePropertyChangeListener<String>
 {
   private RemoteMarketplace communicator;
   private MarketplaceModel model;
@@ -28,6 +34,7 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject
   private int port;
   private RMIListingsReader reader;
   private ReadWriteAccess lock;
+  private PropertyChangeSupport support;
 
   /**
    * 2-argument constructor creating a ClientMarketplaceCommunicator object and establishing connection to the server
@@ -41,6 +48,7 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject
     this.host = host;
     this.port = port;
     this.model = model;
+    this.support = new PropertyChangeSupport(this);
   }
 
   /**
@@ -56,6 +64,7 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject
     reader = new RMIListingsReader(lock, model);
     Thread t = new Thread(reader);
     t.start();
+    communicator.addRemotePropertyChangeListener(this);
   }
 
   /**
@@ -84,6 +93,14 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject
   public void close() throws NoSuchObjectException
   {
     UnicastRemoteObject.unexportObject(this, true);
+  }
+
+  public void addPropertyChangeListener(PropertyChangeListener listener) {
+    support.addPropertyChangeListener(listener);
+  }
+
+  public void removePropertyChangeListener(PropertyChangeListener listener) {
+    support.removePropertyChangeListener(listener);
   }
 
   /**
@@ -120,5 +137,23 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject
       throws RemoteException, SQLException
   {
       communicator.deleteListing(listing);
+  }
+
+  public void trigger() throws RemoteException
+  {
+    communicator.exampleMethod();
+  }
+
+  @Override public void propertyChange(RemotePropertyChangeEvent<String> evt)
+      throws RemoteException
+  {
+    reader.pullUpdate();
+    Platform.runLater(new Runnable()
+    {
+      @Override public void run()
+      {
+        support.firePropertyChange("datapull", 0, 1);
+      }
+    });
   }
 }
