@@ -4,6 +4,9 @@ import com.sep2zg4.viamarket.client.model.MarketplaceModel;
 import com.sep2zg4.viamarket.model.Listing;
 import javafx.collections.ObservableList;
 
+import java.rmi.RemoteException;
+import java.sql.SQLException;
+
 /**
  * A viewmodel for user information
  *
@@ -29,5 +32,9 @@ public class UserInformationViewModel
   public ObservableList<Listing> getUserListings()
   {
     return userListings;
+  }
+  /** Method for deleting listing**/
+  public  void deleteListing(Listing listing) throws SQLException, RemoteException {
+    model.deleteListing(listing);
   }
 }

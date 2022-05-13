@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="414.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sep2zg4.viamarket.client.view.ListingFormViewController">
+<VBox prefHeight="414.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sep2zg4.viamarket.client.view.ListingFormViewController">
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="436.0" prefWidth="640.0" VBox.vgrow="ALWAYS">
          <children>
@@ -37,6 +37,7 @@
             <RadioButton fx:id="conditionDefective" layoutX="495.0" layoutY="169.0" mnemonicParsing="false" onAction="#getCondition" text="Defective" />
             <Button fx:id="saveButton" layoutX="546.0" layoutY="370.0" mnemonicParsing="false" onAction="#save" text="Save" />
             <Label fx:id="condition" alignment="CENTER" layoutX="420.0" layoutY="200.0" prefHeight="18.0" prefWidth="71.0" />
+            <Button layoutX="491.0" layoutY="370.0" mnemonicParsing="false" text="Back" onAction="#goBack"/>
          </children>
     </AnchorPane>
       <AnchorPane layoutX="10.0" layoutY="10.0" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" />

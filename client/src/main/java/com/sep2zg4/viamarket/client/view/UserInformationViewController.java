@@ -2,10 +2,15 @@ package com.sep2zg4.viamarket.client.view;
 
 import com.sep2zg4.viamarket.client.viewmodel.UserInformationViewModel;
 import com.sep2zg4.viamarket.model.Listing;
+import com.sep2zg4.viamarket.model.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Region;
+
+import java.rmi.RemoteException;
+import java.sql.SQLException;
 
 /**
  * Controller class for UserInformationView.fxml
@@ -17,6 +22,9 @@ public class UserInformationViewController
 {
   @FXML private Label userName;
   @FXML private ListView<Listing> userListings;
+  @FXML private MenuItem create;
+  @FXML private MenuItem edit;
+  @FXML private MenuItem remove;
 
   private ViewHandler viewHandler;
   private UserInformationViewModel viewModel;
@@ -46,7 +54,30 @@ public class UserInformationViewController
     viewHandler.closeView();
     viewHandler.openView(ViewHandler.LISTINGS);
   }
+  /**
+   * A function used to open the listing form window upon pushing a button on the screen
+   */
+  @FXML public void create(){
+    viewHandler.closeView();
+    viewHandler.openView(ViewHandler.LISTINGFORM);
+  }
+  /**
+   * A function used to open the listing form window upon pushing a button on the screen
+   */
+  @FXML public void edit(){/*
+    Listing listing = userListings.getSelectionModel().getSelectedItem();
+    viewModel.updateListing(listing);*/
+    viewHandler.closeView();
+    viewHandler.openView(ViewHandler.LISTINGFORM);
+  }
+  /**
+   * A function remove listing upon selection on the screen
+   */
+  @FXML public void remove() throws SQLException, RemoteException {
+    Listing listing = userListings.getSelectionModel().getSelectedItem();
+    viewModel.deleteListing(listing);
 
+  }
   /**
    * A function returning the root
    *
@@ -56,4 +87,6 @@ public class UserInformationViewController
   {
     return root;
   }
+
+
 }
