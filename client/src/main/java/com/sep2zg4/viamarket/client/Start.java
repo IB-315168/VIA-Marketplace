@@ -16,7 +16,6 @@ public class Start extends Application
     ViewModelFactory viewModelFactory = new ViewModelFactory(model);
     ViewHandler viewHandler = new ViewHandler(viewModelFactory);
     viewHandler.start(primaryStage);
-//    model.login("admin", "admin");
   }
   public static void main(String[] args) throws RemoteException
   {

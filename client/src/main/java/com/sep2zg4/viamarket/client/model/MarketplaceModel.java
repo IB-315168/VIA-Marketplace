@@ -32,4 +32,6 @@ public interface MarketplaceModel
       throws SQLException, RemoteException;
   HashMap<String, ArrayList<Listing>> getListings();
   void setListings(HashMap<String, ArrayList<Listing>> listings);
+  ArrayList<Listing> getAllListings();
+  ArrayList<String> getAllCategories();
 }

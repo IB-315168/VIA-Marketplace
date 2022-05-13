@@ -1,10 +1,11 @@
-package com.sep2zg4.viamarket.server.listingaccess;
+package com.sep2zg4.viamarket.client.model.comm;
 
 import com.sep2zg4.viamarket.client.model.MarketplaceModel;
 import com.sep2zg4.viamarket.model.Listing;
 import com.sep2zg4.viamarket.servermodel.ReadMap;
 import com.sep2zg4.viamarket.servermodel.ReadWriteAccess;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,10 +28,18 @@ public class RMIListingsReader implements Runnable
 
   @Override public void run()
   {
-    readToMap();
+    try
+    {
+      readToMap();
+    }
+    catch (RemoteException e)
+    {
+      throw new RuntimeException(e);
+    }
   }
 
-  private void readToMap() {
+  private void readToMap() throws RemoteException
+  {
     while (true) {
       ReadMap read = lock.acquireRead();
       HashMap<String, ArrayList<Listing>> copy = new HashMap<>();

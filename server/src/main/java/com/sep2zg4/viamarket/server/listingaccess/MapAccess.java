@@ -5,7 +5,12 @@ import com.sep2zg4.viamarket.servermodel.ReadMap;
 import com.sep2zg4.viamarket.servermodel.ReadWriteAccess;
 import com.sep2zg4.viamarket.servermodel.WriteMap;
 
-public class MapAccess implements ReadWriteAccess
+import java.io.Serializable;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
+public class MapAccess extends UnicastRemoteObject implements ReadWriteAccess
 {
   private int readers;
   private int writers;
@@ -13,7 +18,8 @@ public class MapAccess implements ReadWriteAccess
   private ReadMap readMap;
   private WriteMap writeMap;
 
-  public MapAccess(RemoteMarketplaceImplementation marketplaceImplementation)
+  public MapAccess(RemoteMarketplaceImplementation marketplaceImplementation) throws
+      RemoteException
   {
     readers = 0;
     writers = 0;

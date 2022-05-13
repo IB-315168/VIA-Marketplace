@@ -18,21 +18,22 @@ public class Start
     Registry registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
     RemoteMarketplace comm = new RemoteMarketplaceImplementation();
     registry.bind("comm", comm);
+    registry.bind("lock", comm.getLock());
     System.out.println("Server running on " + Registry.REGISTRY_PORT);
-    Thread.sleep(5000);
-    System.out.println("Should update");
-    comm.exampleMethod();
-    test(comm);
-    if(comm.login(315236,"derciofernandes")) {
-      System.out.println("success");
-    } else {
-      System.out.println("fail");
-    }
+//    Thread.sleep(5000);
+//    System.out.println("Should update");
+//    comm.exampleMethod();
+//    test(comm);
+//    if(comm.login(315236,"derciofernandes")) {
+//      System.out.println("success");
+//    } else {
+//      System.out.println("fail");
+//    }
   }
 
-  private static void test(RemoteMarketplace comm)
-      throws SQLException, RemoteException
-  {
-    System.out.println(comm.getAllListing().keySet());
-  }
+//  private static void test(RemoteMarketplace comm)
+//      throws SQLException, RemoteException
+//  {
+//    System.out.println(comm.getAllListing());
+//  }
 }

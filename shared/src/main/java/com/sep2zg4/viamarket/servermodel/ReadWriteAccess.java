@@ -1,11 +1,12 @@
 package com.sep2zg4.viamarket.servermodel;
 
-import com.sep2zg4.viamarket.server.RemoteMarketplaceImplementation;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 
-public interface ReadWriteAccess
+public interface ReadWriteAccess extends Remote
 {
-  ReadMap acquireRead();
-  void releaseRead();
-  WriteMap acquireWrite();
-  void releaseWrite();
+  ReadMap acquireRead() throws RemoteException;
+  void releaseRead() throws RemoteException;
+  WriteMap acquireWrite() throws RemoteException;
+  void releaseWrite() throws RemoteException;
 }

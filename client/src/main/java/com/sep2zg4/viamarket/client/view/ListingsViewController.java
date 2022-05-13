@@ -50,6 +50,8 @@ public class ListingsViewController
     this.listingsList.setItems(viewModel.getListingsList());
     this.loggedAs.textProperty().bindBidirectional(viewModel.getUserType());
     viewModel.getListingProperties();
+    viewModel.setListingsList();
+    viewModel.setCategoryList();
 
 /*//    Only for debug/testing purposes - open USERINFO View
     this.listingsList.setOnKeyPressed(new EventHandler<KeyEvent>()

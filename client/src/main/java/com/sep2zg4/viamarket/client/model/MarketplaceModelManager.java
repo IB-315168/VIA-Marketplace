@@ -10,6 +10,7 @@ import java.rmi.registry.Registry;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Implementation of the {@link MarketplaceModel}
@@ -100,5 +101,19 @@ public class MarketplaceModelManager implements MarketplaceModel
   public void setListings(HashMap<String, ArrayList<Listing>> listings)
   {
     this.listings = listings;
+  }
+
+  @Override public ArrayList<Listing> getAllListings()
+  {
+    ArrayList<Listing> allListings = new ArrayList<>();
+    for(String s : listings.keySet()) {
+      allListings.addAll(listings.get(s));
+    }
+    return allListings;
+  }
+
+  @Override public ArrayList<String> getAllCategories()
+  {
+    return new ArrayList<>(listings.keySet());
   }
 }

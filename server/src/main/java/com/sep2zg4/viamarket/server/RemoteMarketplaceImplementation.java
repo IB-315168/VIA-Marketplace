@@ -140,18 +140,20 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
     writer.pushUpdate();
   }
 
-  @Override public ReadWriteAccess getLock()
+  @Override public ReadWriteAccess getLock() throws RemoteException
   {
     return lock;
   }
 
   @Override public ConcurrentHashMap<String, ArrayList<Listing>> getListings()
+      throws RemoteException
   {
     return listings;
   }
 
   @Override public void write(
       ConcurrentHashMap<String, ArrayList<Listing>> listingsReference)
+      throws RemoteException
   {
     this.listings = listingsReference;
   }

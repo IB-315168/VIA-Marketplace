@@ -30,5 +30,5 @@ public interface RemoteMarketplace extends Remote
   User getUserById(String id) throws SQLException, RemoteException;
 
   void exampleMethod() throws RemoteException;
-  ReadWriteAccess getLock();
+  ReadWriteAccess getLock() throws RemoteException;
 }
