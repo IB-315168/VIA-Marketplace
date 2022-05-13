@@ -25,8 +25,6 @@ public class Start
     } else {
       System.out.println("fail");
     }
-
-
   }
 
   private static void test(RemoteMarketplace comm)
