@@ -2,7 +2,7 @@ package com.sep2zg4.viamarket.server.dao;
 
 import com.sep2zg4.viamarket.model.Listing;
 import com.sep2zg4.viamarket.server.listingaccess.RMIListingsWriter;
-import com.sep2zg4.viamarket.server.listingaccess.ReadWriteAccess;
+import com.sep2zg4.viamarket.servermodel.ReadWriteAccess;
 
 import java.rmi.RemoteException;
 import java.sql.Connection;

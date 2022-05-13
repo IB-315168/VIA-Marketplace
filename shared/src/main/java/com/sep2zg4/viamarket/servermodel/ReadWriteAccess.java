@@ -1,4 +1,4 @@
-package com.sep2zg4.viamarket.server.listingaccess;
+package com.sep2zg4.viamarket.servermodel;
 
 import com.sep2zg4.viamarket.server.RemoteMarketplaceImplementation;
 

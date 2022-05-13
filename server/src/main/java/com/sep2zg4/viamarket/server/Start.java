@@ -20,9 +20,9 @@ public class Start
     registry.bind("comm", comm);
     System.out.println("Server running on " + Registry.REGISTRY_PORT);
     Thread.sleep(5000);
-    test(comm);
     System.out.println("Should update");
     comm.exampleMethod();
+    test(comm);
     if(comm.login(315236,"derciofernandes")) {
       System.out.println("success");
     } else {
@@ -33,6 +33,6 @@ public class Start
   private static void test(RemoteMarketplace comm)
       throws SQLException, RemoteException
   {
-    System.out.println(comm.getAllListing().get("Vehicle").get(0).getTitle());
+    System.out.println(comm.getAllListing().keySet());
   }
 }

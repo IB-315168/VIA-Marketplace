@@ -8,6 +8,8 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Implementation of the {@link MarketplaceModel}
@@ -18,6 +20,7 @@ import java.sql.SQLException;
 public class MarketplaceModelManager implements MarketplaceModel
 {
   private User currentUserRef;
+  private HashMap<String, ArrayList<Listing>> listings;
   private ClientMarketplaceCommunicator client;
   private User currentUser;
 
@@ -27,7 +30,8 @@ public class MarketplaceModelManager implements MarketplaceModel
    */
   public MarketplaceModelManager() throws RemoteException
   {
-    client = new ClientMarketplaceCommunicator("localhost", Registry.REGISTRY_PORT);
+    client = new ClientMarketplaceCommunicator("localhost", Registry.REGISTRY_PORT, this);
+    listings = new HashMap<>();
   }
 
   /**
@@ -88,4 +92,13 @@ public class MarketplaceModelManager implements MarketplaceModel
     client.updateListing(listing);
   }
 
+  public HashMap<String, ArrayList<Listing>> getListings()
+  {
+    return listings;
+  }
+
+  public void setListings(HashMap<String, ArrayList<Listing>> listings)
+  {
+    this.listings = listings;
+  }
 }

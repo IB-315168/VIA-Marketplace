@@ -1,7 +1,9 @@
 package com.sep2zg4.viamarket.client.model.comm;
 
+import com.sep2zg4.viamarket.client.model.MarketplaceModel;
 import com.sep2zg4.viamarket.model.Listing;
 import com.sep2zg4.viamarket.model.User;
+import com.sep2zg4.viamarket.server.listingaccess.RMIListingsReader;
 import com.sep2zg4.viamarket.servermodel.RemoteMarketplace;
 
 import java.rmi.NoSuchObjectException;
@@ -21,8 +23,10 @@ import java.sql.SQLException;
 public class ClientMarketplaceCommunicator extends UnicastRemoteObject
 {
   private RemoteMarketplace communicator;
+  private MarketplaceModel model;
   private String host;
   private int port;
+  private RMIListingsReader reader;
 
   /**
    * 2-argument constructor creating a ClientMarketplaceCommunicator object and establishing connection to the server
@@ -30,11 +34,12 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject
    * @param port port of the server-app
    * @throws RemoteException
    */
-  public ClientMarketplaceCommunicator(String host, int port) throws
+  public ClientMarketplaceCommunicator(String host, int port, MarketplaceModel model) throws
       RemoteException
   {
     this.host = host;
     this.port = port;
+    this.model = model;
   }
 
   /**
@@ -46,6 +51,7 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject
   {
     Registry registry = LocateRegistry.getRegistry(host, port);
     communicator = (RemoteMarketplace) registry.lookup("comm");
+    reader = new RMIListingsReader(communicator.getLock(), model);
   }
 
   /**

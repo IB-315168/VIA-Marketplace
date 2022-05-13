@@ -1,6 +1,9 @@
 package com.sep2zg4.viamarket.server.listingaccess;
 
 import com.sep2zg4.viamarket.server.RemoteMarketplaceImplementation;
+import com.sep2zg4.viamarket.servermodel.ReadMap;
+import com.sep2zg4.viamarket.servermodel.ReadWriteAccess;
+import com.sep2zg4.viamarket.servermodel.WriteMap;
 
 public class MapAccess implements ReadWriteAccess
 {

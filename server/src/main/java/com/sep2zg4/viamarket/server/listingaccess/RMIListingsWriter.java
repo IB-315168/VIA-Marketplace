@@ -4,6 +4,8 @@ import com.sep2zg4.viamarket.model.Listing;
 import com.sep2zg4.viamarket.server.dao.CategoryDAO;
 import com.sep2zg4.viamarket.server.dao.ListingDAO;
 import com.sep2zg4.viamarket.server.dao.UserDAO;
+import com.sep2zg4.viamarket.servermodel.ReadWriteAccess;
+import com.sep2zg4.viamarket.servermodel.WriteMap;
 
 import java.rmi.RemoteException;
 import java.sql.Connection;

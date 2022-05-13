@@ -6,6 +6,8 @@ import com.sep2zg4.viamarket.model.User;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Interface for the model
@@ -28,4 +30,6 @@ public interface MarketplaceModel
 
   void updateListing(Listing listing)
       throws SQLException, RemoteException;
+  HashMap<String, ArrayList<Listing>> getListings();
+  void setListings(HashMap<String, ArrayList<Listing>> listings);
 }
