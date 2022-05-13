@@ -11,7 +11,7 @@ import java.util.Locale;
  */
 public class Listing implements Serializable
 {
-  private int id;
+  private int id; //Remove, obsolete
   private String title;
   private String description;
   private double price;

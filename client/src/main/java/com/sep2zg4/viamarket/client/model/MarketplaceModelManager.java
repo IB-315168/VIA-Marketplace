@@ -2,6 +2,7 @@ package com.sep2zg4.viamarket.client.model;
 
 import com.sep2zg4.viamarket.client.model.comm.ClientMarketplaceCommunicator;
 import com.sep2zg4.viamarket.model.Listing;
+import com.sep2zg4.viamarket.model.User;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -16,6 +17,7 @@ import java.sql.SQLException;
  */
 public class MarketplaceModelManager implements MarketplaceModel
 {
+  private User currentUserRef;
   private ClientMarketplaceCommunicator client;
 
   /**
