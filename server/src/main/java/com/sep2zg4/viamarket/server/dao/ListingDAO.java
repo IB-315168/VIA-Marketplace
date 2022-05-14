@@ -56,7 +56,7 @@ public class ListingDAO implements Dao<Listing>
 
   @Override public void create(Listing listing) throws SQLException
   {
-    String query = "INSERT INTO listing (id,title,description,price,city,condition,studentNumber) VALUES ?,?,?,?,?,?,?";
+    String query = "INSERT INTO listing (id,title,description,price,city,condition,studentNumber,idCategory) VALUES ?,?,?,?,?,?,?,?";
     PreparedStatement insertStatement = connection.prepareStatement(query);
     insertStatement.setInt(1, listing.getId());
     insertStatement.setString(2, listing.getTitle());
@@ -65,12 +65,13 @@ public class ListingDAO implements Dao<Listing>
     insertStatement.setString(5, listing.getCity());
     insertStatement.setString(6, listing.getCondition());
     insertStatement.setInt(7, listing.getSeller().getId());
+    //insertStatement.setInt(8,?);
     insertStatement.executeUpdate();
   }
 
   @Override public void update(Listing listing) throws SQLException
   {
-    String query = "UPDATE listing SET title=?,description=?,price=?,city=?,condition=?,studentNumber=? WHERE id=? ;";
+    String query = "UPDATE listing SET title=?,description=?,price=?,city=?,condition=?,studentNumber=?,idCategory=? WHERE id=? ;";
     PreparedStatement updateStatement = connection.prepareStatement(query);
     updateStatement.setString(1, listing.getTitle());
     updateStatement.setString(2, listing.getDescription());
