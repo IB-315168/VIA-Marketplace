@@ -27,6 +27,8 @@ public class ListingsViewController
   @FXML private Label contacts;
   @FXML private TextArea description;
   @FXML private Label loggedAs;
+  @FXML private MenuItem usersInformation;
+  @FXML private MenuItem back;
 
   private ViewHandler viewHandler;
   private ListingsViewModel viewModel;
@@ -73,6 +75,13 @@ public class ListingsViewController
   {
     viewHandler.closeView();
     viewHandler.openView(ViewHandler.LOGIN);
+  }
+  /**
+   * A function used to open the user information window upon pushing a button on the screen
+   */
+  @FXML public void userInformation(){
+    viewHandler.closeView();
+    viewHandler.openView(ViewHandler.USERINFO);
   }
 
   /**

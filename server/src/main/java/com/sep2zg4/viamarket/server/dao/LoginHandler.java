@@ -11,12 +11,25 @@ import java.sql.SQLException;
 public class LoginHandler
 {
 
+  private static LoginHandler loginHandler;
   private Connection connection;
   private UserDAO userDAO = (UserDAO) DAOManager.getInstance().getDao(DAOManager.Table.User);
 
-  public LoginHandler(Connection connection)
-      throws SQLException, RemoteException
+  private LoginHandler() throws SQLException, RemoteException
   {
+
+  };
+
+  public static LoginHandler getInstance() throws SQLException, RemoteException
+  {
+    if(loginHandler == null){
+      loginHandler = new LoginHandler();
+    }
+
+    return loginHandler;
+  }
+
+  public void setConnection(Connection connection){
     this.connection = connection;
   }
 

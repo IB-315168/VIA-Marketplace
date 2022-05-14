@@ -76,6 +76,14 @@ public class ListingFormViewController
     viewHandler.closeView();
     viewHandler.openView(ViewHandler.USERINFO);
   }
+  /**
+   * A function used to open the previous window(ListingsView) upon pushing a button on the screen
+   */
+  @FXML public void goBack()
+  {
+    viewHandler.closeView();
+    viewHandler.openView(ViewHandler.LISTINGS);
+  }
 
   /**
    * A function returning the root

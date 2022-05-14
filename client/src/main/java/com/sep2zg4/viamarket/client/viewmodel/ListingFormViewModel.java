@@ -83,7 +83,6 @@ public class ListingFormViewModel
   //how do i assign seller without any User object reference?
   public void createListing() throws SQLException, RemoteException
   {
-
     model.createListing(new Listing(1, getListingTitle().get(),
         getListingDescription().get(), Double.parseDouble(
         getListingPrice().get()), getListingCity().get(),

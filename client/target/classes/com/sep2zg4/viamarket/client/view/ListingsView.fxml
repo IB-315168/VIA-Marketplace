@@ -16,23 +16,18 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sep2zg4.viamarket.client.view.ListingsViewController">
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sep2zg4.viamarket.client.view.ListingsViewController">
   <children>
       <MenuBar>
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu mnemonicParsing="false" text="User Information">
             <items>
-              <MenuItem mnemonicParsing="false" text="Exit" />
+              <MenuItem fx:id="usersInformation" mnemonicParsing="false" onAction="#userInformation" text="User Information" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
+          <Menu mnemonicParsing="false" text="Back">
             <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem fx:id="back" mnemonicParsing="false" onAction="#goBack" text="User Information" />
             </items>
           </Menu>
         </menus>
@@ -46,7 +41,7 @@
                 <Font size="18.0" fx:id="x1" />
               </font>
               <textFill>
-                <Color blue="0.624" green="0.624" red="0.624" fx:id="x2" />
+                <Color red="0.624" green="0.624" blue="0.624" fx:id="x2" />
               </textFill>
             </Label>
                   <ListView fx:id="categoryList" layoutX="11.0" layoutY="50.0" prefHeight="502.0" prefWidth="200.0" />
@@ -88,7 +83,7 @@
             <Font size="11.0" fx:id="x3" />
           </font>
           <textFill>
-            <Color blue="0.625" green="0.625" red="0.625" fx:id="x4" />
+            <Color red="0.625" green="0.625" blue="0.625" fx:id="x4" />
           </textFill>
         </Label>
         <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />

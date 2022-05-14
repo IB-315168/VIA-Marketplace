@@ -117,11 +117,13 @@ public final class DAOManager
     }
 
     if(loginHandler == null) {
-      loginHandler = new LoginHandler(connection);
+      loginHandler = loginHandler.getInstance();
+      loginHandler.getInstance().setConnection(connection);
     }
 
     return loginHandler;
   }
+
 
   public enum Table
   {Listing, User, Category}
