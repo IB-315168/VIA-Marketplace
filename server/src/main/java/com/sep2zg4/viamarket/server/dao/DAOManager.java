@@ -1,5 +1,6 @@
 package com.sep2zg4.viamarket.server.dao;
 
+import com.sep2zg4.viamarket.model.Listing;
 import com.sep2zg4.viamarket.server.listingaccess.RMIListingsWriter;
 import com.sep2zg4.viamarket.servermodel.ReadWriteAccess;
 import dk.via.remote.observer.RemotePropertyChangeSupport;
@@ -8,6 +9,8 @@ import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class DAOManager
 {

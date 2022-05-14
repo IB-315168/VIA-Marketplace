@@ -13,7 +13,6 @@ import java.util.List;
 public class ListingDAO implements Dao<Listing>
 {
   private DAOManager manager = DAOManager.getInstance();
-  private List<Listing> listOfListing;
   private Connection connection;
   private UserDAO userDAO;
 
@@ -21,7 +20,6 @@ public class ListingDAO implements Dao<Listing>
   {
     this.connection = connection;
     this.userDAO = (UserDAO) manager.getDao(DAOManager.Table.User);
-    this.listOfListing = new ArrayList<>();
   }
 
   @Override public Listing getById(String id) throws SQLException
@@ -41,6 +39,7 @@ public class ListingDAO implements Dao<Listing>
 
   @Override public List<Listing> getAll() throws SQLException
   {
+    List<Listing> listOfListing = new ArrayList<>();
     String query = "SELECT * FROM listing";
     PreparedStatement selectStatement = connection.prepareStatement(query);
     ResultSet res = selectStatement.executeQuery();

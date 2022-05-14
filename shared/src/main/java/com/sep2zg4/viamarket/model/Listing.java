@@ -117,4 +117,8 @@ public class Listing implements Serializable
   {
     return seller;
   }
+
+  @Override public String toString() {
+    return title + " - " + price;
+  }
 }
