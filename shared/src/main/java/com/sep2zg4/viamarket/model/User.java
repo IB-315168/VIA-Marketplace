@@ -1,6 +1,8 @@
 package com.sep2zg4.viamarket.model;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 /**
  * Class representing user on the marketplace.
@@ -24,7 +26,7 @@ public class User implements Serializable
    * @throws IllegalArgumentException if argument conditions are not met
    */
   public User(int id, String fullName, String phoneNumber, String email,
-      boolean isModerator) throws IllegalArgumentException
+      boolean isModerator) throws IllegalArgumentException, RemoteException
   {
     if(id < 0 || id > 999999) {
       throw new IllegalArgumentException("Incorrect id");

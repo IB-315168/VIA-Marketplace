@@ -2,6 +2,7 @@ package com.sep2zg4.viamarket.server.dao;
 
 import com.sep2zg4.viamarket.model.Listing;
 
+import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,11 +10,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.beans.PropertyChangeSupport;
 
 public class ListingDAO implements Dao<Listing>
 {
   private DAOManager manager = DAOManager.getInstance();
-  private List<Listing> listOfListing;
   private Connection connection;
   private UserDAO userDAO;
 
@@ -21,32 +22,38 @@ public class ListingDAO implements Dao<Listing>
   {
     this.connection = connection;
     this.userDAO = (UserDAO) manager.getDao(DAOManager.Table.User);
-    this.listOfListing = new ArrayList<>();
   }
 
-  @Override public Listing getById(String id) throws SQLException
+  @Override public Listing getById(String id)
+      throws SQLException, RemoteException
   {
     //I would parse String to int but by doing so could end up in whenever someone types AZ32 it would take id as 32 and change something we dont want to
     int idInt = Integer.parseInt(id);
     String query = "SELECT * FROM listing WHERE id = ?";
-    PreparedStatement selectStatemenet = connection.prepareStatement(query);
-    selectStatemenet.setInt(1, idInt);
-    ResultSet res = selectStatemenet.executeQuery();
+    PreparedStatement selectStatement = connection.prepareStatement(query);
+    selectStatement.setInt(1, idInt);
+    ResultSet res = selectStatement.executeQuery();
     res.next();
-    return new Listing(res.getInt("id"), res.getString("title"),
+    String categoryQuery = "SELECT name FROM category WHERE idCategory = ?";
+    selectStatement = connection.prepareStatement(categoryQuery);
+    selectStatement.setInt(1, res.getInt("idCategory"));
+    ResultSet categorySet = selectStatement.executeQuery();
+    categorySet.next();
+    return new Listing(res.getInt("id"), categorySet.getString(1), res.getString("title"),
         res.getString("description"), res.getDouble("price"),
         res.getString("city"), res.getString("condition"),
         userDAO.getById(res.getString("studentNumber")));
   }
 
-  @Override public List<Listing> getAll() throws SQLException
+  @Override public List<Listing> getAll() throws SQLException, RemoteException
   {
+    List<Listing> listOfListing = new ArrayList<>();
     String query = "SELECT * FROM listing";
     PreparedStatement selectStatement = connection.prepareStatement(query);
     ResultSet res = selectStatement.executeQuery();
     while (res.next())
     {
-      listOfListing.add(new Listing(res.getInt("id"), res.getString("title"),
+      listOfListing.add(new Listing(res.getInt("id"), null , res.getString("title"),
           res.getString("description"), res.getDouble("price"),
           res.getString("city"), res.getString("condition"),
           userDAO.getById(res.getString("studentNumber"))));
@@ -54,19 +61,29 @@ public class ListingDAO implements Dao<Listing>
     return listOfListing;
   }
 
-  @Override public void create(Listing listing) throws SQLException
+  @Override public void create(Listing listing) throws RemoteException, SQLException
   {
-    String query = "INSERT INTO listing (id,title,description,price,city,condition,studentNumber,idCategory) VALUES ?,?,?,?,?,?,?,?";
+    String query = "INSERT INTO listing (title,description,price,city,condition,studentNumber,idCategory) VALUES (?,?,?,?,?,?,?)";
     PreparedStatement insertStatement = connection.prepareStatement(query);
-    insertStatement.setInt(1, listing.getId());
-    insertStatement.setString(2, listing.getTitle());
-    insertStatement.setString(3, listing.getDescription());
-    insertStatement.setDouble(4, listing.getPrice());
-    insertStatement.setString(5, listing.getCity());
-    insertStatement.setString(6, listing.getCondition());
-    insertStatement.setInt(7, listing.getSeller().getId());
+    insertStatement.setString(1, listing.getTitle());
+    insertStatement.setString(2, listing.getDescription());
+    insertStatement.setDouble(3, listing.getPrice());
+    insertStatement.setString(4, listing.getCity());
+    insertStatement.setString(5, listing.getCondition());
+    insertStatement.setInt(6, listing.getSeller().getId());
+    String categoryQuery = "SELECT idCategory FROM category WHERE name = ?";
+    PreparedStatement selectStatement = connection.prepareStatement(categoryQuery);
+    selectStatement.setString(1, listing.getCategoryName());
+    ResultSet categorySet = selectStatement.executeQuery();
+    categorySet.next();
+    insertStatement.setInt(7, categorySet.getInt(1));
     //insertStatement.setInt(8,?);
-    insertStatement.executeUpdate();
+    try {
+      insertStatement.executeUpdate();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    System.out.println("DAO done");
   }
 
   @Override public void update(Listing listing) throws SQLException

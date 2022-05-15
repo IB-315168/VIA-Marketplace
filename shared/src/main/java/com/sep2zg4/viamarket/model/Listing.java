@@ -1,6 +1,9 @@
 package com.sep2zg4.viamarket.model;
 
 import java.io.Serializable;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Locale;
 
 /**
@@ -11,7 +14,8 @@ import java.util.Locale;
  */
 public class Listing implements Serializable
 {
-  private int id; //Remove, obsolete
+  private int id;
+  private String categoryName;
   private String title;
   private String description;
   private double price;
@@ -20,39 +24,47 @@ public class Listing implements Serializable
   private User seller;
 
   /**
-   * 7-argument constructor with constraints from {@link com.sep2zg4.viamarket.model.Listing#set(int, String, String, double, String, String, User)} method
-   * @param id listings id, required bigger than 0
-   * @param title listings title, required not-blank
-   * @param description listings description, required not-blank
-   * @param price listings price, required bigger than 0.0
-   * @param city listings location (i.e. where is the listing available for pick-up)
-   * @param condition listed item condition, required to be either "New", "Used" or "Defective"
-   * @param seller {@link com.sep2zg4.viamarket.model.User} listings owner
+   * 8-argument constructor with constraints from {@link com.sep2zg4.viamarket.model.Listing#set(int, String, String, String, double, String, String, User)} method
+   *
+   * @param id           listings id, required bigger than 0
+   * @param categoryName name of the category listing belongs to
+   * @param title        listings title, required not-blank
+   * @param description  listings description, required not-blank
+   * @param price        listings price, required bigger than 0.0
+   * @param city         listings location (i.e. where is the listing available for pick-up)
+   * @param condition    listed item condition, required to be either "New", "Used" or "Defective"
+   * @param seller       {@link User} listings owner
    * @throws IllegalArgumentException if argument conditions are not met
    */
-  public Listing(int id, String title, String description, double price, String city,
-      String condition, User seller) throws IllegalArgumentException
+  public Listing(int id, String categoryName, String title, String description, double price, String city,
+      String condition, User seller) throws IllegalArgumentException,
+      RemoteException
   {
-    set(id, title, description, price, city, condition, seller);
+    set(id, categoryName, title, description, price, city, condition, seller);
   }
 
   /**
-   * 7-argument method for setting listings properties
-   * @param id listings id, required bigger than 0
-   * @param title listings title, required not-blank
+   * 8-argument method for setting listings properties
+   *
+   * @param id          listings id, required bigger than 0
+   * @param categoryName name of the category listing belongs to
+   * @param title       listings title, required not-blank
    * @param description listings description, required not-blank
-   * @param price listings price, required bigger than 0.0
-   * @param city listings location (i.e. where is the listing available for pick-up)
-   * @param condition listed item condition, required to be either "New", "Used" or "Defective"
-   * @param seller {@link com.sep2zg4.viamarket.model.User} listings owner
+   * @param price       listings price, required bigger than 0.0
+   * @param city        listings location (i.e. where is the listing available for pick-up)
+   * @param condition   listed item condition, required to be either "New", "Used" or "Defective"
+   * @param seller      {@link User} listings owner
    * @throws IllegalArgumentException if argument conditions are not met
    */
-  public void set(int id, String title, String description, double price, String city,
-      String condition, User seller) throws IllegalArgumentException {
+  public void set(int id, String categoryName, String title, String description, double price, String city,
+      String condition, User seller) throws IllegalArgumentException,
+      RemoteException {
     if(id < 1) {
       throw new IllegalArgumentException("Id cannot be lower than zero");
     }
     this.id = id;
+
+    this.categoryName = categoryName;
 
     if(title == null || title.isBlank()) {
       throw new IllegalArgumentException("Title cannot be empty.");
@@ -88,6 +100,16 @@ public class Listing implements Serializable
     return id;
   }
 
+  public String getCategoryName()
+  {
+    return categoryName;
+  }
+
+  public void setCategoryName(String categoryName)
+  {
+    this.categoryName = categoryName;
+  }
+
   public String getTitle()
   {
     return title;
@@ -116,5 +138,9 @@ public class Listing implements Serializable
   public User getSeller()
   {
     return seller;
+  }
+
+  @Override public String toString() {
+    return title + " - " + price + "DKK";
   }
 }

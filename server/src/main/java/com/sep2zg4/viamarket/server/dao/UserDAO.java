@@ -13,16 +13,14 @@ import java.util.List;
 public class UserDAO implements Dao<User>
 {
   private DAOManager manager = DAOManager.getInstance();
-  private List<User> listOfUser;
   private Connection connection;
 
   public UserDAO(Connection connection) throws SQLException
   {
     this.connection = connection;
-    listOfUser = new ArrayList<>();
   }
 
-  @Override public User getById(String id) throws SQLException
+  @Override public User getById(String id) throws SQLException, RemoteException
   {
     int idInt = Integer.parseInt(id);
     String query = "SELECT * FROM person WHERE studentNumber = ?";
@@ -35,8 +33,9 @@ public class UserDAO implements Dao<User>
         res.getBoolean("isModerator"));
   }
 
-  @Override public List<User> getAll() throws SQLException
+  @Override public List<User> getAll() throws SQLException, RemoteException
   {
+    List<User> listOfUser = new ArrayList<>();
     String query = "SELECT * FROM person";
     PreparedStatement selectStatement = connection.prepareStatement(query);
     ResultSet res = selectStatement.executeQuery();

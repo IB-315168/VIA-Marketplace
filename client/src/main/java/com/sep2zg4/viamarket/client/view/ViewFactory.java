@@ -86,6 +86,7 @@ public class ViewFactory
         e.printStackTrace();
       }
     }
+    listingsViewController.reset();
     return listingsViewController.getRoot();
   }
 
