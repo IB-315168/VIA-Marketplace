@@ -2,6 +2,7 @@ package com.sep2zg4.viamarket.client.viewmodel;
 
 import com.sep2zg4.viamarket.client.model.MarketplaceModel;
 import com.sep2zg4.viamarket.model.Listing;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.rmi.RemoteException;
@@ -27,6 +28,9 @@ public class UserInformationViewModel
   public UserInformationViewModel(MarketplaceModel model)
   {
     this.model = model;
+  }
+  public void setUserListings() {
+    userListings.setAll(FXCollections.observableList(model.getUserListings()));
   }
 
   public ObservableList<Listing> getUserListings()

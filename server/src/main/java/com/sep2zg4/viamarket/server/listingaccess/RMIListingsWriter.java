@@ -76,7 +76,6 @@ public final class RMIListingsWriter implements Runnable
       ConcurrentHashMap<String, ArrayList<Listing>> currentListings = new ConcurrentHashMap<>();
       for (String category : categoryDAO.getAll())
       {
-        System.out.println(category);
         currentListings.put(category, new ArrayList<>());
       }
       for (Listing listing : listingDAO.getAll())
@@ -87,10 +86,14 @@ public final class RMIListingsWriter implements Runnable
         ResultSet res = selectStatement.executeQuery();
         if (res.next())
         {
-          currentListings.get(res.getString(1)).add(listing);
+          String categoryName = res.getString(1);
+          listing.setCategoryName(categoryName);
+          currentListings.get(categoryName).add(listing);
         }
       }
       write.write(currentListings);
+      System.out.println("Writer done");
+      System.out.println(currentListings.get("Misc").get(currentListings.get("Misc").size()-1));
       lock.releaseWrite();
       support.firePropertyChange("dbupdate", "0", "1");
       try

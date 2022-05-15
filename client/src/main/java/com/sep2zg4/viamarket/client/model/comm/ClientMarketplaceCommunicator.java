@@ -25,8 +25,8 @@ import java.sql.SQLException;
  * @author Igor Bulinski, Wojtek Rusinski
  * @version 1.0 - April 2022
  */
-public class ClientMarketplaceCommunicator extends UnicastRemoteObject implements
-    RemotePropertyChangeListener<String>
+public class ClientMarketplaceCommunicator extends UnicastRemoteObject
+    implements RemotePropertyChangeListener<String>
 {
   private RemoteMarketplace communicator;
   private MarketplaceModel model;
@@ -34,29 +34,28 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject implement
   private int port;
   private RMIListingsReader reader;
   private ReadWriteAccess lock;
-  private PropertyChangeSupport support;
 
   /**
    * 2-argument constructor creating a ClientMarketplaceCommunicator object and establishing connection to the server
+   *
    * @param host address of the server
    * @param port port of the server-app
    * @throws RemoteException
    */
-  public ClientMarketplaceCommunicator(String host, int port, MarketplaceModel model) throws
-      RemoteException
+  public ClientMarketplaceCommunicator(String host, int port,
+      MarketplaceModel model) throws RemoteException
   {
     this.host = host;
     this.port = port;
     this.model = model;
-    this.support = new PropertyChangeSupport(this);
   }
 
   /**
    * 2-argument method for establishing connection to the server and locating the remote object
+   *
    * @throws NotBoundException
    */
-  private void connect()
-      throws RemoteException, NotBoundException
+  private void connect() throws RemoteException, NotBoundException
   {
     Registry registry = LocateRegistry.getRegistry(host, port);
     communicator = (RemoteMarketplace) registry.lookup("comm");
@@ -69,6 +68,7 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject implement
 
   /**
    * 2-argument method for logging in
+   *
    * @param username username of the user
    * @param password matching password
    * @return result of {@link com.sep2zg4.viamarket.servermodel.RemoteMarketplace#login(int, String)}
@@ -77,9 +77,12 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject implement
   public User login(int username, String password)
       throws RemoteException, NotBoundException, SQLException
   {
-    try {
+    try
+    {
       connect();
-    } catch (Exception e) {
+    }
+    catch (Exception e)
+    {
       close();
       throw e;
     }
@@ -88,23 +91,18 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject implement
 
   /**
    * No-argument method for closing communicator
+   *
    * @throws NoSuchObjectException if the communicator has not been exported
    */
-  public void close() throws NoSuchObjectException
+  public void close() throws RemoteException
   {
+    communicator.removeRemotePropertyChangeListener(this);
     UnicastRemoteObject.unexportObject(this, true);
-  }
-
-  public void addPropertyChangeListener(PropertyChangeListener listener) {
-    support.addPropertyChangeListener(listener);
-  }
-
-  public void removePropertyChangeListener(PropertyChangeListener listener) {
-    support.removePropertyChangeListener(listener);
   }
 
   /**
    * Method used for creating a listing
+   *
    * @param listing Listing that is being created
    * @throws RemoteException
    * @throws SQLException
@@ -112,11 +110,12 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject implement
   public void createListing(Listing listing)
       throws RemoteException, SQLException
   {
-      communicator.createListing(listing);
+    communicator.createListing(listing);
   }
 
   /**
    * Method used for updating a listing
+   *
    * @param listing Listing that is being updated
    * @throws RemoteException
    * @throws SQLException
@@ -124,11 +123,12 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject implement
   public void updateListing(Listing listing)
       throws RemoteException, SQLException
   {
-      communicator.updateListing(listing);
+    communicator.updateListing(listing);
   }
 
   /**
    * Method used for deleting a listing
+   *
    * @param listing Listing that is being deleted
    * @throws RemoteException
    * @throws SQLException
@@ -136,7 +136,7 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject implement
   public void deleteListing(Listing listing)
       throws RemoteException, SQLException
   {
-      communicator.deleteListing(listing);
+    communicator.deleteListing(listing);
   }
 
   public void trigger() throws RemoteException
@@ -148,12 +148,5 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject implement
       throws RemoteException
   {
     reader.pullUpdate();
-    Platform.runLater(new Runnable()
-    {
-      @Override public void run()
-      {
-        support.firePropertyChange("datapull", 0, 1);
-      }
-    });
   }
 }

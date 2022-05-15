@@ -8,6 +8,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 /**
@@ -35,12 +36,12 @@ public class ListingsViewModel
     this.userType = new SimpleStringProperty("");
     this.listingsList = FXCollections.observableList(model.getAllListings());
     this.categoryList = FXCollections.observableList(model.getAllCategories());
-    model.addClientPropertyChangeListener(evt -> {
+
+    model.addPropertyChangeListener(evt -> {
       setListingsList();
       setCategoryList();
     });
   }
-
   public void setListingsList() {
     listingsList.setAll(model.getAllListings());
   }
@@ -61,10 +62,6 @@ public class ListingsViewModel
   public StringProperty getUserType()
   {
     return userType;
-  }
-
-  public void getListingProperties()
-  {
   }
 
   public Object getNewCategoryName()

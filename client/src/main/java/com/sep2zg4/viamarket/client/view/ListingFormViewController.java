@@ -3,6 +3,8 @@ package com.sep2zg4.viamarket.client.view;
 import com.sep2zg4.viamarket.client.viewmodel.ListingFormViewModel;
 import com.sep2zg4.viamarket.client.viewmodel.ListingsViewModel;
 import com.sep2zg4.viamarket.model.Listing;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
@@ -17,9 +19,8 @@ public class ListingFormViewController
   @FXML private TextField title;
   @FXML private TextField city;
   @FXML private TextField price;
-  @FXML private Label condition;
-  @FXML private TextField socialMedia;
-  @FXML private TextField username;
+  @FXML private ToggleGroup condition;
+  @FXML private ChoiceBox<String> category;
   @FXML private TextArea description;
   @FXML private Button saveButton;
   @FXML private RadioButton conditionDefective;
@@ -44,27 +45,27 @@ public class ListingFormViewController
     this.viewModel = viewModel;
     this.root = root;
 
+    this.conditionNew.setUserData("New");
+    this.conditionUsed.setUserData("Used");
+    this.conditionDefective.setUserData("Defective");
 
+    this.category.setItems(viewModel.getAllCategories());
     this.title.textProperty().bindBidirectional(viewModel.getListingTitle());
     this.city.textProperty().bindBidirectional(viewModel.getListingCity());
     this.price.textProperty().bindBidirectional(viewModel.getListingPrice());
-    this.condition.textProperty().bindBidirectional(viewModel.getListingCondition());
+    this.description.textProperty().bindBidirectional(
+        viewModel.getListingDescription());
+    this.condition.selectedToggleProperty().addListener(new ChangeListener<Toggle>()
+    {
+      @Override public void changed(
+          ObservableValue<? extends Toggle> observable, Toggle oldValue,
+          Toggle newValue)
+      {
+        viewModel.getListingCondition().setValue(newValue.getUserData().toString());
+      }
+    });
     /*this.socialMedia.textProperty().bindBidirectional(viewModel.getListingSocialMedia());
     this.username.textProperty().bindBidirectional(viewModel.getListingUsername());*/
-  }
-
-  /**
-   * A function used for setting the condition label to a specific value according to the selected radio button, to be later used in the viewModel
-   * @param event
-   */
-  @FXML public void getCondition(ActionEvent event)
-  {
-    if(conditionNew.isSelected())
-      condition.setText(conditionNew.getText());
-    else if(conditionUsed.isSelected())
-      condition.setText(conditionUsed.getText());
-    else if(conditionDefective.isSelected())
-      condition.setText(conditionDefective.getText());
   }
 
   /**
@@ -72,7 +73,7 @@ public class ListingFormViewController
    */
   @FXML public void save() throws SQLException, RemoteException
   {
-    viewModel.createListing();
+    viewModel.createListing(category.getSelectionModel().getSelectedItem());
     viewHandler.closeView();
     viewHandler.openView(ViewHandler.USERINFO);
   }

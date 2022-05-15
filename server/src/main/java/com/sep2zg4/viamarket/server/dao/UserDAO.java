@@ -20,7 +20,7 @@ public class UserDAO implements Dao<User>
     this.connection = connection;
   }
 
-  @Override public User getById(String id) throws SQLException
+  @Override public User getById(String id) throws SQLException, RemoteException
   {
     int idInt = Integer.parseInt(id);
     String query = "SELECT * FROM person WHERE studentNumber = ?";
@@ -33,7 +33,7 @@ public class UserDAO implements Dao<User>
         res.getBoolean("isModerator"));
   }
 
-  @Override public List<User> getAll() throws SQLException
+  @Override public List<User> getAll() throws SQLException, RemoteException
   {
     List<User> listOfUser = new ArrayList<>();
     String query = "SELECT * FROM person";

@@ -3,8 +3,10 @@ package com.sep2zg4.viamarket.client.model;
 import com.sep2zg4.viamarket.client.model.comm.ClientMarketplaceCommunicator;
 import com.sep2zg4.viamarket.model.Listing;
 import com.sep2zg4.viamarket.model.User;
+import javafx.application.Platform;
 
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
@@ -24,6 +26,7 @@ public class MarketplaceModelManager implements MarketplaceModel
   private HashMap<String, ArrayList<Listing>> listings;
   private ClientMarketplaceCommunicator client;
   private User currentUser;
+  private PropertyChangeSupport support;
 
   /**
    * Constructor creating a {@link ClientMarketplaceCommunicator} object and establishing connection
@@ -33,6 +36,7 @@ public class MarketplaceModelManager implements MarketplaceModel
   {
     client = new ClientMarketplaceCommunicator("localhost", Registry.REGISTRY_PORT, this);
     listings = new HashMap<>();
+    this.support = new PropertyChangeSupport(this);
   }
 
   /**
@@ -92,6 +96,15 @@ public class MarketplaceModelManager implements MarketplaceModel
   {
     client.updateListing(listing);
   }
+  public void addPropertyChangeListener(PropertyChangeListener listener)
+  {
+    support.addPropertyChangeListener(listener);
+  }
+
+  public void removePropertyChangeListener(PropertyChangeListener listener)
+  {
+    support.removePropertyChangeListener(listener);
+  }
 
   public HashMap<String, ArrayList<Listing>> getListings()
   {
@@ -101,6 +114,13 @@ public class MarketplaceModelManager implements MarketplaceModel
   public void setListings(HashMap<String, ArrayList<Listing>> listings)
   {
     this.listings = listings;
+    Platform.runLater(new Runnable()
+    {
+      @Override public void run()
+      {
+        support.firePropertyChange("dbupdate", 0, 1);
+      }
+    });
   }
 
   @Override public ArrayList<Listing> getAllListings()
@@ -117,18 +137,6 @@ public class MarketplaceModelManager implements MarketplaceModel
     return new ArrayList<>(listings.keySet());
   }
 
-  @Override public void addClientPropertyChangeListener(
-      PropertyChangeListener listener)
-  {
-    client.addPropertyChangeListener(listener);
-  }
-
-  @Override public void removeClientPropertyChangeListener(
-      PropertyChangeListener listener)
-  {
-    client.removePropertyChangeListener(listener);
-  }
-
   @Override public void trigger()
   {
     try
@@ -139,5 +147,18 @@ public class MarketplaceModelManager implements MarketplaceModel
     {
       throw new RuntimeException(e);
     }
+  }
+
+  @Override public ArrayList<Listing> getUserListings()
+  {
+    ArrayList<Listing> userListings = new ArrayList<>();
+    for(String s : listings.keySet()){
+      for(Listing listing : listings.get(s)) {
+        if(listing.getSeller().getId() == currentUser.getId()) {
+          userListings.add(listing);
+        }
+      }
+    }
+    return userListings;
   }
 }

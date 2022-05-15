@@ -2,6 +2,8 @@ package com.sep2zg4.viamarket.client.view;
 
 import com.sep2zg4.viamarket.client.viewmodel.ListingsViewModel;
 import com.sep2zg4.viamarket.model.Listing;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -51,7 +53,6 @@ public class ListingsViewController
     this.categoryList.setItems(viewModel.getCategoryList());
     this.listingsList.setItems(viewModel.getListingsList());
     this.loggedAs.textProperty().bindBidirectional(viewModel.getUserType());
-    viewModel.getListingProperties();
     viewModel.setListingsList();
     viewModel.setCategoryList();
 
@@ -63,6 +64,21 @@ public class ListingsViewController
         if (event.getCode() == KeyCode.A)
         {
           viewModel.trigger();
+        }
+      }
+    });
+    this.listingsList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Listing>()
+    {
+      @Override public void changed(
+          ObservableValue<? extends Listing> observable, Listing oldValue,
+          Listing newValue)
+      {
+        if(newValue != null)
+        {
+          title.setText(newValue.getTitle());
+          price.setText(String.valueOf(newValue.getPrice()));
+          city.setText(newValue.getCity());
+          condition.setText(newValue.getCondition());
         }
       }
     });
@@ -92,5 +108,8 @@ public class ListingsViewController
   public Region getRoot()
   {
     return root;
+  }
+
+  public void reset() {
   }
 }

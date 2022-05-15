@@ -9,6 +9,7 @@ import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Interface for the model
@@ -35,7 +36,8 @@ public interface MarketplaceModel
   void setListings(HashMap<String, ArrayList<Listing>> listings);
   ArrayList<Listing> getAllListings();
   ArrayList<String> getAllCategories();
-  void addClientPropertyChangeListener(PropertyChangeListener listener);
-  void removeClientPropertyChangeListener(PropertyChangeListener listener);
+  void addPropertyChangeListener(PropertyChangeListener listener);
+  void removePropertyChangeListener(PropertyChangeListener listener);
   void trigger();
+  ArrayList<Listing> getUserListings();
 }
