@@ -145,7 +145,17 @@ public class MarketplaceModelManager implements MarketplaceModel
 
   @Override public ArrayList<String> getAllCategories()
   {
-    return new ArrayList<>(listings.keySet());
+    ArrayList<String> categories = new ArrayList<>();
+    categories.add("All");
+    categories.addAll(listings.keySet());
+    return categories;
+  }
+
+  public ArrayList<Listing> getCategoryListing(String categoryName) {
+    if(categoryName.equals("All")) {
+      return getAllListings();
+    }
+    return listings.get(categoryName);
   }
 
   @Override public void trigger()

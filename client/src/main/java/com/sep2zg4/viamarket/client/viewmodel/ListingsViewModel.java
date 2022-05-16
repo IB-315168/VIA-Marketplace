@@ -45,6 +45,7 @@ public class ListingsViewModel
   public void setListingsList() {
     listingsList.setAll(model.getAllListings());
   }
+  public void getByCategory(String categoryName) { listingsList.setAll(model.getCategoryListing(categoryName));}
 
   public void setCategoryList() {
     categoryList.setAll(model.getAllCategories());

@@ -67,6 +67,20 @@ public class ListingsViewController
         }
       }
     });
+    this.categoryList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>()
+    {
+      @Override public void changed(
+          ObservableValue<? extends String> observable, String oldValue,
+          String newValue)
+      {
+        if(newValue == null) {
+          viewModel.setListingsList();
+        } else
+        {
+          viewModel.getByCategory(newValue);
+        }
+      }
+    });
     this.listingsList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Listing>()
     {
       @Override public void changed(
@@ -79,6 +93,9 @@ public class ListingsViewController
           price.setText(String.valueOf(newValue.getPrice()));
           city.setText(newValue.getCity());
           condition.setText(newValue.getCondition());
+          contacts.setText(newValue.getSeller().getFullName() + "\n" + newValue.getSeller().getEmail()
+              + "\n" + newValue.getSeller().getPhoneNumber());
+          description.setText(newValue.getDescription());
         }
       }
     });

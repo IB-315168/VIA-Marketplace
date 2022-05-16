@@ -25,6 +25,7 @@ public interface MarketplaceModel
   User getCurrentUser();
   Listing getCurrentSelectedUserListing();
   void setCurrentSelectedUserListing(Listing currentSelectedUserListing);
+  ArrayList<Listing> getCategoryListing(String categoryName);
 
   void createListing(Listing listing)
       throws SQLException, RemoteException;
