@@ -28,6 +28,9 @@ public class UserInformationViewModel
   public UserInformationViewModel(MarketplaceModel model)
   {
     this.model = model;
+    userListings = FXCollections.observableList(model.getUserListings());
+
+    model.addPropertyChangeListener(evt -> setUserListings());
   }
   public void setUserListings() {
     userListings.setAll(FXCollections.observableList(model.getUserListings()));
