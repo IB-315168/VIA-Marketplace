@@ -23,6 +23,8 @@ public interface MarketplaceModel
       throws RemoteException, NotBoundException, SQLException;
 
   User getCurrentUser();
+  Listing getCurrentSelectedUserListing();
+  void setCurrentSelectedUserListing(Listing currentSelectedUserListing);
 
   void createListing(Listing listing)
       throws SQLException, RemoteException;

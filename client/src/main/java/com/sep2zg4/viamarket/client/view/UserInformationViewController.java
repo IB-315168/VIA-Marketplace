@@ -3,6 +3,8 @@ package com.sep2zg4.viamarket.client.view;
 import com.sep2zg4.viamarket.client.viewmodel.UserInformationViewModel;
 import com.sep2zg4.viamarket.model.Listing;
 import com.sep2zg4.viamarket.model.User;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -44,6 +46,16 @@ public class UserInformationViewController
     this.viewModel = viewModel;
     this.root = root;
     this.userListings.setItems(viewModel.getUserListings());
+
+    this.userListings.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Listing>()
+    {
+      @Override public void changed(
+          ObservableValue<? extends Listing> observable, Listing oldValue,
+          Listing newValue)
+      {
+        viewModel.setCurrentSelectedUserListing(newValue);
+      }
+    });
   }
 
   /**
@@ -58,15 +70,14 @@ public class UserInformationViewController
    * A function used to open the listing form window upon pushing a button on the screen
    */
   @FXML public void create(){
+    viewModel.setCurrentSelectedUserListing(null);
     viewHandler.closeView();
     viewHandler.openView(ViewHandler.LISTINGFORM);
   }
   /**
    * A function used to open the listing form window upon pushing a button on the screen
    */
-  @FXML public void edit(){/*
-    Listing listing = userListings.getSelectionModel().getSelectedItem();
-    viewModel.updateListing(listing);*/
+  @FXML public void edit(){
     viewHandler.closeView();
     viewHandler.openView(ViewHandler.LISTINGFORM);
   }

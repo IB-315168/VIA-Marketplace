@@ -83,6 +83,9 @@ public class ListingFormViewModel
     return description;
   }
 
+  public Listing getSelectedUserListing() {
+    return model.getCurrentSelectedUserListing();
+  }
   /**
    * Method used for creating a Listing
    */
@@ -95,6 +98,14 @@ public class ListingFormViewModel
         new Listing(1, categoryName, getListingTitle().get(), getListingDescription().get(),
             Double.parseDouble(getListingPrice().get()), getListingCity().get(),
             getListingCondition().get(), model.getCurrentUser()));
+  }
+
+  public void updateListing(String categoryName) throws SQLException, RemoteException {
+    model.updateListing(
+        new Listing(model.getCurrentSelectedUserListing().getId(), categoryName,
+            getListingTitle().get(), getListingDescription().get(), Double.parseDouble(getListingPrice().get()),
+            getListingCity().get(), getListingCondition().get(), model.getCurrentUser())
+    );
   }
 
   public ObservableList<String> getAllCategories() {

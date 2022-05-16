@@ -29,11 +29,14 @@ public class UserInformationViewModel
   {
     this.model = model;
     userListings = FXCollections.observableList(model.getUserListings());
-
     model.addPropertyChangeListener(evt -> setUserListings());
   }
+
+  public void setCurrentSelectedUserListing(Listing listing) {
+    model.setCurrentSelectedUserListing(listing);
+  }
   public void setUserListings() {
-    userListings.setAll(FXCollections.observableList(model.getUserListings()));
+    userListings.setAll(model.getUserListings());
   }
 
   public ObservableList<Listing> getUserListings()

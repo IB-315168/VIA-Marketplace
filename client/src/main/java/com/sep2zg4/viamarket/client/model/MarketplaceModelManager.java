@@ -26,6 +26,7 @@ public class MarketplaceModelManager implements MarketplaceModel
   private HashMap<String, ArrayList<Listing>> listings;
   private ClientMarketplaceCommunicator client;
   private User currentUser;
+  private Listing currentSelectedUserListing;
   private PropertyChangeSupport support;
 
   /**
@@ -60,6 +61,16 @@ public class MarketplaceModelManager implements MarketplaceModel
   public User getCurrentUser(){
     return currentUser;
   };
+
+  public Listing getCurrentSelectedUserListing()
+  {
+    return currentSelectedUserListing;
+  }
+
+  public void setCurrentSelectedUserListing(Listing currentSelectedUserListing)
+  {
+    this.currentSelectedUserListing = currentSelectedUserListing;
+  }
 
   /**
    * Method used for creating a listing

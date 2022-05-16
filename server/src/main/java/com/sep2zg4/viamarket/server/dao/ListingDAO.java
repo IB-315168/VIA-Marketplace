@@ -96,8 +96,18 @@ public class ListingDAO implements Dao<Listing>
     updateStatement.setString(4, listing.getCity());
     updateStatement.setString(5, listing.getCondition());
     updateStatement.setInt(6, listing.getSeller().getId());
-    updateStatement.setInt(7, listing.getId());
-    updateStatement.executeUpdate();
+    String categoryQuery = "SELECT idCategory FROM category WHERE name = ?";
+    PreparedStatement selectStatement = connection.prepareStatement(categoryQuery);
+    selectStatement.setString(1, listing.getCategoryName());
+    ResultSet categorySet = selectStatement.executeQuery();
+    categorySet.next();
+    updateStatement.setInt(7, categorySet.getInt(1));
+    updateStatement.setInt(8, listing.getId());
+    try {
+      updateStatement.executeUpdate();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   @Override public void delete(Listing listing)

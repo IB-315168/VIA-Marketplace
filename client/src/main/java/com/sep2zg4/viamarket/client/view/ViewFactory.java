@@ -138,6 +138,7 @@ public class ViewFactory
         e.printStackTrace();
       }
     }
+    listingFormViewController.reset();
     return listingFormViewController.getRoot();
   }
 }

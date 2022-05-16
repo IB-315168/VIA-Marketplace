@@ -13,6 +13,8 @@ import javafx.event.ActionEvent;
 
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Locale;
 
 public class ListingFormViewController
 {
@@ -73,7 +75,12 @@ public class ListingFormViewController
    */
   @FXML public void save() throws SQLException, RemoteException
   {
-    viewModel.createListing(category.getSelectionModel().getSelectedItem());
+    if(viewModel.getSelectedUserListing() == null) {
+      viewModel.createListing(category.getSelectionModel().getSelectedItem());
+    }
+    else {
+      viewModel.updateListing(category.getSelectionModel().getSelectedItem());
+    }
     viewHandler.closeView();
     viewHandler.openView(ViewHandler.USERINFO);
   }
@@ -94,5 +101,31 @@ public class ListingFormViewController
   public Region getRoot()
   {
     return root;
+  }
+
+  public void reset() {
+    if(viewModel.getSelectedUserListing() == null) {
+      category.setValue("");
+      condition.selectToggle(conditionNew);
+      title.setText("");
+      price.setText("");
+      city.setText("");
+      description.setText("");
+    }
+    else {
+      Listing listing = viewModel.getSelectedUserListing();
+      category.setValue(listing.getCategoryName());
+      condition.selectToggle(switch (listing.getCondition().toLowerCase(Locale.ROOT)) {
+        case "new" -> conditionNew;
+        case "used" -> conditionUsed;
+        case "defective" -> conditionDefective;
+        default -> throw new IllegalStateException(
+            "Unexpected value: " + listing.getCondition());
+      });
+      title.setText(listing.getTitle());
+      price.setText(String.valueOf(listing.getPrice()));
+      city.setText(listing.getCity());
+      description.setText(listing.getDescription());
+    }
   }
 }
