@@ -63,6 +63,7 @@ public class ListingFormViewController
           ObservableValue<? extends Toggle> observable, Toggle oldValue,
           Toggle newValue)
       {
+
         viewModel.getListingCondition().setValue(newValue.getUserData().toString());
       }
     });

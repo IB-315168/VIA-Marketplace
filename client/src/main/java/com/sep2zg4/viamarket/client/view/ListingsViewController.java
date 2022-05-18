@@ -13,6 +13,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
 
+import java.nio.file.FileAlreadyExistsException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
@@ -36,6 +37,7 @@ public class ListingsViewController
   @FXML private Label loggedAs;
   @FXML private MenuItem usersInformation;
   @FXML private MenuItem back;
+  @FXML private Menu moderatorPanel;
 
   private ViewHandler viewHandler;
   private ListingsViewModel viewModel;
@@ -55,11 +57,20 @@ public class ListingsViewController
     this.viewModel = viewModel;
     this.root = root;
 
+    //Default FALSE - If theres a way to set this on the XML itself it would be PERFECT
+    moderatorPanel.setVisible(false);
+
     this.categoryList.setItems(viewModel.getCategoryList());
     this.listingsList.setItems(viewModel.getListingsList());
     this.loggedAs.textProperty().bindBidirectional(viewModel.getUserType());
     viewModel.setListingsList();
     viewModel.setCategoryList();
+
+
+    //Moderator Check
+    if(viewModel.isModerator()){
+      moderatorPanel.setVisible(true);
+    }
 
 //    Only for debug/testing purposes - open USERINFO View
     this.listingsList.setOnKeyPressed(new EventHandler<KeyEvent>()
@@ -122,10 +133,18 @@ public class ListingsViewController
     viewHandler.openView(ViewHandler.USERINFO);
   }
   @FXML public void deleteListing() throws SQLException, RemoteException {
-    Listing listing = listingsList.getSelectionModel().getSelectedItem();
-    viewModel.deleteListing(listing);
+    if(viewModel.isModerator())
+    {
+      Listing listing = listingsList.getSelectionModel().getSelectedItem();
+      viewModel.deleteListing(listing);
+    }else{
+      //Gotta learn how to make this into an alert.
+      System.out.println("User does not have permission to do this action.");
+    }
   }
   @FXML public void createCategory(){
+    if(viewModel.isModerator())
+    {
       TextInputDialog td = new TextInputDialog("enter category name");
       td.setHeaderText("enter category name");
       Button d = new Button("click");
@@ -134,11 +153,20 @@ public class ListingsViewController
         System.out.println(td.getEditor().getText());
       };
       d.setOnAction(event);
+    }else{
+      //Gotta learn how to make this into an alert.
+      System.out.println("User does not have permission to do this action.");
+    }
   }
 
   @FXML public void deleteCategory(){
-    String category = categoryList.getSelectionModel().getSelectedItem();
-    viewModel.deleteCategory(category);
+    if(viewModel.isModerator()){
+      String category = categoryList.getSelectionModel().getSelectedItem();
+      viewModel.deleteCategory(category);
+    }else{
+      //Gotta learn how to make this into an alert.
+      System.out.println("User does not have permission to do this action.");
+    }
   }
 
 

@@ -87,4 +87,8 @@ public class ListingsViewModel
     //model.createCategory();
   }
 
+  public boolean isModerator(){
+    return model.getCurrentUser().isModerator();
+  };
+
 }
