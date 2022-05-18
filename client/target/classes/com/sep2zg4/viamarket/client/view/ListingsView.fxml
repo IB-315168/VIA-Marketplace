@@ -16,7 +16,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sep2zg4.viamarket.client.view.ListingsViewController">
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sep2zg4.viamarket.client.view.ListingsViewController">
   <children>
       <MenuBar>
         <menus>
@@ -30,6 +30,14 @@
               <MenuItem fx:id="back" mnemonicParsing="false" onAction="#goBack" text="User Information" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Moderator">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Create Category" onAction="#createCategory"/>
+                  <MenuItem mnemonicParsing="false" text="Delete Category" />
+                  <MenuItem mnemonicParsing="false" text="Edit Category" onAction="#deleteCategory"/>
+                  <MenuItem mnemonicParsing="false" text="Delete Listing" onAction="#deleteListing"/>
+              </items>
+            </Menu>
         </menus>
       </MenuBar>
     <SplitPane dividerPositions="0.2505567928730512, 0.7505567928730512" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
@@ -41,7 +49,7 @@
                 <Font size="18.0" fx:id="x1" />
               </font>
               <textFill>
-                <Color red="0.624" green="0.624" blue="0.624" fx:id="x2" />
+                <Color blue="0.624" green="0.624" red="0.624" fx:id="x2" />
               </textFill>
             </Label>
                   <ListView fx:id="categoryList" layoutX="11.0" layoutY="50.0" prefHeight="502.0" prefWidth="200.0" />
@@ -61,17 +69,17 @@
           <children>
             <Label alignment="CENTER" font="$x1" layoutX="56.0" layoutY="14.0" style="&#10;" text="Listing Details" textAlignment="CENTER" textFill="$x2" wrapText="false" />
                   <Label layoutX="10.0" layoutY="50.0" text="Title:" />
-                  <Label layoutX="6.0" layoutY="315.0" text="Description:" />
+                  <Label layoutX="14.0" layoutY="339.0" text="Description:" />
                   <Label layoutX="9.0" layoutY="102.0" text="Price:" />
                   <Label layoutX="11.0" layoutY="154.0" text="City:" />
                   <Label layoutX="10.0" layoutY="206.0" text="Condition:" />
-                  <Label layoutX="11.0" layoutY="258.0" text="Contacts:" />
+                  <Label layoutX="13.0" layoutY="258.0" text="Contacts:" />
                   <Label fx:id="title" alignment="TOP_LEFT" layoutX="10.0" layoutY="68.0" prefHeight="34.0" prefWidth="200.0" />
                   <Label fx:id="price" alignment="TOP_LEFT" layoutX="11.0" layoutY="120.0" prefHeight="34.0" prefWidth="200.0" />
                   <Label fx:id="city" alignment="TOP_LEFT" layoutX="10.0" layoutY="172.0" prefHeight="34.0" prefWidth="200.0" />
                   <Label fx:id="condition" alignment="TOP_LEFT" layoutX="10.0" layoutY="224.0" prefHeight="34.0" prefWidth="200.0" />
-                  <Label fx:id="contacts" alignment="TOP_LEFT" layoutX="10.0" layoutY="281.0" prefHeight="34.0" prefWidth="200.0" />
-                  <TextArea fx:id="description" editable="false" layoutX="10.0" layoutY="333.0" prefHeight="225.0" prefWidth="200.0" />
+                  <Label fx:id="contacts" alignment="TOP_LEFT" layoutX="10.0" layoutY="279.0" prefHeight="58.0" prefWidth="200.0" />
+                  <TextArea fx:id="description" editable="false" layoutX="10.0" layoutY="357.0" prefHeight="202.0" prefWidth="200.0" />
           </children>
         </AnchorPane>
       </items>
@@ -83,7 +91,7 @@
             <Font size="11.0" fx:id="x3" />
           </font>
           <textFill>
-            <Color red="0.625" green="0.625" blue="0.625" fx:id="x4" />
+            <Color blue="0.625" green="0.625" red="0.625" fx:id="x4" />
           </textFill>
         </Label>
         <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />

@@ -4,12 +4,17 @@ import com.sep2zg4.viamarket.client.viewmodel.ListingsViewModel;
 import com.sep2zg4.viamarket.model.Listing;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
+
+import java.rmi.RemoteException;
+import java.sql.SQLException;
 
 /**
  * Controller class for ListingsView.fxml
@@ -116,6 +121,26 @@ public class ListingsViewController
     viewHandler.closeView();
     viewHandler.openView(ViewHandler.USERINFO);
   }
+  @FXML public void deleteListing() throws SQLException, RemoteException {
+    Listing listing = listingsList.getSelectionModel().getSelectedItem();
+    viewModel.deleteListing(listing);
+  }
+  @FXML public void createCategory(){
+      TextInputDialog td = new TextInputDialog("enter category name");
+      td.setHeaderText("enter category name");
+      Button d = new Button("click");
+      EventHandler<ActionEvent> event = actionEvent -> {
+        td.showAndWait();
+        System.out.println(td.getEditor().getText());
+      };
+      d.setOnAction(event);
+  }
+
+  @FXML public void deleteCategory(){
+    String category = categoryList.getSelectionModel().getSelectedItem();
+    viewModel.deleteCategory(category);
+  }
+
 
   /**
    * A function returning the root

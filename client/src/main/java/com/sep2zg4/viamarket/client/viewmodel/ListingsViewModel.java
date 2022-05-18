@@ -9,6 +9,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.beans.PropertyChangeListener;
+import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -74,4 +76,15 @@ public class ListingsViewModel
   {
     model.trigger();
   }
+
+  public  void deleteListing(Listing listing) throws SQLException, RemoteException {
+    model.deleteListing(listing);
+  }
+  public void deleteCategory(String category){
+    //model.deleteCategory();
+  }
+  public void createCategory(String categoryName){
+    //model.createCategory();
+  }
+
 }

@@ -93,7 +93,7 @@ public final class RMIListingsWriter implements Runnable
       }
       write.write(currentListings);
       System.out.println("Writer done");
-      System.out.println(currentListings.get("Misc").get(currentListings.get("Misc").size()-1));
+      //System.out.println(currentListings.get("Misc").get(currentListings.get("Misc").size()-1));
       lock.releaseWrite();
       support.firePropertyChange("dbupdate", "0", "1");
       try

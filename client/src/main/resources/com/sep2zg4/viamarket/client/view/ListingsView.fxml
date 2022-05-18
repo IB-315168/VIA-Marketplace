@@ -30,6 +30,14 @@
               <MenuItem fx:id="back" mnemonicParsing="false" onAction="#goBack" text="User Information" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Moderator">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Create Category" onAction="#createCategory"/>
+                  <MenuItem mnemonicParsing="false" text="Delete Category" />
+                  <MenuItem mnemonicParsing="false" text="Edit Category" onAction="#deleteCategory"/>
+                  <MenuItem mnemonicParsing="false" text="Delete Listing" onAction="#deleteListing"/>
+              </items>
+            </Menu>
         </menus>
       </MenuBar>
     <SplitPane dividerPositions="0.2505567928730512, 0.7505567928730512" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
