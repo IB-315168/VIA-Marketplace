@@ -78,18 +78,10 @@ public final class RMIListingsWriter implements Runnable
       {
         currentListings.put(category, new ArrayList<>());
       }
+      currentListings.put("<none>", new ArrayList<>());
       for (Listing listing : listingDAO.getAll())
       {
-        String query = "SELECT name FROM category WHERE idCategory = (SELECT idCategory FROM listing WHERE id = ?)";
-        PreparedStatement selectStatement = connection.prepareStatement(query);
-        selectStatement.setInt(1, listing.getId());
-        ResultSet res = selectStatement.executeQuery();
-        if (res.next())
-        {
-          String categoryName = res.getString(1);
-          listing.setCategoryName(categoryName);
-          currentListings.get(categoryName).add(listing);
-        }
+        currentListings.get(listing.getCategoryName()).add(listing);
       }
       write.write(currentListings);
       System.out.println("Writer done");

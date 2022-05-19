@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * A view model for ListingForm
@@ -109,6 +110,9 @@ public class ListingFormViewModel
   }
 
   public ObservableList<String> getAllCategories() {
-    return FXCollections.observableList(model.getAllCategories());
+    ArrayList<String> categories = model.getAllCategories();
+    categories.remove("All");
+    categories.remove("<none>");
+    return FXCollections.observableList(categories);
   }
 }

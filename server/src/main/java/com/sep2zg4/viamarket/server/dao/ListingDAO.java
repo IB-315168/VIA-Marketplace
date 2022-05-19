@@ -2,7 +2,6 @@ package com.sep2zg4.viamarket.server.dao;
 
 import com.sep2zg4.viamarket.model.Listing;
 
-import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.beans.PropertyChangeSupport;
 
 public class ListingDAO implements Dao<Listing>
 {
@@ -34,7 +32,7 @@ public class ListingDAO implements Dao<Listing>
     selectStatement.setInt(1, idInt);
     ResultSet res = selectStatement.executeQuery();
     res.next();
-    String category = "-";
+    String category = getCategoryNameFromId(res.getInt("idCategory"));
     return new Listing(res.getInt("id"), category, res.getString("title"),
         res.getString("description"), res.getDouble("price"),
         res.getString("city"), res.getString("condition"),
@@ -49,7 +47,7 @@ public class ListingDAO implements Dao<Listing>
     ResultSet res = selectStatement.executeQuery();
     while (res.next())
     {
-      listOfListing.add(new Listing(res.getInt("id"), null , res.getString("title"),
+      listOfListing.add(new Listing(res.getInt("id"), getCategoryNameFromId(res.getInt("idCategory")) , res.getString("title"),
           res.getString("description"), res.getDouble("price"),
           res.getString("city"), res.getString("condition"),
           userDAO.getById(res.getString("studentNumber"))));
@@ -67,10 +65,7 @@ public class ListingDAO implements Dao<Listing>
     insertStatement.setString(4, listing.getCity());
     insertStatement.setString(5, listing.getCondition());
     insertStatement.setInt(6, listing.getSeller().getId());
-    insertStatement.setInt(7, 0);
-    if(listing.getCategoryName() != null) {
-      insertStatement.setInt(7, getIdCategoryFromName(listing.getCategoryName()));
-    }
+    insertStatement.setInt(7, getIdCategoryFromName(listing.getCategoryName()));
     try {
       insertStatement.executeUpdate();
     } catch (Exception e) {
@@ -90,9 +85,7 @@ public class ListingDAO implements Dao<Listing>
     updateStatement.setString(5, listing.getCondition());
     updateStatement.setInt(6, listing.getSeller().getId());
     updateStatement.setInt(7, 0);
-    if (listing.getCategoryName() != null) {
-      updateStatement.setInt(7, getIdCategoryFromName(listing.getCategoryName()));
-    }
+    updateStatement.setInt(7, getIdCategoryFromName(listing.getCategoryName()));
     updateStatement.setInt(8, listing.getId());
     try {
       updateStatement.executeUpdate();
@@ -118,5 +111,18 @@ public class ListingDAO implements Dao<Listing>
     ResultSet categorySet = selectStatement.executeQuery();
     categorySet.next();
     return categorySet.getInt(1);
+  }
+
+  private String getCategoryNameFromId(int idCategory) throws SQLException
+  {
+    if(idCategory == 0) {
+      return "<none>";
+    }
+    String categoryQuery = "SELECT name FROM category WHERE idCategory = ?";
+    PreparedStatement selectStatement = connection.prepareStatement(categoryQuery);
+    selectStatement.setInt(1, idCategory);
+    ResultSet categorySet = selectStatement.executeQuery();
+    categorySet.next();
+    return categorySet.getString("name");
   }
 }
