@@ -43,7 +43,7 @@ public class CategoryDAO implements Dao<String>
 
   @Override public void create(String s) throws SQLException
   {
-    String query = "INSERT INTO category (name) VALUES ?";
+    String query = "INSERT INTO category (name) VALUES (?)";
     PreparedStatement insertStatement = connection.prepareStatement(query);
     insertStatement.setString(1, s);
     insertStatement.executeUpdate();

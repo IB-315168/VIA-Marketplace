@@ -16,6 +16,7 @@ import javafx.scene.layout.Region;
 import java.nio.file.FileAlreadyExistsException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.Optional;
 
 /**
  * Controller class for ListingsView.fxml
@@ -142,17 +143,15 @@ public class ListingsViewController
       System.out.println("User does not have permission to do this action.");
     }
   }
-  @FXML public void createCategory(){
+  @FXML public void createCategory(ActionEvent event) throws SQLException, RemoteException {
     if(viewModel.isModerator())
     {
-      TextInputDialog td = new TextInputDialog("enter category name");
-      td.setHeaderText("enter category name");
-      Button d = new Button("click");
-      EventHandler<ActionEvent> event = actionEvent -> {
-        td.showAndWait();
-        System.out.println(td.getEditor().getText());
-      };
-      d.setOnAction(event);
+      TextInputDialog textInputDialog = new TextInputDialog();
+      textInputDialog.setTitle("Create category");
+      textInputDialog.getDialogPane().setContentText("Category name: ");
+      Optional<String> result = textInputDialog.showAndWait();
+      TextField input = textInputDialog.getEditor();
+      viewModel.createCategory(input.getText());
     }else{
       //Gotta learn how to make this into an alert.
       System.out.println("User does not have permission to do this action.");

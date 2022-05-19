@@ -80,15 +80,10 @@ public class ListingsViewModel
   public  void deleteListing(Listing listing) throws SQLException, RemoteException {
     model.deleteListing(listing);
   }
-  public void deleteCategory(String category)
-      throws SQLException, RemoteException
-  {
+  public void deleteCategory(String category) throws SQLException, RemoteException {
     model.deleteCategory(category);
   }
-
-  public void createCategory(String categoryName)
-      throws SQLException, RemoteException
-  {
+  public void createCategory(String categoryName) throws SQLException, RemoteException {
     model.createCategory(categoryName);
   }
 

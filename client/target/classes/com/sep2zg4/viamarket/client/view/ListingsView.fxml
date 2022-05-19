@@ -27,15 +27,15 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Back">
             <items>
-              <MenuItem fx:id="back" mnemonicParsing="false" onAction="#goBack" text="User Information" />
+              <MenuItem fx:id="back" mnemonicParsing="false" onAction="#goBack" text="Back" />
             </items>
           </Menu>
             <Menu fx:id="moderatorPanel" mnemonicParsing="false" text="Moderator">
               <items>
-                <MenuItem mnemonicParsing="false" text="Create Category" onAction="#createCategory"/>
-                  <MenuItem mnemonicParsing="false" text="Delete Category" onAction="#deleteCategory" />
+                <MenuItem mnemonicParsing="false" onAction="#createCategory" text="Create Category" />
+                  <MenuItem mnemonicParsing="false" onAction="#deleteCategory" text="Delete Category" />
                   <MenuItem mnemonicParsing="false" text="Edit Category" />
-                  <MenuItem mnemonicParsing="false" text="Delete Listing" onAction="#deleteListing"/>
+                  <MenuItem mnemonicParsing="false" onAction="#deleteListing" text="Delete Listing" />
               </items>
             </Menu>
         </menus>
