@@ -34,12 +34,8 @@ public class ListingDAO implements Dao<Listing>
     selectStatement.setInt(1, idInt);
     ResultSet res = selectStatement.executeQuery();
     res.next();
-    String categoryQuery = "SELECT name FROM category WHERE idCategory = ?";
-    selectStatement = connection.prepareStatement(categoryQuery);
-    selectStatement.setInt(1, res.getInt("idCategory"));
-    ResultSet categorySet = selectStatement.executeQuery();
-    categorySet.next();
-    return new Listing(res.getInt("id"), categorySet.getString(1), res.getString("title"),
+    String category = "-";
+    return new Listing(res.getInt("id"), category, res.getString("title"),
         res.getString("description"), res.getDouble("price"),
         res.getString("city"), res.getString("condition"),
         userDAO.getById(res.getString("studentNumber")));
@@ -71,13 +67,10 @@ public class ListingDAO implements Dao<Listing>
     insertStatement.setString(4, listing.getCity());
     insertStatement.setString(5, listing.getCondition());
     insertStatement.setInt(6, listing.getSeller().getId());
-    String categoryQuery = "SELECT idCategory FROM category WHERE name = ?";
-    PreparedStatement selectStatement = connection.prepareStatement(categoryQuery);
-    selectStatement.setString(1, listing.getCategoryName());
-    ResultSet categorySet = selectStatement.executeQuery();
-    categorySet.next();
-    insertStatement.setInt(7, categorySet.getInt(1));
-    //insertStatement.setInt(8,?);
+    insertStatement.setInt(7, 0);
+    if(listing.getCategoryName() != null) {
+      insertStatement.setInt(7, getIdCategoryFromName(listing.getCategoryName()));
+    }
     try {
       insertStatement.executeUpdate();
     } catch (Exception e) {
@@ -96,12 +89,10 @@ public class ListingDAO implements Dao<Listing>
     updateStatement.setString(4, listing.getCity());
     updateStatement.setString(5, listing.getCondition());
     updateStatement.setInt(6, listing.getSeller().getId());
-    String categoryQuery = "SELECT idCategory FROM category WHERE name = ?";
-    PreparedStatement selectStatement = connection.prepareStatement(categoryQuery);
-    selectStatement.setString(1, listing.getCategoryName());
-    ResultSet categorySet = selectStatement.executeQuery();
-    categorySet.next();
-    updateStatement.setInt(7, categorySet.getInt(1));
+    updateStatement.setInt(7, 0);
+    if (listing.getCategoryName() != null) {
+      updateStatement.setInt(7, getIdCategoryFromName(listing.getCategoryName()));
+    }
     updateStatement.setInt(8, listing.getId());
     try {
       updateStatement.executeUpdate();
@@ -119,4 +110,13 @@ public class ListingDAO implements Dao<Listing>
     deleteStatement.executeUpdate();
   }
 
+  private int getIdCategoryFromName(String categoryName) throws SQLException
+  {
+    String categoryQuery = "SELECT idCategory FROM category WHERE name = ?";
+    PreparedStatement selectStatement = connection.prepareStatement(categoryQuery);
+    selectStatement.setString(1, categoryName);
+    ResultSet categorySet = selectStatement.executeQuery();
+    categorySet.next();
+    return categorySet.getInt(1);
+  }
 }
