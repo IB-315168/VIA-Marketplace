@@ -31,6 +31,9 @@ public interface RemoteMarketplace extends Remote
   void deleteUser(User user) throws SQLException, RemoteException;
   User getUserById(String id) throws SQLException, RemoteException;
 
+  void createCategory(String categoryName) throws SQLException,RemoteException;
+  void deleteCategory(String category) throws SQLException,RemoteException;
+
   void exampleMethod() throws RemoteException;
   ReadWriteAccess getLock() throws RemoteException;
   void addRemotePropertyChangeListener(RemotePropertyChangeListener<String> listener) throws RemoteException;

@@ -182,4 +182,16 @@ public class MarketplaceModelManager implements MarketplaceModel
     }
     return userListings;
   }
+
+  public void createCategory(String categoryName)
+      throws SQLException, RemoteException
+  {
+    client.createCategory(categoryName);
+  }
+
+  public void deleteCategory(String category)
+      throws SQLException, RemoteException
+  {
+    client.deleteCategory(category);
+  }
 }

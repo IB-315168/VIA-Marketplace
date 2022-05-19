@@ -139,6 +139,19 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject
     communicator.deleteListing(listing);
   }
 
+  public void createCategory(String categoryName)
+      throws SQLException, RemoteException
+  {
+    communicator.createCategory(categoryName);
+  }
+
+  public void deleteCategory(String category)
+      throws SQLException, RemoteException
+  {
+    communicator.deleteCategory(category);
+  }
+
+
   public void trigger() throws RemoteException
   {
     communicator.exampleMethod();

@@ -43,4 +43,6 @@ public interface MarketplaceModel
   void removePropertyChangeListener(PropertyChangeListener listener);
   void trigger();
   ArrayList<Listing> getUserListings();
+  void deleteCategory(String category) throws SQLException, RemoteException;
+  void createCategory(String categoryName) throws SQLException, RemoteException;
 }

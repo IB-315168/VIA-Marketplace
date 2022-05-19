@@ -138,6 +138,19 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
     return userDAO.getById(id);
   }
 
+  @Override public void createCategory(String categoryName)
+      throws SQLException, RemoteException
+  {
+    categoryDAO.create(categoryName);
+    writer.pushUpdate();
+  }
+
+  @Override public void deleteCategory(String category)
+      throws SQLException, RemoteException
+  {
+    categoryDAO.delete(category);
+    writer.pushUpdate();
+  }
 
   //Debug purpose, showing issues with reading
   public void exampleMethod() {

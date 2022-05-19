@@ -159,7 +159,8 @@ public class ListingsViewController
     }
   }
 
-  @FXML public void deleteCategory(){
+  @FXML public void deleteCategory() throws SQLException, RemoteException
+  {
     if(viewModel.isModerator()){
       String category = categoryList.getSelectionModel().getSelectedItem();
       viewModel.deleteCategory(category);
