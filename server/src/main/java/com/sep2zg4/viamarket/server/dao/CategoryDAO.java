@@ -17,12 +17,11 @@ public class CategoryDAO implements Dao<String>
     this.connection = connection;
   }
 
-  @Override public String getById(String id) throws SQLException
+  @Override public String getById(int id) throws SQLException
   {
-    int idInt = Integer.parseInt(id);
     String query = "SELECT * FROM category WHERE id = ?";
     PreparedStatement selectStatement = connection.prepareStatement(query);
-    selectStatement.setInt(1, idInt);
+    selectStatement.setInt(1, id);
     ResultSet res = selectStatement.executeQuery();
     res.next();
     return res.getString("name");

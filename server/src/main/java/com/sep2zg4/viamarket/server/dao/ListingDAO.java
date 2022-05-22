@@ -22,21 +22,19 @@ public class ListingDAO implements Dao<Listing>
     this.userDAO = (UserDAO) manager.getDao(DAOManager.Table.User);
   }
 
-  @Override public Listing getById(String id)
+  @Override public Listing getById(int id)
       throws SQLException, RemoteException
   {
-    //I would parse String to int but by doing so could end up in whenever someone types AZ32 it would take id as 32 and change something we dont want to
-    int idInt = Integer.parseInt(id);
     String query = "SELECT * FROM listing WHERE id = ?";
     PreparedStatement selectStatement = connection.prepareStatement(query);
-    selectStatement.setInt(1, idInt);
+    selectStatement.setInt(1, id);
     ResultSet res = selectStatement.executeQuery();
     res.next();
     String category = getCategoryNameFromId(res.getInt("idCategory"));
     return new Listing(res.getInt("id"), category, res.getString("title"),
         res.getString("description"), res.getDouble("price"),
         res.getString("city"), res.getString("condition"),
-        userDAO.getById(res.getString("studentNumber")));
+        userDAO.getById(Integer.parseInt(res.getString("studentNumber"))));
   }
 
   @Override public List<Listing> getAll() throws SQLException, RemoteException
@@ -50,7 +48,7 @@ public class ListingDAO implements Dao<Listing>
       listOfListing.add(new Listing(res.getInt("id"), getCategoryNameFromId(res.getInt("idCategory")) , res.getString("title"),
           res.getString("description"), res.getDouble("price"),
           res.getString("city"), res.getString("condition"),
-          userDAO.getById(res.getString("studentNumber"))));
+          userDAO.getById(Integer.parseInt(res.getString("studentNumber")))));
     }
     return listOfListing;
   }

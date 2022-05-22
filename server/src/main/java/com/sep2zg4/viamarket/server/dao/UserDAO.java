@@ -20,12 +20,11 @@ public class UserDAO implements Dao<User>
     this.connection = connection;
   }
 
-  @Override public User getById(String id) throws SQLException, RemoteException
+  @Override public User getById(int id) throws SQLException, RemoteException
   {
-    int idInt = Integer.parseInt(id);
     String query = "SELECT * FROM person WHERE studentNumber = ?";
     PreparedStatement selectStatemenet = connection.prepareStatement(query);
-    selectStatemenet.setInt(1, idInt);
+    selectStatemenet.setInt(1, id);
     ResultSet res = selectStatemenet.executeQuery();
     res.next();
     return new User(res.getInt("studentNumber"), res.getString("fullName"),

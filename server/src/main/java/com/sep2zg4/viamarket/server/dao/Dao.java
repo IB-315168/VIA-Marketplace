@@ -20,7 +20,7 @@ public interface Dao<Type>
    * @throws SQLException if error in SQL
    * @throws RemoteException if error in Server side
    */
-  Type getById(String id) throws
+  Type getById(int id) throws
       SQLException, RemoteException; //Reason why ID is a string is because user ID's are a string.
 
   /**

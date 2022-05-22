@@ -42,7 +42,7 @@ public class LoginHandler
     selectStatement.setString(2, password);
     ResultSet res = selectStatement.executeQuery();
     if(res.next()){
-      return userDAO.getById(res.getString(1));
+      return userDAO.getById(Integer.parseInt(res.getString(1)));
     }
     return null;
   }

@@ -73,7 +73,7 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
   @Override public Listing getListingById(String id)
       throws SQLException, RemoteException
   {
-    return listingDAO.getById(id);
+    return listingDAO.getById(Integer.parseInt(id));
   }
 
   @Override public void getAllListing()
@@ -135,7 +135,7 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
 
   @Override
   public User getUserById(String id) throws SQLException, RemoteException {
-    return userDAO.getById(id);
+    return userDAO.getById(Integer.parseInt(id));
   }
 
   @Override public void createCategory(String categoryName)
