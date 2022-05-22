@@ -62,6 +62,10 @@ public class MarketplaceModelManager implements MarketplaceModel
     return currentUser;
   };
 
+  public boolean isModerator(){
+    return getCurrentUser().isModerator();
+  }
+
   public Listing getCurrentSelectedUserListing()
   {
     return currentSelectedUserListing;

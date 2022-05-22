@@ -88,7 +88,7 @@ public class ListingsViewModel
   }
 
   public boolean isModerator(){
-    return model.getCurrentUser().isModerator();
+    return model.isModerator();
   };
 
 }

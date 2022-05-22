@@ -39,6 +39,12 @@ public interface MarketplaceModel
   User getCurrentUser();
 
   /**
+   * method to get information about current user permissions
+   * @return true if theres permissions, false if no permission.
+   */
+  boolean isModerator();
+
+  /**
    * method to get current selected user listing
    * @return Listing object of current selected listing
    */
