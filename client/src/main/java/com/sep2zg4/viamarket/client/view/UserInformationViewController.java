@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.Region;
 
 import java.rmi.RemoteException;
@@ -24,9 +25,18 @@ public class UserInformationViewController
 {
   @FXML private Label userName;
   @FXML private ListView<Listing> userListings;
+  @FXML private ListView<Listing> userWishList;
   @FXML private MenuItem create;
   @FXML private MenuItem edit;
   @FXML private MenuItem remove;
+  @FXML private Label title;
+  @FXML private Label price;
+  @FXML private Label city;
+  @FXML private Label condition;
+  @FXML private Label contacts;
+  @FXML private TextArea description;
+
+
 
   private ViewHandler viewHandler;
   private UserInformationViewModel viewModel;
@@ -46,7 +56,7 @@ public class UserInformationViewController
     this.viewModel = viewModel;
     this.root = root;
     this.userListings.setItems(viewModel.getUserListings());
-
+    this.userWishList.setItems(viewModel.getUserWishlist());
     this.userListings.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Listing>()
     {
       @Override public void changed(
@@ -54,6 +64,24 @@ public class UserInformationViewController
           Listing newValue)
       {
         viewModel.setCurrentSelectedUserListing(newValue);
+      }
+    });
+    this.userWishList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Listing>()
+    {
+      @Override public void changed(
+              ObservableValue<? extends Listing> observable, Listing oldValue,
+              Listing newValue)
+      {
+        if(newValue != null)
+        {
+          title.setText(newValue.getTitle());
+          price.setText(String.valueOf(newValue.getPrice()));
+          city.setText(newValue.getCity());
+          condition.setText(newValue.getCondition());
+          contacts.setText(newValue.getSeller().getFullName() + "\n" + newValue.getSeller().getEmail()
+                  + "\n" + newValue.getSeller().getPhoneNumber());
+          description.setText(newValue.getDescription());
+        }
       }
     });
   }
@@ -87,8 +115,12 @@ public class UserInformationViewController
   @FXML public void remove() throws SQLException, RemoteException {
     Listing listing = userListings.getSelectionModel().getSelectedItem();
     viewModel.deleteListing(listing);
-
   }
+  @FXML public void deleteWishlistItem(){
+    Listing wishlistListing = userWishList.getSelectionModel().getSelectedItem();
+    viewModel.deleteWishlistItem(wishlistListing);
+  }
+
   /**
    * A function returning the root
    *

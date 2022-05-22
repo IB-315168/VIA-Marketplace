@@ -86,6 +86,9 @@ public class ListingsViewModel
   public void createCategory(String categoryName) throws SQLException, RemoteException {
     model.createCategory(categoryName);
   }
+  public void addToWishlist(Listing wishlistListing){
+    model.addToListing(wishlistListing);
+  }
 
   public boolean isModerator(){
     return model.isModerator();

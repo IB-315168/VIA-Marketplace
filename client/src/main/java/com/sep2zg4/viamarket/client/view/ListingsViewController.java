@@ -168,7 +168,13 @@ public class ListingsViewController
       System.out.println("User does not have permission to do this action.");
     }
   }
-
+  /**
+   * A function used to add item to wishlist
+   */
+  @FXML public void addToWishlist() {
+    Listing wishlistListing = listingsList.getSelectionModel().getSelectedItem();
+    viewModel.addToWishlist(wishlistListing);
+  }
 
   /**
    * A function returning the root
