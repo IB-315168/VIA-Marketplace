@@ -152,6 +152,8 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
     writer.pushUpdate();
   }
 
+  //
+
   //Debug purpose, showing issues with reading
   public void exampleMethod() {
     writer.pushUpdate();

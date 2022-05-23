@@ -80,6 +80,8 @@ public final class DAOManager
         return new UserDAO(connection);
       case Category:
         return new CategoryDAO(connection);
+      case Wishlist:
+        return new WishlistDAO(connection);
       default:
         throw new SQLException("Table does not exist");
     }
@@ -126,5 +128,5 @@ public final class DAOManager
 
 
   public enum Table
-  {Listing, User, Category}
+  {Listing, User, Category, Wishlist}
 }
