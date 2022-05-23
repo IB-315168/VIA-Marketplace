@@ -24,6 +24,11 @@ public interface ReadMap extends Remote
   ConcurrentHashMap<String, ArrayList<Listing>> getListings() throws
       RemoteException;
 
+  /**
+   * method to get a concurrent hashmap with all the wishlist listings stored by <Category,ArrayList<Listings from category>>
+   * @return concurrent hashmap with all wishlist listings stored by <Category,ArrayList<Listings from category>>
+   * @throws RemoteException if error in Server side
+   */
   ConcurrentHashMap<String, ArrayList<Listing>> getWishlist() throws
       RemoteException;
 }
