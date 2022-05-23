@@ -30,7 +30,7 @@ public class UserInformationViewModel
   {
     this.model = model;
     userListings = FXCollections.observableList(model.getUserListings());
-    userWishlist =  FXCollections.observableList(model.getUserWishlist);
+    userWishlist =  FXCollections.observableList(model.getUserWishlist());
     model.addPropertyChangeListener(evt -> setUserListings());
     model.addPropertyChangeListener(evt -> setUserWishlist());
   }
@@ -63,5 +63,9 @@ public class UserInformationViewModel
   }
   public void deleteWishlistItem(Listing wishlist){
     model.deleteWishlistItem;
+  }
+
+  public String getFullName(){
+    return model.getFullName();
   }
 }

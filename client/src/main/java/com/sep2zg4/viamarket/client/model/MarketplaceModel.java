@@ -45,6 +45,12 @@ public interface MarketplaceModel
   boolean isModerator();
 
   /**
+   * method to get current user Full Name
+   * @return current user full name
+   */
+  String getFullName();
+
+  /**
    * method to get current selected user listing
    * @return Listing object of current selected listing
    */

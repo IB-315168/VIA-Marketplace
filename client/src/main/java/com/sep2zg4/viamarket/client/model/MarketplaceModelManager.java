@@ -66,6 +66,10 @@ public class MarketplaceModelManager implements MarketplaceModel
     return getCurrentUser().isModerator();
   }
 
+  public String getFullName(){
+    return getCurrentUser().getFullName();
+  }
+
   public Listing getCurrentSelectedUserListing()
   {
     return currentSelectedUserListing;
