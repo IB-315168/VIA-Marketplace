@@ -151,6 +151,14 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject
     communicator.deleteCategory(category);
   }
 
+  public void deleteWishlistItem(int idListing, int idUser) throws SQLException, RemoteException{
+    communicator.deleteWishlistItem(idListing,idUser);
+  }
+
+  public void addToWishlist(int idListing, int idUser) throws SQLException, RemoteException{
+    communicator.addToWishlist(idListing,idUser);
+  }
+
 
   public void trigger() throws RemoteException
   {

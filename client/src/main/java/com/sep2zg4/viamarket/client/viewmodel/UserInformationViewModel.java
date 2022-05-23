@@ -61,8 +61,10 @@ public class UserInformationViewModel
   public  void deleteListing(Listing listing) throws SQLException, RemoteException {
     model.deleteListing(listing);
   }
-  public void deleteWishlistItem(Listing wishlist){
-    model.deleteWishlistItem;
+  public void deleteWishlistItem(Integer idListing)
+      throws SQLException, RemoteException
+  {
+    model.deleteWishlistItem(idListing);
   }
 
   public String getFullName(){

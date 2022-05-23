@@ -119,6 +119,24 @@ public interface RemoteMarketplace extends Remote
   void deleteCategory(String category) throws SQLException,RemoteException;
 
   /**
+   * method to delete an item from wishlist
+   * @param idListing              Listing id to be deleted on wishlist
+   * @param idUser                 Student Number to be deleted on wishlist
+   * @throws SQLException if error in SQL
+   * @throws RemoteException if error in Server side
+   */
+  void deleteWishlistItem(Integer idListing, int idUser) throws SQLException, RemoteException;
+
+  /**
+   * method to add listing to wishlist
+   * @param idListing              Listing id to be added on wishlist
+   * @param idUser                 Student Number to be added on wishlist
+   * @throws SQLException if error in SQL
+   * @throws RemoteException if error in Server side
+   */
+  void addToWishlist(int idListing, int idUser) throws SQLException, RemoteException;
+
+  /**
    *
    * @throws RemoteException
    */
@@ -133,4 +151,5 @@ public interface RemoteMarketplace extends Remote
 
   void addRemotePropertyChangeListener(RemotePropertyChangeListener<String> listener) throws RemoteException;
   void removeRemotePropertyChangeListener(RemotePropertyChangeListener<String> listener) throws RemoteException;
+
 }

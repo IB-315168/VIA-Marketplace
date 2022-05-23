@@ -145,4 +145,26 @@ public interface MarketplaceModel
    * @throws RemoteException if error in Server side
    */
   void createCategory(String categoryName) throws SQLException, RemoteException;
+
+  /**
+   * method to delete item from wishlist
+   * @param idListing                          Listing Id
+   * @throws SQLException if error in SQL
+   * @throws RemoteException if error in Server side
+   */
+  void deleteWishlistItem(Integer idListing) throws SQLException, RemoteException;
+
+  /**
+   * method to add listing to wishlist
+   * @param idListing                          Listing id
+   * @throws SQLException if error in SQL
+   * @throws RemoteException if error in Server side
+   */
+  void addToListing(int idListing) throws SQLException, RemoteException;
+
+  /**
+   * Method to get all the current user wishlist listings
+   * @return list of listings on current user wishlist
+   */
+  ArrayList<Listing> getUserWishlist();
 }

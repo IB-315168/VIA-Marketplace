@@ -31,6 +31,7 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
   private UserDAO userDAO;
   private CategoryDAO categoryDAO;
   private ListingDAO listingDAO;
+  private WishlistDAO wishlistDAO;
   private final RMIListingsWriter writer;
   private ReadWriteAccess lock;
   private LoginHandler loginHandler;
@@ -49,6 +50,7 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
     userDAO = (UserDAO) daoManager.getDao(DAOManager.Table.User);
     categoryDAO = (CategoryDAO) daoManager.getDao(DAOManager.Table.Category);
     listingDAO = (ListingDAO) daoManager.getDao(DAOManager.Table.Listing);
+    wishlistDAO = (WishlistDAO) daoManager.getDao(DAOManager.Table.Wishlist);
     support = new RemotePropertyChangeSupport<String>(this);
     writer = daoManager.getRMIListingsWriter(lock, listingDAO, userDAO, categoryDAO, support);
     loginHandler = daoManager.getLoginHandler();
@@ -152,7 +154,17 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
     writer.pushUpdate();
   }
 
-  //
+  @Override public void deleteWishlistItem(Integer idListing, int idUser) throws SQLException, RemoteException{
+    wishlistDAO.setCurrentStudentNumber(idUser);
+    wishlistDAO.delete(idListing);
+    //writer.pushUpdate();
+  }
+
+  @Override public void addToWishlist(int idListing, int idUser) throws SQLException, RemoteException{
+    wishlistDAO.setCurrentStudentNumber(idUser);
+    wishlistDAO.create(idListing);
+    //writer.pushUpdate();
+  }
 
   //Debug purpose, showing issues with reading
   public void exampleMethod() {
