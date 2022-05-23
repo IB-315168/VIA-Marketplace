@@ -215,11 +215,23 @@ public class MarketplaceModelManager implements MarketplaceModel
     client.addToWishlist(idListing,getCurrentUser().getId());
   }
 
+  public void setWishlist(HashMap<String, ArrayList<Listing>> wishlist)
+  {
+    this.wishlist = wishlist;
+    Platform.runLater(new Runnable()
+    {
+      @Override public void run()
+      {
+        support.firePropertyChange("dbupdate", 0, 2);
+      }
+    });
+  }
+
   @Override public ArrayList<Listing> getUserWishlist()
   {
     ArrayList<Listing> userWishlist = new ArrayList<>();
-    for(String s : listings.keySet()){
-      for(Listing listing : listings.get(s)) {
+    for(String s : wishlist.keySet()){
+      for(Listing listing : wishlist.get(s)) {
           userWishlist.add(listing);
         }
     }

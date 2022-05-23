@@ -28,11 +28,13 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
 
   private DAOManager daoManager = DAOManager.getInstance();
   private ConcurrentHashMap<String, ArrayList<Listing>> listings;
+  private ConcurrentHashMap<String, ArrayList<Listing>> wishlist;
   private UserDAO userDAO;
   private CategoryDAO categoryDAO;
   private ListingDAO listingDAO;
   private WishlistDAO wishlistDAO;
   private final RMIListingsWriter writer;
+  private final RMIWishlistWriter writerWishlist;
   private ReadWriteAccess lock;
   private LoginHandler loginHandler;
   private RemotePropertyChangeSupport<String> support;
@@ -47,13 +49,19 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
   {
     lock = new MapAccess(this);
     listings = new ConcurrentHashMap<>();
+    wishlist = new ConcurrentHashMap<>();
     userDAO = (UserDAO) daoManager.getDao(DAOManager.Table.User);
     categoryDAO = (CategoryDAO) daoManager.getDao(DAOManager.Table.Category);
     listingDAO = (ListingDAO) daoManager.getDao(DAOManager.Table.Listing);
     wishlistDAO = (WishlistDAO) daoManager.getDao(DAOManager.Table.Wishlist);
     support = new RemotePropertyChangeSupport<String>(this);
-    writer = daoManager.getRMIListingsWriter(lock, listingDAO, userDAO, categoryDAO, support);
+    writerWishlist = daoManager.getRMIWishlistWriter(lock, listingDAO, userDAO, categoryDAO, wishlistDAO, support);
+    writer = daoManager.getRMIListingsWriter(lock, listingDAO, userDAO, categoryDAO, wishlistDAO, support);
     loginHandler = daoManager.getLoginHandler();
+
+    Thread writerThreadv2 = new Thread(writerWishlist);
+    writerThreadv2.start();
+
     Thread writerThread = new Thread(writer);
     writerThread.start();
   }
@@ -116,12 +124,14 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
   public void createUser(User user) throws SQLException, RemoteException {
     userDAO.create(user);
     writer.pushUpdate();
+    writerWishlist.pushUpdate();
   }
 
   @Override
   public void updateUser(User user) throws SQLException, RemoteException {
     userDAO.update(user);
     writer.pushUpdate();
+    writerWishlist.pushUpdate();
   }
 
   @Override
@@ -133,6 +143,7 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
       throw new RuntimeException(e);
     }
     writer.pushUpdate();
+    writerWishlist.pushUpdate();
   }
 
   @Override
@@ -145,6 +156,7 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
   {
     categoryDAO.create(categoryName);
     writer.pushUpdate();
+    writerWishlist.pushUpdate();
   }
 
   @Override public void deleteCategory(String category)
@@ -152,18 +164,19 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
   {
     categoryDAO.delete(category);
     writer.pushUpdate();
+    writerWishlist.pushUpdate();
   }
 
   @Override public void deleteWishlistItem(Integer idListing, int idUser) throws SQLException, RemoteException{
     wishlistDAO.setCurrentStudentNumber(idUser);
     wishlistDAO.delete(idListing);
-    //writer.pushUpdate();
+    writerWishlist.pushUpdate();
   }
 
   @Override public void addToWishlist(int idListing, int idUser) throws SQLException, RemoteException{
     wishlistDAO.setCurrentStudentNumber(idUser);
     wishlistDAO.create(idListing);
-    //writer.pushUpdate();
+    writerWishlist.pushUpdate();
   }
 
   //Debug purpose, showing issues with reading
@@ -194,10 +207,23 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
     return listings;
   }
 
+  @Override public ConcurrentHashMap<String, ArrayList<Listing>> getWishlist()
+      throws RemoteException
+  {
+    return wishlist;
+  }
+
   @Override public void write(
       ConcurrentHashMap<String, ArrayList<Listing>> listingsReference)
       throws RemoteException
   {
     this.listings = listingsReference;
+  }
+
+  @Override public void writeWishlist(
+      ConcurrentHashMap<String, ArrayList<Listing>> wishlistReference)
+      throws RemoteException
+  {
+    this.wishlist = wishlistReference;
   }
 }

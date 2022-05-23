@@ -7,21 +7,17 @@ import com.sep2zg4.viamarket.server.dao.UserDAO;
 import com.sep2zg4.viamarket.server.dao.WishlistDAO;
 import com.sep2zg4.viamarket.servermodel.ReadWriteAccess;
 import com.sep2zg4.viamarket.servermodel.WriteMap;
-import dk.via.remote.observer.RemotePropertyChangeEvent;
 import dk.via.remote.observer.RemotePropertyChangeSupport;
 
 import java.rmi.RemoteException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-public final class RMIListingsWriter implements Runnable
+public final class RMIWishlistWriter implements Runnable
 {
-  private static RMIListingsWriter INSTANCE;
+  private static RMIWishlistWriter INSTANCE;
   private ListingDAO listingDAO;
   private UserDAO userDAO;
   private CategoryDAO categoryDAO;
@@ -30,7 +26,7 @@ public final class RMIListingsWriter implements Runnable
   private ReadWriteAccess lock;
   private RemotePropertyChangeSupport<String> support;
 
-  private RMIListingsWriter(ReadWriteAccess lock, Connection connection, ListingDAO listingDAO,
+  private RMIWishlistWriter(ReadWriteAccess lock, Connection connection, ListingDAO listingDAO,
       UserDAO userDAO, CategoryDAO categoryDAO, WishlistDAO wishlistDAO, RemotePropertyChangeSupport<String> support)
   {
     this.lock = lock;
@@ -42,13 +38,13 @@ public final class RMIListingsWriter implements Runnable
     this.support = support;
   }
 
-  public static RMIListingsWriter getInstance(ReadWriteAccess lock, Connection connection,
+  public static RMIWishlistWriter getInstance(ReadWriteAccess lock, Connection connection,
       ListingDAO listingDAO, UserDAO userDAO, CategoryDAO categoryDAO, WishlistDAO wishlistDAO, RemotePropertyChangeSupport<String> support)
       throws SQLException
   {
     if (INSTANCE == null)
     {
-      INSTANCE = new RMIListingsWriter(lock, connection, listingDAO, userDAO, categoryDAO, wishlistDAO, support);
+      INSTANCE = new RMIWishlistWriter(lock, connection, listingDAO, userDAO, categoryDAO, wishlistDAO, support);
     }
 
     return INSTANCE;
@@ -76,25 +72,25 @@ public final class RMIListingsWriter implements Runnable
   {
     while(true) {
       WriteMap write = lock.acquireWrite();
-      ConcurrentHashMap<String, ArrayList<Listing>> currentListings = new ConcurrentHashMap<>();
+      ConcurrentHashMap<String, ArrayList<Listing>> currentWishlist = new ConcurrentHashMap<>();
       for (String category : categoryDAO.getAll())
       {
-        currentListings.put(category, new ArrayList<>());
+        currentWishlist.put(category, new ArrayList<>());
       }
-      currentListings.put("<none>", new ArrayList<>());
+      currentWishlist.put("<none>", new ArrayList<>());
 
-      for (Listing listing : listingDAO.getAll())
+      wishlistDAO.setCurrentStudentNumber(315236);
+      for (Integer idListing : wishlistDAO.getAll())
       {
-        System.out.println("default");
-        currentListings.get(listing.getCategoryName()).add(listing);
+        currentWishlist.get(listingDAO.getById(idListing).getCategoryName()).add(listingDAO.getById(idListing));
       }
-      write.write(currentListings);
+      write.writeWishlist(currentWishlist);
 
 
-      System.out.println("Writer done");
+      System.out.println("Writer Wishlist done");
       //System.out.println(currentListings.get("Misc").get(currentListings.get("Misc").size()-1));
       lock.releaseWrite();
-      support.firePropertyChange("dbupdate", "0", "1");
+      support.firePropertyChange("dbupdate", "0", "2");
       try
       {
         synchronized (this) {

@@ -167,4 +167,11 @@ public interface MarketplaceModel
    * @return list of listings on current user wishlist
    */
   ArrayList<Listing> getUserWishlist();
+
+  /**
+   * method to set list of wishlist listings
+   * @param wishlist                          Hashmap with category and listings from wishlist listings
+   */
+  void setWishlist(HashMap<String, ArrayList<Listing>> wishlist);
+
 }

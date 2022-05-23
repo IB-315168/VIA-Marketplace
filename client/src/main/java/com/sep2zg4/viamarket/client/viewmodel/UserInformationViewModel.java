@@ -39,7 +39,7 @@ public class UserInformationViewModel
     model.setCurrentSelectedUserListing(listing);
   }
   public void setCurrentSelectedUserWishlistItem(Listing listing) {
-    model.setCurrentSelectedUserWishlistItem(listing);
+    //model.setCurrentSelectedUserWishlistItem(listing);
   }
   public void setUserListings() {
     userListings.setAll(model.getUserListings());
