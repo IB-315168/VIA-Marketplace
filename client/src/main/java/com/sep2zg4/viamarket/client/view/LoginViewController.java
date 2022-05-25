@@ -54,6 +54,7 @@ public class LoginViewController
         alert.setContentText("Incorrect username and/or password");
         alert.show();
       }
+      reset();
     } catch (Exception e) {
       e.printStackTrace();
       alert.setContentText(e.getMessage());
@@ -72,5 +73,10 @@ public class LoginViewController
   public Region getRoot()
   {
     return root;
+  }
+  public void reset()
+  {
+    userNameTextField.setText("");
+    userPasswordTextField.setText("");
   }
 }
