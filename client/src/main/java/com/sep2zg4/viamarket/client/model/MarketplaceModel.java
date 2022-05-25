@@ -145,6 +145,7 @@ public interface MarketplaceModel
    * @throws RemoteException if error in Server side
    */
   void createCategory(String categoryName) throws SQLException, RemoteException;
+<<<<<<< HEAD
 
   /**
    * method to delete item from wishlist
@@ -174,4 +175,6 @@ public interface MarketplaceModel
    */
   void setWishlist(HashMap<String, ArrayList<Listing>> wishlist);
 
+=======
+>>>>>>> parent of 2c0f89b (Tentative on HashMap for wishlist (Before))
 }

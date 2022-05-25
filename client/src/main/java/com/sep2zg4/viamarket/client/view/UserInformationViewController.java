@@ -117,10 +117,9 @@ public class UserInformationViewController
     Listing listing = userListings.getSelectionModel().getSelectedItem();
     viewModel.deleteListing(listing);
   }
-  @FXML public void deleteWishlistItem() throws SQLException, RemoteException
-  {
+  @FXML public void deleteWishlistItem(){
     Listing wishlistListing = userWishList.getSelectionModel().getSelectedItem();
-    viewModel.deleteWishlistItem(wishlistListing.getId());
+    viewModel.deleteWishlistItem(wishlistListing);
   }
 
   /**
