@@ -87,7 +87,18 @@ public class ListingsViewModel
     model.createCategory(categoryName);
   }
   public void addToWishlist(Listing wishlistListing){
-    model.addToListing(wishlistListing);
+    try
+    {
+      model.addToListing(wishlistListing.getId());
+    }
+    catch (SQLException e)
+    {
+      throw new RuntimeException(e);
+    }
+    catch (RemoteException e)
+    {
+      throw new RuntimeException(e);
+    }
   }
 
   public boolean isModerator(){

@@ -119,7 +119,18 @@ public class UserInformationViewController
   }
   @FXML public void deleteWishlistItem(){
     Listing wishlistListing = userWishList.getSelectionModel().getSelectedItem();
-    viewModel.deleteWishlistItem(wishlistListing);
+    try
+    {
+      viewModel.deleteWishlistItem(wishlistListing);
+    }
+    catch (SQLException e)
+    {
+      throw new RuntimeException(e);
+    }
+    catch (RemoteException e)
+    {
+      throw new RuntimeException(e);
+    }
   }
 
   /**

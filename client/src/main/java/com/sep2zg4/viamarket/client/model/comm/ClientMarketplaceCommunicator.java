@@ -162,4 +162,16 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject
   {
     reader.pullUpdate();
   }
+
+  public void deleteWishlistItem(Integer idListing, int id)
+      throws SQLException, RemoteException
+  {
+    communicator.deleteWishlistItem(idListing, id);
+  }
+
+  public void addToWishlist(int idListing, int id)
+      throws SQLException, RemoteException
+  {
+    communicator.addToWishlist(idListing, id);
+  }
 }
