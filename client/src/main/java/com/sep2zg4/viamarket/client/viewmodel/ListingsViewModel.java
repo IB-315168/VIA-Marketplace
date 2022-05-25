@@ -80,17 +80,14 @@ public class ListingsViewModel
   public  void deleteListing(Listing listing) throws SQLException, RemoteException {
     model.deleteListing(listing);
   }
-
   public void deleteCategory(String category) throws SQLException, RemoteException {
     model.deleteCategory(category);
   }
-
   public void createCategory(String categoryName) throws SQLException, RemoteException {
     model.createCategory(categoryName);
   }
-
-  public void addToWishlist(int idListing) throws SQLException, RemoteException{
-    model.addToListing(idListing);
+  public void addToWishlist(Listing wishlistListing){
+    model.addToListing(wishlistListing);
   }
 
   public boolean isModerator(){

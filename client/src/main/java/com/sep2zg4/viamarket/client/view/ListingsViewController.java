@@ -171,10 +171,9 @@ public class ListingsViewController
   /**
    * A function used to add item to wishlist
    */
-  @FXML public void addToWishlist() throws SQLException, RemoteException
-  {
+  @FXML public void addToWishlist() {
     Listing wishlistListing = listingsList.getSelectionModel().getSelectedItem();
-    viewModel.addToWishlist(wishlistListing.getId());
+    viewModel.addToWishlist(wishlistListing);
   }
 
   /**

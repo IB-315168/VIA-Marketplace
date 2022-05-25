@@ -24,7 +24,6 @@ import java.util.Set;
 public class MarketplaceModelManager implements MarketplaceModel
 {
   private HashMap<String, ArrayList<Listing>> listings;
-  private HashMap<String, ArrayList<Listing>> wishlist;
   private ClientMarketplaceCommunicator client;
   private User currentUser;
   private Listing currentSelectedUserListing;
@@ -38,7 +37,6 @@ public class MarketplaceModelManager implements MarketplaceModel
   {
     client = new ClientMarketplaceCommunicator("localhost", Registry.REGISTRY_PORT, this);
     listings = new HashMap<>();
-    wishlist = new HashMap<>();
     this.support = new PropertyChangeSupport(this);
   }
 
@@ -239,4 +237,6 @@ public class MarketplaceModelManager implements MarketplaceModel
   }
 
 
+=======
+>>>>>>> parent of 2c0f89b (Tentative on HashMap for wishlist (Before))
 }
