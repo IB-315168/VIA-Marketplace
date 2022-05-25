@@ -60,6 +60,11 @@ public class MarketplaceModelManager implements MarketplaceModel
     return false;
   }
 
+  public void closeCommunicator() throws RemoteException
+  {
+    client.close();
+  }
+
   public User getCurrentUser(){
     return currentUser;
   };

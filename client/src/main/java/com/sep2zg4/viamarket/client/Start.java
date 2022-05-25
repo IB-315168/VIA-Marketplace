@@ -4,7 +4,10 @@ import com.sep2zg4.viamarket.client.model.MarketplaceModelManager;
 import com.sep2zg4.viamarket.client.view.ViewHandler;
 import com.sep2zg4.viamarket.client.viewmodel.ViewModelFactory;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.rmi.RemoteException;
 
@@ -16,6 +19,21 @@ public class Start extends Application
     ViewModelFactory viewModelFactory = new ViewModelFactory(model);
     ViewHandler viewHandler = new ViewHandler(viewModelFactory);
     viewHandler.start(primaryStage);
+    primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+      @Override
+      public void handle(WindowEvent t) {
+        try
+        {
+          model.closeCommunicator();
+        }
+        catch (RemoteException e)
+        {
+          e.printStackTrace();
+        }
+        Platform.exit();
+        System.exit(0);
+      }
+    });
   }
   public static void main(String[] args) throws RemoteException
   {

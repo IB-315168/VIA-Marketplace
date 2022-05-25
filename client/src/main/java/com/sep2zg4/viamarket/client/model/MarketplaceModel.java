@@ -46,6 +46,7 @@ public interface MarketplaceModel
    * @return true if theres permissions, false if no permission.
    */
   boolean isModerator();
+  void closeCommunicator() throws RemoteException;
 
   /**
    * method to get current user Full Name

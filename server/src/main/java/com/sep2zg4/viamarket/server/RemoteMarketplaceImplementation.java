@@ -104,6 +104,7 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
   {
     listingDAO.update(listing);
     writer.pushUpdate();
+    writerWishlist.pushUpdate();
   }
 
   @Override public void deleteListing(Listing listing)
@@ -118,13 +119,13 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
       throw new RuntimeException(e);
     }
     writer.pushUpdate();
+    writerWishlist.pushUpdate();
   }
 
   @Override
   public void createUser(User user) throws SQLException, RemoteException {
     userDAO.create(user);
     writer.pushUpdate();
-    writerWishlist.pushUpdate();
   }
 
   @Override
@@ -156,7 +157,6 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
   {
     categoryDAO.create(categoryName);
     writer.pushUpdate();
-    writerWishlist.pushUpdate();
   }
 
   @Override public void deleteCategory(String category)
