@@ -14,7 +14,7 @@ public class WishlistDAO implements Dao<Integer>
   private Connection connection;
   private int currentStudentNumber;
 
-  public WishlistDAO(Connection connection) throws SQLException
+  public WishlistDAO(Connection connection)
   {
     this.connection = connection;
   }
@@ -24,12 +24,12 @@ public class WishlistDAO implements Dao<Integer>
     this.currentStudentNumber = currentStudentNumber;
   }
 
-  @Override public Integer getById(int id) throws SQLException, RemoteException
+  @Override public Integer getById(int id) throws SQLException
   {
     return null;
   }
 
-  @Override public List<Integer> getAll() throws SQLException, RemoteException
+  @Override public List<Integer> getAll() throws SQLException
   {
     ArrayList<Integer> wishlist = new ArrayList<>();
     String query = "SELECT * FROM wishlist WHERE studentNumber=?";
@@ -44,7 +44,7 @@ public class WishlistDAO implements Dao<Integer>
   }
 
   @Override public void create(Integer idListing)
-      throws SQLException, RemoteException
+      throws SQLException
   {
     String query = "INSERT INTO wishlist (studentNumber,idListing) VALUES (?,?)";
     PreparedStatement insertStatement = connection.prepareStatement(query);
@@ -60,7 +60,7 @@ public class WishlistDAO implements Dao<Integer>
   }
 
   @Override public void delete(Integer idListing)
-      throws SQLException, RemoteException
+      throws SQLException
   {
     String query = "DELETE FROM wishlist WHERE studentNumber=? AND idListing=?";
     PreparedStatement deleteStatement = connection.prepareStatement(query);

@@ -114,7 +114,6 @@ public final class DAOManager
 
   public RMIWishlistWriter getRMIWishlistWriter(ReadWriteAccess lock, ListingDAO listingDAO, UserDAO userDAO,
       CategoryDAO categoryDAO, WishlistDAO wishlistDAO, RemotePropertyChangeSupport<String> support)
-      throws SQLException
   {
     return RMIWishlistWriter.getInstance(lock, connection, listingDAO, userDAO, categoryDAO, wishlistDAO, support);
   }
@@ -127,8 +126,8 @@ public final class DAOManager
     }
 
     if(loginHandler == null) {
-      loginHandler = loginHandler.getInstance();
-      loginHandler.getInstance().setConnection(connection);
+      loginHandler = LoginHandler.getInstance();
+      loginHandler.setConnection(connection);
     }
 
     return loginHandler;

@@ -12,7 +12,7 @@ public class CategoryDAO implements Dao<String>
 {
   private Connection connection;
 
-  public CategoryDAO(Connection connection) throws SQLException
+  public CategoryDAO(Connection connection)
   {
     this.connection = connection;
   }

@@ -40,7 +40,6 @@ public final class RMIWishlistWriter implements Runnable
 
   public static RMIWishlistWriter getInstance(ReadWriteAccess lock, Connection connection,
       ListingDAO listingDAO, UserDAO userDAO, CategoryDAO categoryDAO, WishlistDAO wishlistDAO, RemotePropertyChangeSupport<String> support)
-      throws SQLException
   {
     if (INSTANCE == null)
     {
