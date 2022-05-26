@@ -98,15 +98,18 @@ public class ListingsViewController
         switch (newValue.getUserData().toString()){
           case "1":
             Collections.sort(viewModel.getListingsList(), (o1, o2) -> (int) (o2.getId() - o1.getId()));
-            Collections.sort(searchResults, (o1, o2) -> (int) (o2.getId() - o1.getId()));
+            if(searchResults!=null)
+              Collections.sort(searchResults, (o1, o2) -> (int) (o2.getId() - o1.getId()));
             break;
           case "2":
             Collections.sort(viewModel.getListingsList(), (o1, o2) -> (int) (o1.getPrice() - o2.getPrice()));
-            Collections.sort(searchResults, (o1, o2) -> (int) (o1.getPrice() - o2.getPrice()));
+            if(searchResults!=null)
+              Collections.sort(searchResults, (o1, o2) -> (int) (o1.getPrice() - o2.getPrice()));
             break;
           case "3":
             Collections.sort(viewModel.getListingsList(), (o1, o2) -> (int) (o2.getPrice() - o1.getPrice()));
-            Collections.sort(searchResults, (o1, o2) -> (int) (o2.getPrice() - o1.getPrice()));
+            if(searchResults!=null)
+              Collections.sort(searchResults, (o1, o2) -> (int) (o2.getPrice() - o1.getPrice()));
             break;
         }
 
