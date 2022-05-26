@@ -4,6 +4,8 @@ import com.sep2zg4.viamarket.client.viewmodel.ListingsViewModel;
 import com.sep2zg4.viamarket.model.Listing;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -16,6 +18,9 @@ import javafx.scene.layout.Region;
 import java.nio.file.FileAlreadyExistsException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Optional;
 
 /**
@@ -36,6 +41,10 @@ public class ListingsViewController
   @FXML private Label contacts;
   @FXML private TextArea description;
   @FXML private Label loggedAs;
+  @FXML private ToggleGroup sort;
+  @FXML private RadioButton mostRecent;
+  @FXML private RadioButton lowToHigh;
+  @FXML private RadioButton HighToLow;
   @FXML private MenuItem usersInformation;
   @FXML private MenuItem back;
   @FXML private Menu moderatorPanel;
@@ -61,6 +70,7 @@ public class ListingsViewController
     //Default FALSE - If theres a way to set this on the XML itself it would be PERFECT
     moderatorPanel.setVisible(false);
 
+
     this.categoryList.setItems(viewModel.getCategoryList());
     this.listingsList.setItems(viewModel.getListingsList());
     this.loggedAs.textProperty().bindBidirectional(viewModel.getUserType());
@@ -73,6 +83,34 @@ public class ListingsViewController
       moderatorPanel.setVisible(true);
     }
 
+    mostRecent.setUserData(1);
+    lowToHigh.setUserData(2);
+    HighToLow.setUserData(3);
+
+    this.sort.selectedToggleProperty().addListener(new ChangeListener<Toggle>()
+    {
+      @Override public void changed(
+          ObservableValue<? extends Toggle> observable, Toggle oldValue,
+          Toggle newValue)
+      {
+
+        System.out.println(newValue.getUserData().toString());
+        System.out.println(viewModel.getListingsList());
+        switch (newValue.getUserData().toString()){
+          case "1":
+            break;
+          case "2":
+            Collections.sort(viewModel.getListingsList(), (o1, o2) -> (int) (o1.getPrice() - o2.getPrice()));
+            break;
+          case "3":
+            Collections.sort(viewModel.getListingsList(), (o1, o2) -> (int) (o2.getPrice() - o1.getPrice()));
+            break;
+        }
+
+
+      }
+    });
+
 //    Only for debug/testing purposes - open USERINFO View
     this.listingsList.setOnKeyPressed(new EventHandler<KeyEvent>()
     {
@@ -84,6 +122,7 @@ public class ListingsViewController
         }
       }
     });
+
     this.categoryList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>()
     {
       @Override public void changed(
@@ -98,6 +137,7 @@ public class ListingsViewController
         }
       }
     });
+
     this.listingsList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Listing>()
     {
       @Override public void changed(

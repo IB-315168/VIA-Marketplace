@@ -44,6 +44,7 @@ public class ListingsViewModel
       setCategoryList();
     });
   }
+  
   public void setListingsList() {
     listingsList.setAll(model.getAllListings());
   }
