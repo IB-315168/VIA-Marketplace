@@ -28,7 +28,7 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
 
   private DAOManager daoManager = DAOManager.getInstance();
   private ConcurrentHashMap<String, ArrayList<Listing>> listings;
-  private ConcurrentHashMap<String, ArrayList<Listing>> wishlist;
+  private ConcurrentHashMap<Integer, ArrayList<Listing>> wishlist;
   private UserDAO userDAO;
   private CategoryDAO categoryDAO;
   private ListingDAO listingDAO;
@@ -55,6 +55,7 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
     listingDAO = (ListingDAO) daoManager.getDao(DAOManager.Table.Listing);
     wishlistDAO = (WishlistDAO) daoManager.getDao(DAOManager.Table.Wishlist);
     support = new RemotePropertyChangeSupport<String>(this);
+    System.out.println(support.getPropertyChangeListeners().length);
     writerWishlist = daoManager.getRMIWishlistWriter(lock, listingDAO, userDAO, categoryDAO, wishlistDAO, support);
     writer = daoManager.getRMIListingsWriter(lock, listingDAO, userDAO, categoryDAO, wishlistDAO, support);
     loginHandler = daoManager.getLoginHandler();
@@ -192,13 +193,17 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
   @Override public void addRemotePropertyChangeListener(
       RemotePropertyChangeListener<String> listener) throws RemoteException
   {
+    System.out.println(support.getPropertyChangeListeners().length);
     support.addPropertyChangeListener(listener);
+    System.out.println(support.getPropertyChangeListeners().length);
   }
 
   @Override public void removeRemotePropertyChangeListener(
       RemotePropertyChangeListener<String> listener) throws RemoteException
   {
+    System.out.println(support.getPropertyChangeListeners().length);
     support.removePropertyChangeListener(listener);
+    System.out.println(support.getPropertyChangeListeners().length);
   }
 
   @Override public ConcurrentHashMap<String, ArrayList<Listing>> getListings()
@@ -207,7 +212,7 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
     return listings;
   }
 
-  @Override public ConcurrentHashMap<String, ArrayList<Listing>> getWishlist()
+  @Override public ConcurrentHashMap<Integer, ArrayList<Listing>> getWishlist()
       throws RemoteException
   {
     return wishlist;
@@ -221,7 +226,7 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
   }
 
   @Override public void writeWishlist(
-      ConcurrentHashMap<String, ArrayList<Listing>> wishlistReference)
+      ConcurrentHashMap<Integer, ArrayList<Listing>> wishlistReference)
       throws RemoteException
   {
     this.wishlist = wishlistReference;

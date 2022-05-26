@@ -1,6 +1,7 @@
 package com.sep2zg4.viamarket.server.listingaccess;
 
 import com.sep2zg4.viamarket.model.Listing;
+import com.sep2zg4.viamarket.model.User;
 import com.sep2zg4.viamarket.server.dao.CategoryDAO;
 import com.sep2zg4.viamarket.server.dao.ListingDAO;
 import com.sep2zg4.viamarket.server.dao.UserDAO;
@@ -71,17 +72,14 @@ public final class RMIWishlistWriter implements Runnable
   {
     while(true) {
       WriteMap write = lock.acquireWrite();
-      ConcurrentHashMap<String, ArrayList<Listing>> currentWishlist = new ConcurrentHashMap<>();
-      for (String category : categoryDAO.getAll())
+      ConcurrentHashMap<Integer, ArrayList<Listing>> currentWishlist = new ConcurrentHashMap<>();
+      for (User user : userDAO.getAll())
       {
-        currentWishlist.put(category, new ArrayList<>());
-      }
-      currentWishlist.put("<none>", new ArrayList<>());
-
-      wishlistDAO.setCurrentStudentNumber(315236);
-      for (Integer idListing : wishlistDAO.getAll())
-      {
-        currentWishlist.get(listingDAO.getById(idListing).getCategoryName()).add(listingDAO.getById(idListing));
+        wishlistDAO.setCurrentStudentNumber(user.getId());
+        currentWishlist.put(user.getId(), new ArrayList<>());
+        for (Integer id : wishlistDAO.getAll()) {
+          currentWishlist.get(user.getId()).add(listingDAO.getById(id));
+        }
       }
       write.writeWishlist(currentWishlist);
 

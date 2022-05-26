@@ -24,6 +24,6 @@ public interface WriteMap extends ReadMap
   void write(ConcurrentHashMap<String, ArrayList<Listing>> listingsReference) throws
       RemoteException;
 
-  void writeWishlist(ConcurrentHashMap<String, ArrayList<Listing>> wishlistReference) throws
+  void writeWishlist(ConcurrentHashMap<Integer, ArrayList<Listing>> wishlistReference) throws
       RemoteException;
 }

@@ -33,9 +33,9 @@ public class WishlistDAO implements Dao<Integer>
   {
     ArrayList<Integer> wishlist = new ArrayList<>();
     String query = "SELECT * FROM wishlist WHERE studentNumber=?";
-    PreparedStatement selectStatemenet = connection.prepareStatement(query);
-    selectStatemenet.setInt(1, currentStudentNumber);
-    ResultSet res = selectStatemenet.executeQuery();
+    PreparedStatement selectStatement = connection.prepareStatement(query);
+    selectStatement.setInt(1, currentStudentNumber);
+    ResultSet res = selectStatement.executeQuery();
     while (res.next())
     {
       wishlist.add(res.getInt("idListing"));

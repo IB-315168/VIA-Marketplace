@@ -34,6 +34,7 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject
   private int port;
   private RMIListingsReader reader;
   private ReadWriteAccess lock;
+  private boolean connIsAlive;
 
   /**
    * 2-argument constructor creating a ClientMarketplaceCommunicator object and establishing connection to the server
@@ -48,6 +49,7 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject
     this.host = host;
     this.port = port;
     this.model = model;
+    this.connIsAlive = false;
   }
 
   /**
@@ -64,6 +66,7 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject
     Thread t = new Thread(reader);
     t.start();
     communicator.addRemotePropertyChangeListener(this);
+    connIsAlive = true;
   }
 
   /**
@@ -77,14 +80,16 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject
   public User login(int username, String password)
       throws RemoteException, NotBoundException, SQLException
   {
-    try
-    {
-      connect();
-    }
-    catch (Exception e)
-    {
-      close();
-      throw e;
+    if(!connIsAlive) {
+      try
+      {
+        connect();
+      }
+      catch (Exception e)
+      {
+        close();
+        throw e;
+      }
     }
     return communicator.login(username, password);
   }

@@ -60,6 +60,7 @@ public class ViewFactory
         e.printStackTrace();
       }
     }
+    loginViewController.reset();
     return loginViewController.getRoot();
   }
 

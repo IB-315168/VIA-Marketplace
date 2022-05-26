@@ -24,6 +24,6 @@ public interface ReadMap extends Remote
   ConcurrentHashMap<String, ArrayList<Listing>> getListings() throws
       RemoteException;
 
-  ConcurrentHashMap<String, ArrayList<Listing>> getWishlist() throws
+  ConcurrentHashMap<Integer, ArrayList<Listing>> getWishlist() throws
       RemoteException;
 }

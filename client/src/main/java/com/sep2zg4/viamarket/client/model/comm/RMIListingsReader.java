@@ -44,21 +44,18 @@ public class RMIListingsReader implements Runnable, Serializable
     while (true) {
       ReadMap read = lock.acquireRead();
       HashMap<String, ArrayList<Listing>> copy = new HashMap<>();
-      HashMap<String, ArrayList<Listing>> copyWishlist = new HashMap<>();
+      ArrayList<Listing> copyWishlist = new ArrayList<>();
       ConcurrentHashMap<String, ArrayList<Listing>> storage = read.getListings();
-      ConcurrentHashMap<String, ArrayList<Listing>> storageWishlist = read.getWishlist();
+      ConcurrentHashMap<Integer, ArrayList<Listing>> storageWishlist = read.getWishlist();
       for(String s : storage.keySet()) {
-        System.out.println("s: " + s);
         copy.put(s, storage.get(s));
       }
 
-      if(storageWishlist.isEmpty()){
-        System.out.println("StorageWIshlist is empty");
-      }
-      for(String b : storageWishlist.keySet()){
-        System.out.println("b: " + b);
-        System.out.println(storageWishlist.get(b));
-        copyWishlist.put(b,storageWishlist.get(b));
+      if(model.getCurrentUser() != null)
+      {
+        for(Listing listing : storageWishlist.get(model.getCurrentUser().getId())) {
+          copyWishlist.add(listing);
+        }
       }
       model.setListings(copy);
       model.setWishlist(copyWishlist);

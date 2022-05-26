@@ -49,6 +49,7 @@ public class LoginViewController
     Alert alert = new Alert(Alert.AlertType.ERROR);
     try {
       if(viewModel.login()) {
+        viewHandler.closeView();
         viewHandler.openView(ViewHandler.LISTINGS);
       } else {
         alert.setContentText("Incorrect username and/or password");

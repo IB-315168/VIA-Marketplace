@@ -191,5 +191,5 @@ public interface MarketplaceModel
    *
    * @param wishlist Hashmap with category and listings from wishlist listings
    */
-  void setWishlist(HashMap<String, ArrayList<Listing>> wishlist);
+  void setWishlist(ArrayList<Listing> wishlist);
 }

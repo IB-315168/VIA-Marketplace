@@ -24,7 +24,7 @@ import java.util.Set;
 public class MarketplaceModelManager implements MarketplaceModel
 {
   private HashMap<String, ArrayList<Listing>> listings;
-  private HashMap<String, ArrayList<Listing>> wishlist;
+  private ArrayList<Listing> wishlist;
   private ClientMarketplaceCommunicator client;
   private User currentUser;
   private Listing currentSelectedUserListing;
@@ -38,7 +38,7 @@ public class MarketplaceModelManager implements MarketplaceModel
   {
     client = new ClientMarketplaceCommunicator("localhost", Registry.REGISTRY_PORT, this);
     listings = new HashMap<>();
-    wishlist = new HashMap<>();
+    wishlist = new ArrayList<>();
     this.support = new PropertyChangeSupport(this);
   }
 
@@ -53,8 +53,10 @@ public class MarketplaceModelManager implements MarketplaceModel
   public boolean login(int username, String password)
       throws RemoteException, NotBoundException, SQLException
   {
-    if(client.login(username,password)!=null){
-      currentUser = client.login(username,password);
+    //TODO fix-up failed logins
+    currentUser = client.login(username,password);
+    if(currentUser!=null){
+      client.trigger();
       return true;
     }
     return false;
@@ -220,7 +222,7 @@ public class MarketplaceModelManager implements MarketplaceModel
     client.addToWishlist(idListing,getCurrentUser().getId());
   }
 
-  public void setWishlist(HashMap<String, ArrayList<Listing>> wishlist)
+  public void setWishlist(ArrayList<Listing> wishlist)
   {
     this.wishlist = wishlist;
     Platform.runLater(new Runnable()
@@ -234,14 +236,6 @@ public class MarketplaceModelManager implements MarketplaceModel
 
   @Override public ArrayList<Listing> getUserWishlist()
   {
-    ArrayList<Listing> userWishlist = new ArrayList<>();
-    for (String s : wishlist.keySet())
-    {
-      for (Listing listing : wishlist.get(s))
-      {
-        userWishlist.add(listing);
-      }
-    }
-    return userWishlist;
+    return wishlist;
   }
 }
