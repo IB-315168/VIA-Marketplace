@@ -18,10 +18,7 @@ import javafx.scene.layout.Region;
 import java.nio.file.FileAlreadyExistsException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Controller class for ListingsView.fxml
@@ -45,9 +42,11 @@ public class ListingsViewController
   @FXML private RadioButton mostRecent;
   @FXML private RadioButton lowToHigh;
   @FXML private RadioButton HighToLow;
+  @FXML private TextField searchKey;
   @FXML private MenuItem usersInformation;
   @FXML private MenuItem back;
   @FXML private Menu moderatorPanel;
+  private ArrayList<Listing> searchResults;
 
   private ViewHandler viewHandler;
   private ListingsViewModel viewModel;
@@ -99,12 +98,15 @@ public class ListingsViewController
         switch (newValue.getUserData().toString()){
           case "1":
             Collections.sort(viewModel.getListingsList(), (o1, o2) -> (int) (o2.getId() - o1.getId()));
+            Collections.sort(searchResults, (o1, o2) -> (int) (o2.getId() - o1.getId()));
             break;
           case "2":
             Collections.sort(viewModel.getListingsList(), (o1, o2) -> (int) (o1.getPrice() - o2.getPrice()));
+            Collections.sort(searchResults, (o1, o2) -> (int) (o1.getPrice() - o2.getPrice()));
             break;
           case "3":
             Collections.sort(viewModel.getListingsList(), (o1, o2) -> (int) (o2.getPrice() - o1.getPrice()));
+            Collections.sort(searchResults, (o1, o2) -> (int) (o2.getPrice() - o1.getPrice()));
             break;
         }
 
@@ -232,6 +234,21 @@ public class ListingsViewController
       moderatorPanel.setVisible(true);
     } else {
       moderatorPanel.setVisible(false);
+    }
+  }
+
+  public void search(ActionEvent actionEvent)
+  {
+    searchResults = new ArrayList<Listing>();
+    for (Listing listing : viewModel.getListingsList())
+    {
+      if(listing.getTitle().toLowerCase().contains(searchKey.getText().toLowerCase())){
+        searchResults.add(listing);
+      }
+    }
+    this.listingsList.setItems(FXCollections.observableList(searchResults));
+    if(searchKey.getText().equals("")){
+      this.listingsList.setItems(viewModel.getListingsList());
     }
   }
 }
