@@ -98,6 +98,7 @@ public class ListingsViewController
         System.out.println(viewModel.getListingsList());
         switch (newValue.getUserData().toString()){
           case "1":
+            Collections.sort(viewModel.getListingsList(), (o1, o2) -> (int) (o2.getId() - o1.getId()));
             break;
           case "2":
             Collections.sort(viewModel.getListingsList(), (o1, o2) -> (int) (o1.getPrice() - o2.getPrice()));
