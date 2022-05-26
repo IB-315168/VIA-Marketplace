@@ -55,7 +55,7 @@ public class UserInformationViewController
     this.viewHandler = viewHandler;
     this.viewModel = viewModel;
     this.root = root;
-    this.userName.setText(viewModel.getFullName());
+    this.userName.textProperty().bindBidirectional(viewModel.getFullName());
     this.userListings.setItems(viewModel.getUserListings());
     this.userWishList.setItems(viewModel.getUserWishlist());
     this.userListings.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Listing>()
@@ -143,5 +143,7 @@ public class UserInformationViewController
     return root;
   }
 
-
+  public void reset() {
+    viewModel.setFullname();
+  }
 }

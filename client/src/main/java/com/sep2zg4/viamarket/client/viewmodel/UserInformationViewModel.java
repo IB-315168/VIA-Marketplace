@@ -2,6 +2,8 @@ package com.sep2zg4.viamarket.client.viewmodel;
 
 import com.sep2zg4.viamarket.client.model.MarketplaceModel;
 import com.sep2zg4.viamarket.model.Listing;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -20,6 +22,7 @@ public class UserInformationViewModel
   private MarketplaceModel model;
   private ObservableList<Listing> userListings;
   private ObservableList<Listing> userWishlist;
+  private StringProperty fullname;
 
   /**
    * Constructor for UserInformationViewModel taking Model as an argument
@@ -33,6 +36,7 @@ public class UserInformationViewModel
     userWishlist =  FXCollections.observableList(model.getUserWishlist());
     model.addPropertyChangeListener(evt -> setUserListings());
     model.addPropertyChangeListener(evt -> setUserWishlist());
+    fullname = new SimpleStringProperty("");
   }
 
   public void setCurrentSelectedUserListing(Listing listing) {
@@ -46,6 +50,10 @@ public class UserInformationViewModel
   }
   public void setUserWishlist() {
     userWishlist.setAll(model.getUserWishlist());
+  }
+
+  public void setFullname() {
+    fullname.setValue(model.getFullName());
   }
 
   public ObservableList<Listing> getUserListings()
@@ -67,7 +75,7 @@ public class UserInformationViewModel
     model.deleteWishlistItem(wishlist.getId());
   }
 
-  public String getFullName(){
-    return model.getFullName();
+  public StringProperty getFullName(){
+    return fullname;
   }
 }

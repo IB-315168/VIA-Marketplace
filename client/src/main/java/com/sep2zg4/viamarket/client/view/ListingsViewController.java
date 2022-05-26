@@ -187,5 +187,10 @@ public class ListingsViewController
   }
 
   public void reset() {
+    if(viewModel.isModerator()){
+      moderatorPanel.setVisible(true);
+    } else {
+      moderatorPanel.setVisible(false);
+    }
   }
 }

@@ -114,6 +114,7 @@ public class ViewFactory
         e.printStackTrace();
       }
     }
+    userInformationViewController.reset();
     return userInformationViewController.getRoot();
   }
   /**
