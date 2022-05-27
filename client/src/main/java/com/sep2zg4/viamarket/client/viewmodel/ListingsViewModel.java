@@ -102,6 +102,10 @@ public class ListingsViewModel
     }
   }
 
+  public ArrayList<Listing> getWishlistItem(){
+    return model.getUserWishlist();
+  }
+
   public boolean isModerator(){
     return model.isModerator();
   };
