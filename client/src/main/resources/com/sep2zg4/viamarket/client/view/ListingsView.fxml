@@ -20,7 +20,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sep2zg4.viamarket.client.view.ListingsViewController">
+<VBox prefHeight="727.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sep2zg4.viamarket.client.view.ListingsViewController">
   <children>
       <MenuBar>
         <menus>
@@ -64,29 +64,48 @@
                   <ListView fx:id="categoryList" layoutX="11.0" layoutY="50.0" prefHeight="502.0" prefWidth="200.0" />
           </children>
         </AnchorPane>
-        <ScrollPane prefHeight="-1.0" prefWidth="-1.0">
+        <ScrollPane prefWidth="443.0">
           <content>
-            <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="545.0" prefWidth="430.0">
+            <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="673.0" prefWidth="430.0">
               <children>
-                <Label alignment="CENTER" font="$x1" layoutX="14.0" layoutY="14.0" style="&#10;" text="Listings" textAlignment="CENTER" textFill="$x2" wrapText="false" />
+                <Label alignment="CENTER" font="$x1" layoutX="13.0" layoutY="14.0" style="&#10;" text="Listings" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false" />
                         <ListView fx:id="listingsList" layoutX="14.0" layoutY="49.0" prefHeight="463.0" prefWidth="402.0" />
-                        <RadioButton fx:id="mostRecent" layoutX="75.0" layoutY="523.0" mnemonicParsing="false" text="Most Recent">
+                        <RadioButton fx:id="mostRecent" layoutX="98.0" layoutY="532.0" mnemonicParsing="false" text="Most Recent">
                           <toggleGroup>
                             <ToggleGroup fx:id="sort" />
                           </toggleGroup>
                         </RadioButton>
-                        <RadioButton fx:id="lowToHigh" layoutX="171.0" layoutY="523.0" mnemonicParsing="false" text="Low to High">
+                        <RadioButton fx:id="lowToHigh" layoutX="195.0" layoutY="532.0" mnemonicParsing="false" text="Low to High">
                           <toggleGroup>
                             <fx:reference source="sort" />
                           </toggleGroup>
                         </RadioButton>
-                        <RadioButton fx:id="HighToLow" layoutX="269.0" layoutY="523.0" mnemonicParsing="false" text="High to Low">
+                        <RadioButton fx:id="HighToLow" layoutX="297.0" layoutY="532.0" mnemonicParsing="false" text="High to Low">
                           <toggleGroup>
                             <fx:reference source="sort" />
                           </toggleGroup>
                         </RadioButton>
-                        <TextField fx:id="searchKey" layoutX="115.0" layoutY="15.0" prefHeight="25.0" prefWidth="210.0" />
+                        <TextField fx:id="searchKey" layoutX="115.0" layoutY="15.0" prefHeight="25.0" prefWidth="210.0" promptText="Type keyword here..." />
                         <Button layoutX="330.0" layoutY="15.0" mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="85.0" text="Search" />
+                        <Label layoutX="13.0" layoutY="527.0" text="Sort by" textFill="#9f9f9f">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="15.0" layoutY="606.0" text="Condition:" />
+                        <RadioButton layoutX="119.0" layoutY="606.0" mnemonicParsing="false" text="New" />
+                        <RadioButton layoutX="212.0" layoutY="606.0" mnemonicParsing="false" text="Used" />
+                        <RadioButton layoutX="294.0" layoutY="606.0" mnemonicParsing="false" text="Defective" />
+                        <Label layoutX="12.0" layoutY="642.0" text="Price range:" />
+                        <TextField layoutX="119.0" layoutY="637.0" prefHeight="26.0" prefWidth="126.0" promptText="Minimal price in DKK" />
+                        <TextField layoutX="273.0" layoutY="637.0" prefHeight="26.0" prefWidth="134.0" promptText="Maximum price in DKK" />
+                        <Label layoutX="84.0" layoutY="642.0" text="From" />
+                        <Label layoutX="250.0" layoutY="641.0" text="To" />
+                        <Label layoutX="183.0" layoutY="567.0" text="Filter by" textFill="#9f9f9f">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
               </children>
             </AnchorPane>
           </content>
