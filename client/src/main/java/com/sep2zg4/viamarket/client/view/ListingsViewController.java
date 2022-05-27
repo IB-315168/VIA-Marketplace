@@ -46,8 +46,8 @@ public class ListingsViewController
   @FXML private MenuItem usersInformation;
   @FXML private MenuItem back;
   @FXML private Menu moderatorPanel;
-  @FXML private TextField minPrice;
-  @FXML private TextField maxPrice;
+  @FXML private TextField minimumPrice;
+  @FXML private TextField maximumPrice;
   @FXML private RadioButton conditionNew;
   @FXML private RadioButton conditionUsed;
   @FXML private RadioButton conditionDefective;
