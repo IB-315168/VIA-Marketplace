@@ -51,6 +51,7 @@ public class ListingsViewController
   @FXML private RadioButton conditionNew;
   @FXML private RadioButton conditionUsed;
   @FXML private RadioButton conditionDefective;
+  @FXML private MenuItem addToWishlistMI;
   private ArrayList<Listing> searchResults;
 
   private ViewHandler viewHandler;
@@ -164,6 +165,13 @@ public class ListingsViewController
           contacts.setText(newValue.getSeller().getFullName() + "\n" + newValue.getSeller().getEmail()
               + "\n" + newValue.getSeller().getPhoneNumber());
           description.setText(newValue.getDescription());
+          ArrayList<Listing> wishlistItems = viewModel.getWishlistItem();
+          addToWishlistMI.setDisable(false);
+          for(Listing listing : wishlistItems){
+            if(listing.getId() == newValue.getId()){
+              addToWishlistMI.setDisable(true);
+            }
+          }
         }
       }
     });

@@ -44,7 +44,7 @@
             </Menu>
             <Menu fx:id="addToWishlist" mnemonicParsing="false" text="Add to Wishlist">
               <items>
-                <MenuItem mnemonicParsing="false" onAction="#addToWishlist" text="Add to Wishlist" />
+                <MenuItem fx:id="addToWishlistMI" mnemonicParsing="false" onAction="#addToWishlist" text="Add to Wishlist" />
               </items>
             </Menu>
         </menus>
