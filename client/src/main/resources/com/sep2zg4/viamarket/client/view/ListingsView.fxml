@@ -93,12 +93,12 @@
                            </font>
                         </Label>
                         <Label layoutX="15.0" layoutY="606.0" text="Condition:" />
-                        <RadioButton layoutX="119.0" layoutY="606.0" mnemonicParsing="false" text="New" />
-                        <RadioButton layoutX="212.0" layoutY="606.0" mnemonicParsing="false" text="Used" />
-                        <RadioButton layoutX="294.0" layoutY="606.0" mnemonicParsing="false" text="Defective" />
+                        <RadioButton fx:id="conditionNew" layoutX="119.0" layoutY="606.0" mnemonicParsing="false" text="New" />
+                        <RadioButton fx:id="conditionUsed" layoutX="212.0" layoutY="606.0" mnemonicParsing="false" text="Used" />
+                        <RadioButton fx:id="conditionDefective" layoutX="294.0" layoutY="606.0" mnemonicParsing="false" text="Defective" />
                         <Label layoutX="12.0" layoutY="642.0" text="Price range:" />
-                        <TextField layoutX="119.0" layoutY="637.0" prefHeight="26.0" prefWidth="126.0" promptText="Minimal price in DKK" />
-                        <TextField layoutX="273.0" layoutY="637.0" prefHeight="26.0" prefWidth="134.0" promptText="Maximum price in DKK" />
+                        <TextField fx:id="minPrice" layoutX="119.0" layoutY="637.0" prefHeight="26.0" prefWidth="126.0" promptText="Minimal price in DKK" />
+                        <TextField fx:id="maxPrice" layoutX="273.0" layoutY="637.0" prefHeight="26.0" prefWidth="134.0" promptText="Maximum price in DKK" />
                         <Label layoutX="84.0" layoutY="642.0" text="From" />
                         <Label layoutX="250.0" layoutY="641.0" text="To" />
                         <Label layoutX="183.0" layoutY="567.0" text="Filter by" textFill="#9f9f9f">
