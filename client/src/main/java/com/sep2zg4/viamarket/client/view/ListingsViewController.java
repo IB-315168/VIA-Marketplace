@@ -259,4 +259,39 @@ public class ListingsViewController
       this.listingsList.setItems(viewModel.getListingsList());
     }
   }
+  public void filter(ActionEvent actionEvent)
+  {
+    double minPrice;
+    double maxPrice;
+    //TODO parse text field string into double for price range
+    ArrayList<Listing> filterResults=new ArrayList<>(listingsList.getItems());
+    for(Listing listing : filterResults)
+    {
+      if(conditionNew.isSelected())
+      {
+        if(listing.getCondition().equals(conditionNew.getText()))
+        {
+          filterResults.remove(listing);
+        }
+      }
+      if(conditionUsed.isSelected())
+      {
+        if(listing.getCondition().equals(conditionUsed.getText()))
+        {
+          filterResults.remove(listing);
+        }
+      }
+      if(conditionDefective.isSelected())
+      {
+        if(listing.getCondition().equals(conditionDefective.getText()))
+        {
+          filterResults.remove(listing);
+        }
+      }
+      if(listing.getPrice()<minPrice && listing.getPrice()>maxPrice)
+      {
+        filterResults.remove(listing);
+      }
+    }
+  }
 }
