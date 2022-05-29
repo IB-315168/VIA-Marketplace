@@ -296,10 +296,11 @@ public class ListingsViewController
           filterResults.remove(listing);
         }
       }
-      if(listing.getPrice()<minPrice && listing.getPrice()>maxPrice)
+      if(listing.getPrice()<minPrice || listing.getPrice()>maxPrice)
       {
         filterResults.remove(listing);
       }
     }
+    this.listingsList.setItems(FXCollections.observableList(filterResults));
   }
 }
