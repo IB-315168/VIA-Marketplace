@@ -269,8 +269,8 @@ public class ListingsViewController
   }
   public void filter(ActionEvent actionEvent)
   {
-    double minPrice;
-    double maxPrice;
+    double minPrice=Double.parseDouble(minimumPrice.getText());
+    double maxPrice=Double.parseDouble(maximumPrice.getText());
     //TODO parse text field string into double for price range
     ArrayList<Listing> filterResults=new ArrayList<>(listingsList.getItems());
     for(Listing listing : filterResults)
