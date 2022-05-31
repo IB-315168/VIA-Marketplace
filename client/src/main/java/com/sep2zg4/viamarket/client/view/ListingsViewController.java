@@ -277,21 +277,21 @@ public class ListingsViewController
     {
       if(conditionNew.isSelected())
       {
-        if(listing.getCondition().equals(conditionNew.getText()))
+        if(!(listing.getCondition().equals(conditionNew.getText())))
         {
           filterResults.remove(listing);
         }
       }
       if(conditionUsed.isSelected())
       {
-        if(listing.getCondition().equals(conditionUsed.getText()))
+        if(!(listing.getCondition().equals(conditionUsed.getText())))
         {
           filterResults.remove(listing);
         }
       }
       if(conditionDefective.isSelected())
       {
-        if(listing.getCondition().equals(conditionDefective.getText()))
+        if(!(listing.getCondition().equals(conditionDefective.getText())))
         {
           filterResults.remove(listing);
         }
