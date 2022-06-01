@@ -94,9 +94,9 @@
                         </Label>
                         <Label layoutX="15.0" layoutY="588.0" text="Condition:" />
                         <RadioButton fx:id="conditionNew" layoutX="119.0" layoutY="588.0" mnemonicParsing="false" text="New">
-                  <toggleGroup>
-                      <ToggleGroup fx:id="filter" />
-                  </toggleGroup>
+                            <toggleGroup>
+                                <ToggleGroup fx:id="filter" />
+                            </toggleGroup>
                         </RadioButton>
                         <RadioButton fx:id="conditionUsed" layoutX="214.0" layoutY="588.0" mnemonicParsing="false" text="Used">
                             <toggleGroup>

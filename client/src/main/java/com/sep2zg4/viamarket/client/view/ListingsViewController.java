@@ -24,7 +24,7 @@ import java.util.*;
  * Controller class for ListingsView.fxml
  *
  * @author Rojus Paukste
- * @version 1.0 - April 2022
+ * @version 2.2 - May 2022
  */
 
 public class ListingsViewController
@@ -44,8 +44,6 @@ public class ListingsViewController
   @FXML private RadioButton lowToHigh;
   @FXML private RadioButton HighToLow;
   @FXML private TextField searchKey;
-  @FXML private MenuItem usersInformation;
-  @FXML private MenuItem back;
   @FXML private Menu moderatorPanel;
   @FXML private TextField minimumPrice;
   @FXML private TextField maximumPrice;
@@ -59,13 +57,6 @@ public class ListingsViewController
   private ListingsViewModel viewModel;
   private Region root;
 
-  /**
-   * A constructor/function of ListingsViewController containing actions to be made by the system upon initialization
-   *
-   * @param viewHandler
-   * @param viewModel
-   * @param root
-   */
   public void init(ViewHandler viewHandler, ListingsViewModel viewModel,
       Region root)
   {
@@ -73,9 +64,7 @@ public class ListingsViewController
     this.viewModel = viewModel;
     this.root = root;
 
-    //Default FALSE - If theres a way to set this on the XML itself it would be PERFECT
     moderatorPanel.setVisible(false);
-
 
     this.categoryList.setItems(viewModel.getCategoryList());
     this.listingsList.setItems(viewModel.getListingsList());
@@ -84,8 +73,9 @@ public class ListingsViewController
     viewModel.setCategoryList();
 
     viewModel.setUserType();
-    //Moderator Check
-    if(viewModel.isModerator()){
+
+    if (viewModel.isModerator())
+    {
       moderatorPanel.setVisible(true);
     }
 
@@ -106,23 +96,27 @@ public class ListingsViewController
 
         //        System.out.println(newValue.getUserData().toString());
         System.out.println(viewModel.getListingsList());
-        if(newValue != null)
+        if (newValue != null)
         {
           switch (newValue.getUserData().toString())
           {
             case "1":
-              Collections.sort(viewModel.getListingsList(), (o1, o2) -> (int) (o2.getId() - o1.getId()));
+              Collections.sort(viewModel.getListingsList(),
+                  (o1, o2) -> (int) (o2.getId() - o1.getId()));
               if (searchResults != null)
-                Collections.sort(searchResults, (o1, o2) -> (int) (o2.getId() - o1.getId()));
+                Collections.sort(searchResults,
+                    (o1, o2) -> (int) (o2.getId() - o1.getId()));
               break;
             case "2":
-              Collections.sort(viewModel.getListingsList(), (o1, o2) -> (int) (o1.getPrice() - o2.getPrice()));
+              Collections.sort(viewModel.getListingsList(),
+                  (o1, o2) -> (int) (o1.getPrice() - o2.getPrice()));
               if (searchResults != null)
                 Collections.sort(searchResults,
                     (o1, o2) -> (int) (o1.getPrice() - o2.getPrice()));
               break;
             case "3":
-              Collections.sort(viewModel.getListingsList(), (o1, o2) -> (int) (o2.getPrice() - o1.getPrice()));
+              Collections.sort(viewModel.getListingsList(),
+                  (o1, o2) -> (int) (o2.getPrice() - o1.getPrice()));
               if (searchResults != null)
                 Collections.sort(searchResults,
                     (o1, o2) -> (int) (o2.getPrice() - o1.getPrice()));
@@ -130,91 +124,88 @@ public class ListingsViewController
           }
         }
 
-
       }
     });
 
-    //    Only for debug/testing purposes - open USERINFO View
-    this.listingsList.setOnKeyPressed(new EventHandler<KeyEvent>()
-    {
-      @Override public void handle(KeyEvent event)
-      {
-        if (event.getCode() == KeyCode.A)
+    this.categoryList.getSelectionModel().selectedItemProperty()
+        .addListener(new ChangeListener<String>()
         {
-          viewModel.trigger();
-        }
-      }
-    });
-
-    this.categoryList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>()
-    {
-      @Override public void changed(
-          ObservableValue<? extends String> observable, String oldValue,
-          String newValue)
-      {
-        if(newValue == null) {
-          viewModel.setListingsList();
-        } else
-        {
-          viewModel.getByCategory(newValue);
-        }
-      }
-    });
-
-    this.listingsList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Listing>()
-    {
-      @Override public void changed(
-          ObservableValue<? extends Listing> observable, Listing oldValue,
-          Listing newValue)
-      {
-        if(newValue != null)
-        {
-          title.setText(newValue.getTitle());
-          price.setText(String.valueOf(newValue.getPrice()));
-          city.setText(newValue.getCity());
-          condition.setText(newValue.getCondition());
-          contacts.setText(newValue.getSeller().getFullName() + "\n" + newValue.getSeller().getEmail()
-              + "\n" + newValue.getSeller().getPhoneNumber());
-          description.setText(newValue.getDescription());
-          ArrayList<Listing> wishlistItems = viewModel.getWishlistItem();
-          addToWishlistMI.setDisable(false);
-          for(Listing listing : wishlistItems){
-            if(listing.getId() == newValue.getId()){
-              addToWishlistMI.setDisable(true);
+          @Override public void changed(
+              ObservableValue<? extends String> observable, String oldValue,
+              String newValue)
+          {
+            if (newValue == null)
+            {
+              viewModel.setListingsList();
+            }
+            else
+            {
+              viewModel.getByCategory(newValue);
             }
           }
-        }
-      }
-    });
+        });
+
+    this.listingsList.getSelectionModel().selectedItemProperty()
+        .addListener(new ChangeListener<Listing>()
+        {
+          @Override public void changed(
+              ObservableValue<? extends Listing> observable, Listing oldValue,
+              Listing newValue)
+          {
+            if (newValue != null)
+            {
+              title.setText(newValue.getTitle());
+              price.setText(String.valueOf(newValue.getPrice()));
+              city.setText(newValue.getCity());
+              condition.setText(newValue.getCondition());
+              contacts.setText(newValue.getSeller().getFullName() + "\n"
+                  + newValue.getSeller().getEmail() + "\n"
+                  + newValue.getSeller().getPhoneNumber());
+              description.setText(newValue.getDescription());
+              ArrayList<Listing> wishlistItems = viewModel.getWishlistItem();
+              addToWishlistMI.setDisable(false);
+              for (Listing listing : wishlistItems)
+              {
+                if (listing.getId() == newValue.getId())
+                {
+                  addToWishlistMI.setDisable(true);
+                }
+              }
+            }
+          }
+        });
   }
 
-  /**
-   * A function used to open the previous (Log-in) window upon pushing a button on the screen
-   */
   @FXML public void goBack()
   {
     viewHandler.closeView();
     viewHandler.openView(ViewHandler.LOGIN);
   }
-  /**
-   * A function used to open the user information window upon pushing a button on the screen
-   */
-  @FXML public void userInformation(){
+
+  @FXML public void userInformation()
+  {
     viewHandler.closeView();
     viewHandler.openView(ViewHandler.USERINFO);
   }
-  @FXML public void deleteListing() throws SQLException, RemoteException {
-    if(viewModel.isModerator())
+
+  @FXML public void deleteListing() throws SQLException, RemoteException
+  {
+    if (viewModel.isModerator())
     {
       Listing listing = listingsList.getSelectionModel().getSelectedItem();
       viewModel.deleteListing(listing);
-    }else{
-      //Gotta learn how to make this into an alert.
-      System.out.println("User does not have permission to do this action.");
+    }
+    else
+    {
+      viewHandler.displayAlert(Alert.AlertType.ERROR,
+          "User does not have permission to do this action.");
     }
   }
-  @FXML public void createCategory(ActionEvent event) throws SQLException, RemoteException {
-    if(viewModel.isModerator())
+
+  @FXML public void createCategory(ActionEvent event)
+      throws SQLException, RemoteException
+  {
+    if (viewModel.isModerator())
     {
       TextInputDialog textInputDialog = new TextInputDialog();
       textInputDialog.setTitle("Create category");
@@ -222,51 +213,56 @@ public class ListingsViewController
       Optional<String> result = textInputDialog.showAndWait();
       TextField input = textInputDialog.getEditor();
       viewModel.createCategory(input.getText());
-    }else{
-      //Gotta learn how to make this into an alert.
-      System.out.println("User does not have permission to do this action.");
+    }
+    else
+    {
+      viewHandler.displayAlert(Alert.AlertType.ERROR,
+          "User does not have permission to do this action.");
     }
   }
 
   @FXML public void deleteCategory() throws SQLException, RemoteException
   {
-    if(viewModel.isModerator()){
+    if (viewModel.isModerator())
+    {
       String category = categoryList.getSelectionModel().getSelectedItem();
       viewModel.deleteCategory(category);
-    }else{
-      //Gotta learn how to make this into an alert.
-      System.out.println("User does not have permission to do this action.");
+    }
+    else
+    {
+      viewHandler.displayAlert(Alert.AlertType.ERROR,
+          "User does not have permission to do this action.");
     }
   }
-  /**
-   * A function used to add item to wishlist
-   */
-  @FXML public void addToWishlist() {
-    Listing wishlistListing = listingsList.getSelectionModel().getSelectedItem();
+
+  @FXML public void addToWishlist()
+  {
+    Listing wishlistListing = listingsList.getSelectionModel()
+        .getSelectedItem();
     viewModel.addToWishlist(wishlistListing);
   }
 
-  /**
-   * A function returning the root
-   *
-   * @return
-   */
   public Region getRoot()
   {
     return root;
   }
 
-  public void reset() {
-    if(viewModel.isModerator()){
+  public void reset()
+  {
+    if (viewModel.isModerator())
+    {
       moderatorPanel.setVisible(true);
-    } else {
+    }
+    else
+    {
       moderatorPanel.setVisible(false);
     }
     viewModel.setUserType();
     clear();
   }
 
-  @FXML public void clear() {
+  @FXML public void clear()
+  {
     searchKey.setText("");
     conditionNew.selectedProperty().set(false);
     conditionUsed.selectedProperty().set(false);
@@ -282,51 +278,69 @@ public class ListingsViewController
     searchResults = new ArrayList<Listing>();
     for (Listing listing : viewModel.getListingsList())
     {
-      if(listing.getTitle().toLowerCase().contains(searchKey.getText().toLowerCase())){
+      if (listing.getTitle().toLowerCase()
+          .contains(searchKey.getText().toLowerCase()))
+      {
         searchResults.add(listing);
       }
     }
     this.listingsList.setItems(FXCollections.observableList(searchResults));
-    if(searchKey.getText().equals("")){
+    if (searchKey.getText().equals(""))
+    {
       this.listingsList.setItems(viewModel.getListingsList());
     }
   }
+
   @FXML public void filter(ActionEvent actionEvent)
   {
-    ArrayList<Listing> filterResults=new ArrayList<>(viewModel.getListingsList());
+    ArrayList<Listing> filterResults = new ArrayList<>(
+        viewModel.getListingsList());
 
-    if(!minimumPrice.getText().isEmpty()) {
+    if (!minimumPrice.getText().isEmpty())
+    {
       double minPrice = 0.0;
-      try {
+      try
+      {
         minPrice = Double.parseDouble(minimumPrice.getText());
-      } catch (Exception e) {
+      }
+      catch (Exception e)
+      {
         viewHandler.displayAlert(Alert.AlertType.ERROR, e.getMessage());
       }
       double finalMinPrice = minPrice;
       filterResults.removeIf(listing -> listing.getPrice() < finalMinPrice);
     }
 
-    if(!maximumPrice.getText().isEmpty()) {
+    if (!maximumPrice.getText().isEmpty())
+    {
       double maxPrice = 0.0;
-      try {
+      try
+      {
         maxPrice = Double.parseDouble(maximumPrice.getText());
-      } catch (Exception e) {
+      }
+      catch (Exception e)
+      {
         viewHandler.displayAlert(Alert.AlertType.ERROR, e.getMessage());
       }
       double finalMaxPrice = maxPrice;
       filterResults.removeIf(listing -> listing.getPrice() > finalMaxPrice);
     }
 
-    if(filter.getSelectedToggle() != null) {
-      switch ((Integer) filter.getSelectedToggle().getUserData()) {
-        case 1 :
-          filterResults.removeIf(listing -> !listing.getCondition().equals(conditionNew.getText()));
+    if (filter.getSelectedToggle() != null)
+    {
+      switch ((Integer) filter.getSelectedToggle().getUserData())
+      {
+        case 1:
+          filterResults.removeIf(listing -> !listing.getCondition()
+              .equals(conditionNew.getText()));
           break;
         case 2:
-          filterResults.removeIf(listing -> !listing.getCondition().equals(conditionUsed.getText()));
+          filterResults.removeIf(listing -> !listing.getCondition()
+              .equals(conditionUsed.getText()));
           break;
         case 3:
-          filterResults.removeIf(listing -> !listing.getCondition().equals(conditionDefective.getText()));
+          filterResults.removeIf(listing -> !listing.getCondition()
+              .equals(conditionDefective.getText()));
           break;
         default:
           return;
