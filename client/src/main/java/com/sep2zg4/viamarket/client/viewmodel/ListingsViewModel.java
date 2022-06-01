@@ -2,6 +2,7 @@ package com.sep2zg4.viamarket.client.viewmodel;
 
 import com.sep2zg4.viamarket.client.model.MarketplaceModel;
 import com.sep2zg4.viamarket.model.Listing;
+import com.sep2zg4.viamarket.model.User;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -66,6 +67,14 @@ public class ListingsViewModel
   public StringProperty getUserType()
   {
     return userType;
+  }
+
+  public void setUserType() {
+    if(model.getCurrentUser().isModerator()) {
+      this.userType.setValue("Moderator : " + model.getCurrentUser().getFullName());
+    } else {
+      this.userType.setValue("User : " + model.getCurrentUser().getFullName());
+    }
   }
 
   public Object getNewCategoryName()

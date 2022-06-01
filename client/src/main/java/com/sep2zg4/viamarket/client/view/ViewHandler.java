@@ -4,6 +4,7 @@ import com.sep2zg4.viamarket.client.viewmodel.ViewModelFactory;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -75,5 +76,11 @@ public class ViewHandler
   public void closeView()
   {
     primaryStage.close();
+  }
+
+  public void displayAlert(Alert.AlertType alertType, String content) {
+    Alert alert = new Alert(alertType);
+    alert.setContentText(content);
+    alert.show();
   }
 }

@@ -93,9 +93,21 @@
                            </font>
                         </Label>
                         <Label layoutX="15.0" layoutY="588.0" text="Condition:" />
-                        <RadioButton fx:id="conditionNew" layoutX="119.0" layoutY="588.0" mnemonicParsing="false" text="New" />
-                        <RadioButton fx:id="conditionUsed" layoutX="214.0" layoutY="588.0" mnemonicParsing="false" text="Used" />
-                        <RadioButton fx:id="conditionDefective" layoutX="294.0" layoutY="588.0" mnemonicParsing="false" text="Defective" />
+                        <RadioButton fx:id="conditionNew" layoutX="119.0" layoutY="588.0" mnemonicParsing="false" text="New">
+                  <toggleGroup>
+                      <ToggleGroup fx:id="filter" />
+                  </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="conditionUsed" layoutX="214.0" layoutY="588.0" mnemonicParsing="false" text="Used">
+                            <toggleGroup>
+                            <fx:reference source="filter" />
+                        </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="conditionDefective" layoutX="294.0" layoutY="588.0" mnemonicParsing="false" text="Defective">
+                            <toggleGroup>
+                            <fx:reference source="filter" />
+                        </toggleGroup>
+                        </RadioButton>
                         <Label layoutX="12.0" layoutY="632.0" text="Price range:" />
                         <TextField fx:id="minimumPrice" layoutX="120.0" layoutY="628.0" prefHeight="26.0" prefWidth="126.0" promptText="Minimal price in DKK" />
                         <TextField fx:id="maximumPrice" layoutX="273.0" layoutY="628.0" prefHeight="26.0" prefWidth="134.0" promptText="Maximum price in DKK" />
@@ -106,7 +118,12 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Button layoutX="177.0" layoutY="672.0" mnemonicParsing="false" onAction="#filter" prefHeight="22.0" prefWidth="86.0" text="Filter">
+                        <Button layoutX="121.0" layoutY="672.0" mnemonicParsing="false" onAction="#filter" prefHeight="22.0" prefWidth="86.0" text="Filter">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Button>
+                        <Button layoutX="230.0" layoutY="672.0" mnemonicParsing="false" onAction="#clear" prefHeight="18.0" prefWidth="85.0" text="Clear">
                            <font>
                               <Font size="10.0" />
                            </font>

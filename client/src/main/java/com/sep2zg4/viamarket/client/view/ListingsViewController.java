@@ -39,6 +39,7 @@ public class ListingsViewController
   @FXML private TextArea description;
   @FXML private Label loggedAs;
   @FXML private ToggleGroup sort;
+  @FXML private ToggleGroup filter;
   @FXML private RadioButton mostRecent;
   @FXML private RadioButton lowToHigh;
   @FXML private RadioButton HighToLow;
@@ -82,11 +83,15 @@ public class ListingsViewController
     viewModel.setListingsList();
     viewModel.setCategoryList();
 
-
+    viewModel.setUserType();
     //Moderator Check
     if(viewModel.isModerator()){
       moderatorPanel.setVisible(true);
     }
+
+    conditionNew.setUserData(1);
+    conditionUsed.setUserData(2);
+    conditionDefective.setUserData(3);
 
     mostRecent.setUserData(1);
     lowToHigh.setUserData(2);
@@ -99,24 +104,30 @@ public class ListingsViewController
           Toggle newValue)
       {
 
-        System.out.println(newValue.getUserData().toString());
+//        System.out.println(newValue.getUserData().toString());
         System.out.println(viewModel.getListingsList());
-        switch (newValue.getUserData().toString()){
-          case "1":
-            Collections.sort(viewModel.getListingsList(), (o1, o2) -> (int) (o2.getId() - o1.getId()));
-            if(searchResults!=null)
-              Collections.sort(searchResults, (o1, o2) -> (int) (o2.getId() - o1.getId()));
-            break;
-          case "2":
-            Collections.sort(viewModel.getListingsList(), (o1, o2) -> (int) (o1.getPrice() - o2.getPrice()));
-            if(searchResults!=null)
-              Collections.sort(searchResults, (o1, o2) -> (int) (o1.getPrice() - o2.getPrice()));
-            break;
-          case "3":
-            Collections.sort(viewModel.getListingsList(), (o1, o2) -> (int) (o2.getPrice() - o1.getPrice()));
-            if(searchResults!=null)
-              Collections.sort(searchResults, (o1, o2) -> (int) (o2.getPrice() - o1.getPrice()));
-            break;
+        if(newValue != null)
+        {
+          switch (newValue.getUserData().toString())
+          {
+            case "1":
+              Collections.sort(viewModel.getListingsList(), (o1, o2) -> (int) (o2.getId() - o1.getId()));
+              if (searchResults != null)
+                Collections.sort(searchResults, (o1, o2) -> (int) (o2.getId() - o1.getId()));
+              break;
+            case "2":
+              Collections.sort(viewModel.getListingsList(), (o1, o2) -> (int) (o1.getPrice() - o2.getPrice()));
+              if (searchResults != null)
+                Collections.sort(searchResults,
+                    (o1, o2) -> (int) (o1.getPrice() - o2.getPrice()));
+              break;
+            case "3":
+              Collections.sort(viewModel.getListingsList(), (o1, o2) -> (int) (o2.getPrice() - o1.getPrice()));
+              if (searchResults != null)
+                Collections.sort(searchResults,
+                    (o1, o2) -> (int) (o2.getPrice() - o1.getPrice()));
+              break;
+          }
         }
 
 
@@ -251,9 +262,22 @@ public class ListingsViewController
     } else {
       moderatorPanel.setVisible(false);
     }
+    viewModel.setUserType();
+    clear();
   }
 
-  public void search(ActionEvent actionEvent)
+  @FXML public void clear() {
+    searchKey.setText("");
+    conditionNew.selectedProperty().set(false);
+    conditionUsed.selectedProperty().set(false);
+    conditionDefective.selectedProperty().set(false);
+    minimumPrice.setText("");
+    maximumPrice.setText("");
+    sort.selectToggle(null);
+    this.listingsList.setItems(viewModel.getListingsList());
+  }
+
+  @FXML public void search(ActionEvent actionEvent)
   {
     searchResults = new ArrayList<Listing>();
     for (Listing listing : viewModel.getListingsList())
@@ -267,40 +291,48 @@ public class ListingsViewController
       this.listingsList.setItems(viewModel.getListingsList());
     }
   }
-  public void filter(ActionEvent actionEvent)
+  @FXML public void filter(ActionEvent actionEvent)
   {
-    double minPrice=Double.parseDouble(minimumPrice.getText());
-    double maxPrice=Double.parseDouble(maximumPrice.getText());
-    //TODO parse text field string into double for price range
-    ArrayList<Listing> filterResults=new ArrayList<>(listingsList.getItems());
-    for(Listing listing : filterResults)
-    {
-      if(conditionNew.isSelected())
-      {
-        if(!(listing.getCondition().equals(conditionNew.getText())))
-        {
-          filterResults.remove(listing);
-        }
+    ArrayList<Listing> filterResults=new ArrayList<>(viewModel.getListingsList());
+
+    if(!minimumPrice.getText().isEmpty()) {
+      double minPrice = 0.0;
+      try {
+        minPrice = Double.parseDouble(minimumPrice.getText());
+      } catch (Exception e) {
+        viewHandler.displayAlert(Alert.AlertType.ERROR, e.getMessage());
       }
-      if(conditionUsed.isSelected())
-      {
-        if(!(listing.getCondition().equals(conditionUsed.getText())))
-        {
-          filterResults.remove(listing);
-        }
+      double finalMinPrice = minPrice;
+      filterResults.removeIf(listing -> listing.getPrice() < finalMinPrice);
+    }
+
+    if(!maximumPrice.getText().isEmpty()) {
+      double maxPrice = 0.0;
+      try {
+        maxPrice = Double.parseDouble(maximumPrice.getText());
+      } catch (Exception e) {
+        viewHandler.displayAlert(Alert.AlertType.ERROR, e.getMessage());
       }
-      if(conditionDefective.isSelected())
-      {
-        if(!(listing.getCondition().equals(conditionDefective.getText())))
-        {
-          filterResults.remove(listing);
-        }
-      }
-      if(listing.getPrice()<minPrice || listing.getPrice()>maxPrice)
-      {
-        filterResults.remove(listing);
+      double finalMaxPrice = maxPrice;
+      filterResults.removeIf(listing -> listing.getPrice() > finalMaxPrice);
+    }
+
+    if(filter.getSelectedToggle() != null) {
+      switch ((Integer) filter.getSelectedToggle().getUserData()) {
+        case 1 :
+          filterResults.removeIf(listing -> !listing.getCondition().equals(conditionNew.getText()));
+          break;
+        case 2:
+          filterResults.removeIf(listing -> !listing.getCondition().equals(conditionUsed.getText()));
+          break;
+        case 3:
+          filterResults.removeIf(listing -> !listing.getCondition().equals(conditionDefective.getText()));
+          break;
+        default:
+          return;
       }
     }
+
     this.listingsList.setItems(FXCollections.observableList(filterResults));
   }
 }

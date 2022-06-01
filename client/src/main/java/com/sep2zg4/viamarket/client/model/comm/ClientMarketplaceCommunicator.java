@@ -101,7 +101,10 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject
    */
   public void close() throws RemoteException
   {
-    communicator.removeRemotePropertyChangeListener(this);
+    if(communicator != null)
+    {
+      communicator.removeRemotePropertyChangeListener(this);
+    }
     UnicastRemoteObject.unexportObject(this, true);
   }
 
