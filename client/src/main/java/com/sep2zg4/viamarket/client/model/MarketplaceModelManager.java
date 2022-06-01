@@ -36,6 +36,7 @@ public class MarketplaceModelManager implements MarketplaceModel
    */
   public MarketplaceModelManager() throws RemoteException
   {
+//    client = new ClientMarketplaceCommunicator("localhost", Registry.REGISTRY_PORT, this);
     client = new ClientMarketplaceCommunicator("localhost", Registry.REGISTRY_PORT, this);
 //    client = new ClientMarketplaceCommunicator("192.168.1.82", Registry.REGISTRY_PORT, this);
     listings = new HashMap<>();

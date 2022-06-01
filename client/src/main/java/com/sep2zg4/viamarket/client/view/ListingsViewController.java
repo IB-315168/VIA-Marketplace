@@ -104,7 +104,7 @@ public class ListingsViewController
           Toggle newValue)
       {
 
-//        System.out.println(newValue.getUserData().toString());
+        //        System.out.println(newValue.getUserData().toString());
         System.out.println(viewModel.getListingsList());
         if(newValue != null)
         {
@@ -134,7 +134,7 @@ public class ListingsViewController
       }
     });
 
-//    Only for debug/testing purposes - open USERINFO View
+    //    Only for debug/testing purposes - open USERINFO View
     this.listingsList.setOnKeyPressed(new EventHandler<KeyEvent>()
     {
       @Override public void handle(KeyEvent event)
