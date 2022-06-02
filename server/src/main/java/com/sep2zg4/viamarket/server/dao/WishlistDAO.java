@@ -11,7 +11,7 @@ import java.util.List;
 public class WishlistDAO implements Dao<Integer>
 {
 
-  private Connection connection;
+  private final Connection connection;
   private int currentStudentNumber;
 
   public WishlistDAO(Connection connection)

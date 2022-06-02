@@ -1,13 +1,10 @@
 package com.sep2zg4.viamarket.client.view;
 
 import com.sep2zg4.viamarket.client.viewmodel.ViewModelFactory;
-import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 /**
  * An MVVM pattern class used for managing different stages of the application
@@ -22,37 +19,22 @@ public class ViewHandler
   public static final String LISTINGS = "listings";
   public static final String USERINFO = "userInfo";
   public static final String LISTINGFORM = "listingForm";
-  private Scene currentScene;
+  private final Scene currentScene;
   private Stage primaryStage;
   private final ViewFactory viewFactory;
 
-  /**
-   * Constructor function for the ViewHandler
-   *
-   * @param viewModelFactory
-   */
   public ViewHandler(ViewModelFactory viewModelFactory)
   {
     this.viewFactory = new ViewFactory(this, viewModelFactory);
     this.currentScene = new Scene(new Region());
   }
 
-  /**
-   * A function that initializes the primary stage and opens up the first view for the user which is log in
-   *
-   * @param primaryStage
-   */
   public void start(Stage primaryStage)
   {
     this.primaryStage = primaryStage;
     openView(LOGIN);
   }
 
-  /**
-   * Function used for opening a different view depending on the keyword sent to the function
-   *
-   * @param view
-   */
   public void openView(String view)
   {
     Region root = switch (view)
@@ -78,7 +60,8 @@ public class ViewHandler
     primaryStage.close();
   }
 
-  public void displayAlert(Alert.AlertType alertType, String content) {
+  public void displayAlert(Alert.AlertType alertType, String content)
+  {
     Alert alert = new Alert(alertType);
     alert.setContentText(content);
     alert.show();

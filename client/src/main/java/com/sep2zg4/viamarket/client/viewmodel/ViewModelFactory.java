@@ -6,7 +6,7 @@ import com.sep2zg4.viamarket.client.model.MarketplaceModel;
  * ViewModelFactory for ViaMarketplace
  *
  * @author Wojtek Rusinski
- * @version 1.0 - April 2022
+ * @version 1.6 - May 2022
  */
 public class ViewModelFactory
 {
@@ -15,17 +15,12 @@ public class ViewModelFactory
   private final UserInformationViewModel userInformationViewModel;
   private final ListingFormViewModel listingFormViewModel;
 
-  /**
-   * Constructor for ViewModelFactory, initializing 3 viewmodels
-   *
-   * @param model Model Manager reference
-   */
   public ViewModelFactory(MarketplaceModel model)
   {
     listingsViewModel = new ListingsViewModel(model);
     loginViewModel = new LoginViewModel(model);
     userInformationViewModel = new UserInformationViewModel(model);
-    listingFormViewModel=new ListingFormViewModel(model);
+    listingFormViewModel = new ListingFormViewModel(model);
   }
 
   public ListingsViewModel getListingsViewModel()

@@ -8,22 +8,29 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- *
+ * Read access interface of reader-writers lock
  *
  * @author Igor Bulinski
- * @version 1.0 - May 2022
+ * @version 1.3 - May 2022
  */
 
 public interface ReadMap extends Remote
 {
   /**
-   * method to get a concurrent hashmap with all listings stored by <Category,ArrayList<Listings from category>>
-   * @return concurrent hashmap with all listings stored by <Category,ArrayList<Listings from category>>
-   * @throws RemoteException if error in Server side
+   * Method responsible for acquiring all available Listings
+   *
+   * @return Concurrent HashMap of all listings available
+   * @throws RemoteException
    */
-  ConcurrentHashMap<String, ArrayList<Listing>> getListings() throws
-      RemoteException;
+  ConcurrentHashMap<String, ArrayList<Listing>> getListings()
+      throws RemoteException;
 
-  ConcurrentHashMap<Integer, ArrayList<Listing>> getWishlist() throws
-      RemoteException;
+  /**
+   * Method responsible for acquiring Wishlist of all Users
+   *
+   * @return Concurrent HashMap of WishList items
+   * @throws RemoteException
+   */
+  ConcurrentHashMap<Integer, ArrayList<Listing>> getWishlist()
+      throws RemoteException;
 }

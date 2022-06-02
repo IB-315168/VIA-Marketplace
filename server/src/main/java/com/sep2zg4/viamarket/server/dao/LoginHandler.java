@@ -8,17 +8,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class LoginHandler
+public final class LoginHandler
 {
 
   private static LoginHandler loginHandler;
   private Connection connection;
-  private UserDAO userDAO = (UserDAO) DAOManager.getInstance().getDao(DAOManager.Table.User);
+  private final UserDAO userDAO = (UserDAO) DAOManager.getInstance().getDao(DAOManager.Table.User);
 
   private LoginHandler() throws SQLException, RemoteException
   {
 
-  };
+  }
 
   public static LoginHandler getInstance() throws SQLException, RemoteException
   {

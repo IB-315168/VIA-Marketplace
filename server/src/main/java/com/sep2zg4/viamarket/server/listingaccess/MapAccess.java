@@ -13,8 +13,8 @@ public class MapAccess extends UnicastRemoteObject implements ReadWriteAccess
   private int readers;
   private int writers;
   private int waitingWriters;
-  private ReadMap readMap;
-  private WriteMap writeMap;
+  private final ReadMap readMap;
+  private final WriteMap writeMap;
 
   public MapAccess(RemoteMarketplaceImplementation marketplaceImplementation) throws
       RemoteException

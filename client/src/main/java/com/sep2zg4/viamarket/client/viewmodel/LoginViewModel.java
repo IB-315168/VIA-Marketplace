@@ -12,19 +12,15 @@ import java.sql.SQLException;
  * A viewmodel for Login view
  *
  * @author Wojtek Rusinski
- * @version 1.0 - April 2022
+ * @version 1.6 - May 2022
  */
 
 public class LoginViewModel
 {
-  private StringProperty username, password;
-  private MarketplaceModel model;
+  private final StringProperty username;
+  private final StringProperty password;
+  private final MarketplaceModel model;
 
-  /**
-   * Constructor for LoginViewModel taking Model as an argument
-   *
-   * @param model Model Manager reference
-   */
   public LoginViewModel(MarketplaceModel model)
   {
     this.model = model;
@@ -43,12 +39,6 @@ public class LoginViewModel
     return password;
   }
 
-  /** 0-argument method used for logging in
-   *
-   * @return result of {@link com.sep2zg4.viamarket.client.model.MarketplaceModel#login(int, String)}
-   * @throws RemoteException
-   * @throws NotBoundException
-   */
   public boolean login() throws RemoteException, NotBoundException, SQLException
   {
     return model.login(Integer.parseInt(username.get()), password.get());

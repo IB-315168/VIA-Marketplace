@@ -2,7 +2,6 @@ package com.sep2zg4.viamarket.client.viewmodel;
 
 import com.sep2zg4.viamarket.client.model.MarketplaceModel;
 import com.sep2zg4.viamarket.model.Listing;
-import com.sep2zg4.viamarket.model.User;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -16,19 +15,21 @@ import java.util.ArrayList;
  * A view model for ListingForm
  *
  * @author Wojtek Rusinski
- * @version 1.0 - May 2022
+ * @version 1.6 - May 2022
  */
 public class ListingFormViewModel
 {
-  private MarketplaceModel model;
-  private ObservableList<String> categories;
-  private StringProperty title, city, price, condition, phoneNumber, email, socialMediaAndUsername, description;
+  private final MarketplaceModel model;
+  private final ObservableList<String> categories;
+  private final StringProperty title;
+  private final StringProperty city;
+  private final StringProperty price;
+  private final StringProperty condition;
+  private final StringProperty phoneNumber;
+  private final StringProperty email;
+  private final StringProperty socialMediaAndUsername;
+  private final StringProperty description;
 
-  /**
-   * Constructor for ListingForm view model
-   *
-   * @param model Model Manager reference
-   */
   public ListingFormViewModel(MarketplaceModel model)
   {
     this.model = model;
@@ -64,52 +65,37 @@ public class ListingFormViewModel
     return condition;
   }
 
-  public StringProperty getListingEmail()
-  {
-    return email;
-  }
-
-  public StringProperty getListingPhoneNumber()
-  {
-    return phoneNumber;
-  }
-
-  public StringProperty getListingSocialMediaAndUsername()
-  {
-    return socialMediaAndUsername;
-  }
-
   public StringProperty getListingDescription()
   {
     return description;
   }
 
-  public Listing getSelectedUserListing() {
+  public Listing getSelectedUserListing()
+  {
     return model.getCurrentSelectedUserListing();
   }
-  /**
-   * Method used for creating a Listing
-   */
-  //set(id, title, description, price, city, condition, seller);
-  //there is , no make new id method
-  //how do i assign seller without any User object reference?
-  public void createListing(String categoryName) throws SQLException, RemoteException
+
+  public void createListing(String categoryName)
+      throws SQLException, RemoteException
   {
-    model.createListing(
-        new Listing(1, categoryName, getListingTitle().get(), getListingDescription().get(),
+    model.createListing(new Listing(1, categoryName, getListingTitle().get(),
+        getListingDescription().get(),
+        Double.parseDouble(getListingPrice().get()), getListingCity().get(),
+        getListingCondition().get(), model.getCurrentUser()));
+  }
+
+  public void updateListing(String categoryName)
+      throws SQLException, RemoteException
+  {
+    model.updateListing(
+        new Listing(model.getCurrentSelectedUserListing().getId(), categoryName,
+            getListingTitle().get(), getListingDescription().get(),
             Double.parseDouble(getListingPrice().get()), getListingCity().get(),
             getListingCondition().get(), model.getCurrentUser()));
   }
 
-  public void updateListing(String categoryName) throws SQLException, RemoteException {
-    model.updateListing(
-        new Listing(model.getCurrentSelectedUserListing().getId(), categoryName,
-            getListingTitle().get(), getListingDescription().get(), Double.parseDouble(getListingPrice().get()),
-            getListingCity().get(), getListingCondition().get(), model.getCurrentUser())
-    );
-  }
-
-  public ObservableList<String> getAllCategories() {
+  public ObservableList<String> getAllCategories()
+  {
     ArrayList<String> categories = model.getAllCategories();
     categories.remove("All");
     categories.remove("<none>");

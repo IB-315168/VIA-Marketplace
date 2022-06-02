@@ -3,7 +3,6 @@ package com.sep2zg4.viamarket.servermodel;
 import com.sep2zg4.viamarket.model.Listing;
 import com.sep2zg4.viamarket.model.User;
 import dk.via.remote.observer.RemotePropertyChangeListener;
-import dk.via.remote.observer.RemotePropertyChangeSupport;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -13,25 +12,25 @@ import java.sql.SQLException;
  * Remote interface for RMI
  *
  * @author Igor Bulinski
- * @version 1.0 - April 2022
+ * @version 1.8 - May 2022
  */
 public interface RemoteMarketplace extends Remote
 {
 
   /**
-   * method to do login
+   * Method responsible for handling login request
    * @param studentNumber             Student identification number
    * @param password                  Student password
-   * @return insert user object in case of correct credentials, else null
-   * @throws SQLException if error in SQL
-   * @throws RemoteException if error in Server side
+   * @return Object of a User with matching credentials, constructed on data from database (null if credentials did not match any record)
+   * @throws SQLException
+   * @throws RemoteException
    */
   User login(int studentNumber, String password)
       throws RemoteException, SQLException;
 
   /**
-   * method to get a specific listing by id
-   * @param id                        Listing id
+   * Method responsible for acquiring Listing from database by its id
+   * @param id                        Listings id
    * @return listing object
    * @throws SQLException if error in SQL
    * @throws RemoteException if error in Server side

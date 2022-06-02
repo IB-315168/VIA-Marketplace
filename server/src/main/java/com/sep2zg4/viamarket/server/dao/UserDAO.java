@@ -12,8 +12,8 @@ import java.util.List;
 
 public class UserDAO implements Dao<User>
 {
-  private DAOManager manager = DAOManager.getInstance();
-  private Connection connection;
+  private final DAOManager manager = DAOManager.getInstance();
+  private final Connection connection;
 
   public UserDAO(Connection connection) throws SQLException
   {

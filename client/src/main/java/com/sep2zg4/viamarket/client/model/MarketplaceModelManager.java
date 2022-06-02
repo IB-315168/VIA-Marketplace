@@ -13,32 +13,31 @@ import java.rmi.registry.Registry;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 
 /**
  * Implementation of the {@link MarketplaceModel}
  *
  * @author Igor Bulinski, Wojtek Rusinski
- * @version 1.0 - April 2022
+ * @version 2.2 - May 2022
  */
 public class MarketplaceModelManager implements MarketplaceModel
 {
   private HashMap<String, ArrayList<Listing>> listings;
   private ArrayList<Listing> wishlist;
-  private ClientMarketplaceCommunicator client;
+  private final ClientMarketplaceCommunicator client;
   private User currentUser;
   private Listing currentSelectedUserListing;
-  private PropertyChangeSupport support;
+  private final PropertyChangeSupport support;
 
   /**
    * Constructor creating a {@link ClientMarketplaceCommunicator} object and establishing connection
+   *
    * @throws RemoteException
    */
   public MarketplaceModelManager() throws RemoteException
   {
-//    client = new ClientMarketplaceCommunicator("localhost", Registry.REGISTRY_PORT, this);
-    client = new ClientMarketplaceCommunicator("localhost", Registry.REGISTRY_PORT, this);
-//    client = new ClientMarketplaceCommunicator("192.168.1.82", Registry.REGISTRY_PORT, this);
+    client = new ClientMarketplaceCommunicator("localhost",
+        Registry.REGISTRY_PORT, this);
     listings = new HashMap<>();
     wishlist = new ArrayList<>();
     this.support = new PropertyChangeSupport(this);
@@ -55,10 +54,10 @@ public class MarketplaceModelManager implements MarketplaceModel
   public boolean login(int username, String password)
       throws RemoteException, NotBoundException, SQLException
   {
-    //TODO fix-up failed logins
-    currentUser = client.login(username,password);
-    if(currentUser!=null){
-      client.trigger();
+    currentUser = client.login(username, password);
+    if (currentUser != null)
+    {
+      client.propertyChange(null);
       return true;
     }
     return false;
@@ -69,16 +68,9 @@ public class MarketplaceModelManager implements MarketplaceModel
     client.close();
   }
 
-  public User getCurrentUser(){
+  public User getCurrentUser()
+  {
     return currentUser;
-  };
-
-  public boolean isModerator(){
-    return getCurrentUser().isModerator();
-  }
-
-  public String getFullName(){
-    return getCurrentUser().getFullName();
   }
 
   public Listing getCurrentSelectedUserListing()
@@ -93,6 +85,7 @@ public class MarketplaceModelManager implements MarketplaceModel
 
   /**
    * Method used for creating a listing
+   *
    * @param listing Listing that is being created
    * @throws SQLException
    * @throws RemoteException
@@ -105,6 +98,7 @@ public class MarketplaceModelManager implements MarketplaceModel
 
   /**
    * Method used for deleting a listing
+   *
    * @param listing Listing that is being deleted
    * @throws SQLException
    * @throws RemoteException
@@ -117,6 +111,7 @@ public class MarketplaceModelManager implements MarketplaceModel
 
   /**
    * Method used for updating a listing
+   *
    * @param listing Listing that is being updated
    * @throws SQLException
    * @throws RemoteException
@@ -126,6 +121,7 @@ public class MarketplaceModelManager implements MarketplaceModel
   {
     client.updateListing(listing);
   }
+
   public void addPropertyChangeListener(PropertyChangeListener listener)
   {
     support.addPropertyChangeListener(listener);
@@ -156,7 +152,8 @@ public class MarketplaceModelManager implements MarketplaceModel
   @Override public ArrayList<Listing> getAllListings()
   {
     ArrayList<Listing> allListings = new ArrayList<>();
-    for(String s : listings.keySet()) {
+    for (String s : listings.keySet())
+    {
       allListings.addAll(listings.get(s));
     }
     return allListings;
@@ -170,31 +167,24 @@ public class MarketplaceModelManager implements MarketplaceModel
     return categories;
   }
 
-  public ArrayList<Listing> getCategoryListing(String categoryName) {
-    if(categoryName.equals("All")) {
+  public ArrayList<Listing> getCategoryListing(String categoryName)
+  {
+    if (categoryName.equals("All"))
+    {
       return getAllListings();
     }
     return listings.get(categoryName);
   }
 
-  @Override public void trigger()
-  {
-    try
-    {
-      client.trigger();
-    }
-    catch (RemoteException e)
-    {
-      throw new RuntimeException(e);
-    }
-  }
-
   @Override public ArrayList<Listing> getUserListings()
   {
     ArrayList<Listing> userListings = new ArrayList<>();
-    for(String s : listings.keySet()){
-      for(Listing listing : listings.get(s)) {
-        if(listing.getSeller().getId() == currentUser.getId()) {
+    for (String s : listings.keySet())
+    {
+      for (Listing listing : listings.get(s))
+      {
+        if (listing.getSeller().getId() == currentUser.getId())
+        {
           userListings.add(listing);
         }
       }
@@ -214,14 +204,16 @@ public class MarketplaceModelManager implements MarketplaceModel
     client.deleteCategory(category);
   }
 
-  @Override public void deleteWishlistItem(Integer idListing) throws SQLException, RemoteException{
-    client.deleteWishlistItem(idListing,getCurrentUser().getId());
+  @Override public void deleteWishlistItem(Integer idListing)
+      throws SQLException, RemoteException
+  {
+    client.deleteWishlistItem(idListing, getCurrentUser().getId());
   }
 
   @Override public void addToListing(int idListing)
       throws SQLException, RemoteException
   {
-    client.addToWishlist(idListing,getCurrentUser().getId());
+    client.addToWishlist(idListing, getCurrentUser().getId());
   }
 
   public void setWishlist(ArrayList<Listing> wishlist)

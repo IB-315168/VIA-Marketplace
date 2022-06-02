@@ -10,7 +10,7 @@ import java.util.List;
 
 public class CategoryDAO implements Dao<String>
 {
-  private Connection connection;
+  private final Connection connection;
 
   public CategoryDAO(Connection connection)
   {

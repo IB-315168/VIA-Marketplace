@@ -6,6 +6,7 @@ import com.sep2zg4.viamarket.client.viewmodel.ViewModelFactory;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -28,7 +29,7 @@ public class Start extends Application
         }
         catch (RemoteException e)
         {
-          e.printStackTrace();
+          viewHandler.displayAlert(Alert.AlertType.ERROR, e.getMessage());
         }
         Platform.exit();
         System.exit(0);

@@ -19,13 +19,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class RMIWishlistWriter implements Runnable
 {
   private static RMIWishlistWriter INSTANCE;
-  private ListingDAO listingDAO;
-  private UserDAO userDAO;
-  private CategoryDAO categoryDAO;
-  private WishlistDAO wishlistDAO;
-  private Connection connection;
-  private ReadWriteAccess lock;
-  private RemotePropertyChangeSupport<String> support;
+  private final ListingDAO listingDAO;
+  private final UserDAO userDAO;
+  private final CategoryDAO categoryDAO;
+  private final WishlistDAO wishlistDAO;
+  private final Connection connection;
+  private final ReadWriteAccess lock;
+  private final RemotePropertyChangeSupport<String> support;
 
   private RMIWishlistWriter(ReadWriteAccess lock, Connection connection, ListingDAO listingDAO,
       UserDAO userDAO, CategoryDAO categoryDAO, WishlistDAO wishlistDAO, RemotePropertyChangeSupport<String> support)

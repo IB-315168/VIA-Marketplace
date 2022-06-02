@@ -26,18 +26,18 @@ public class RemoteMarketplaceImplementation extends UnicastRemoteObject
     implements RemoteMarketplace, WriteMap
 {
 
-  private DAOManager daoManager = DAOManager.getInstance();
+  private final DAOManager daoManager = DAOManager.getInstance();
   private ConcurrentHashMap<String, ArrayList<Listing>> listings;
   private ConcurrentHashMap<Integer, ArrayList<Listing>> wishlist;
-  private UserDAO userDAO;
-  private CategoryDAO categoryDAO;
-  private ListingDAO listingDAO;
-  private WishlistDAO wishlistDAO;
+  private final UserDAO userDAO;
+  private final CategoryDAO categoryDAO;
+  private final ListingDAO listingDAO;
+  private final WishlistDAO wishlistDAO;
   private final RMIListingsWriter writer;
   private final RMIWishlistWriter writerWishlist;
-  private ReadWriteAccess lock;
-  private LoginHandler loginHandler;
-  private RemotePropertyChangeSupport<String> support;
+  private final ReadWriteAccess lock;
+  private final LoginHandler loginHandler;
+  private final RemotePropertyChangeSupport<String> support;
 
   /**
    * Class constructor

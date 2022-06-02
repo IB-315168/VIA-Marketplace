@@ -12,9 +12,9 @@ import java.util.List;
 
 public class ListingDAO implements Dao<Listing>
 {
-  private DAOManager manager = DAOManager.getInstance();
-  private Connection connection;
-  private UserDAO userDAO;
+  private final DAOManager manager = DAOManager.getInstance();
+  private final Connection connection;
+  private final UserDAO userDAO;
 
   public ListingDAO(Connection connection) throws SQLException, RemoteException
   {

@@ -12,11 +12,11 @@ import java.rmi.server.UnicastRemoteObject;
  */
 public class User implements Serializable
 {
-  private int id;
-  private String fullName;
-  private String phoneNumber;
-  private String email;
-  private boolean isModerator;
+  private final int id;
+  private final String fullName;
+  private final String phoneNumber;
+  private final String email;
+  private final boolean isModerator;
 
   /**
    * 3-argument constructor.

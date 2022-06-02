@@ -12,82 +12,72 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Interface for the model
+ * Interface for the Model of application
  *
  * @author Igor Bulinski, Wojtek Rusinski, Dércio Fernandes
- * @version 1.0 - April 2022
+ * @version 2.2 - May 2022
  */
 public interface MarketplaceModel
 {
 
   /**
-   * method to login
+   * Method responsible for logging in user
    *
    * @param username Student Number
    * @param password Student password
-   * @return true if successfully login, false if unsuccessfully login
-   * @throws RemoteException   if error in Server
-   * @throws NotBoundException if
-   * @throws SQLException      if error in SQL
+   * @return <ul><li>true - if {@link com.sep2zg4.viamarket.client.model.comm.ClientMarketplaceCommunicator#login(int, String)} returns a User object, meaning that credentials (arguments) matched a record in a database</li><li>false if {@link com.sep2zg4.viamarket.client.model.comm.ClientMarketplaceCommunicator#login(int, String)} returns null</li></ul>
+   * @throws RemoteException
+   * @throws NotBoundException
+   * @throws SQLException
    */
   boolean login(int username, String password)
       throws RemoteException, NotBoundException, SQLException;
 
   /**
-   * method to get current logged user
+   * Method responsible for returning currently logged-in User reference
+   * Used for displaying current Users' data in the view
    *
-   * @return User object of current logged user.
+   * @return reference of currently logged-in user.
    */
   User getCurrentUser();
 
-  /**
-   * method to get information about current user permissions
-   *
-   * @return true if theres permissions, false if no permission.
-   */
-  boolean isModerator();
   void closeCommunicator() throws RemoteException;
 
   /**
-   * method to get current user Full Name
-   *
-   * @return current user full name
-   */
-  String getFullName();
-
-  /**
-   * method to get current selected user listing
+   * Method returning reference to currently selected Listing of a user
+   * Used for applying ListingFormView for both creating and editing listing
    *
    * @return Listing object of current selected listing
    */
   Listing getCurrentSelectedUserListing();
 
   /**
-   * method to set current selected user listing
+   * Method setting reference to currently selected Listing of a user
+   * Used for applying ListingFormView for both creating and editing listing
    *
-   * @param currentSelectedUserListing Listing object of current selected user listing
+   * @param currentSelectedUserListing currently selected User listing
    */
   void setCurrentSelectedUserListing(Listing currentSelectedUserListing);
 
   /**
-   * method to get listings of specified category
+   * Method responsible for returning ArrayList for given Key being category
    *
    * @param categoryName Category name
-   * @return List of Listings with same category passed on parameters
+   * @return List of Listings matching the category key
    */
   ArrayList<Listing> getCategoryListing(String categoryName);
 
   /**
-   * method to create a listing
+   * Method responsible for creating Listing
    *
-   * @param listing Listing object
+   * @param listing Listing object to be created
    * @throws SQLException    if error in SQL
    * @throws RemoteException if error in Server side
    */
   void createListing(Listing listing) throws SQLException, RemoteException;
 
   /**
-   * method to delete a listing
+   * Method responsible for deleting Listing
    *
    * @param listing Listing object
    * @throws SQLException    if error in SQL
@@ -96,7 +86,7 @@ public interface MarketplaceModel
   void deleteListing(Listing listing) throws SQLException, RemoteException;
 
   /**
-   * method to update a listing
+   * Method responsible for updating an object
    *
    * @param listing Listing object
    * @throws SQLException    if error in SQL
@@ -105,46 +95,57 @@ public interface MarketplaceModel
   void updateListing(Listing listing) throws SQLException, RemoteException;
 
   /**
-   * method to get all listings
+   * Method responsible for returning listings HashMap stored in the model
    *
-   * @return hashmap with category and list of listing from that category
+   * @return HashMap containing all listings sorted by categories
    */
   HashMap<String, ArrayList<Listing>> getListings();
 
   /**
-   * method to set all listings
+   * Method responsible for setting HashMap of listings in the model
    *
-   * @param listings Hashmap with category and list of listings from that category
+   * @param listings HashMap containing listings sorted by categories
    */
   void setListings(HashMap<String, ArrayList<Listing>> listings);
 
   /**
-   * method to get all listings
+   * Method responsible for returning HashMap listings in form of an Arraylist
    *
    * @return list of all listings
    */
   ArrayList<Listing> getAllListings();
 
   /**
-   * method to get all categories
+   * Method responsible for returning an ArrayList of categories
+   * formed from KeySet of the HashMap
    *
    * @return list of all categories
    */
   ArrayList<String> getAllCategories();
 
+  /**
+   * Observer pattern-related method, responsible for adding a listener
+   *
+   * @param listener PropertyChangeListener to be added
+   */
   void addPropertyChangeListener(PropertyChangeListener listener);
+  /**
+   * Observer pattern-related method, responsible for removing a listener
+   *
+   * @param listener PropertyChangeListener to be removed
+   */
   void removePropertyChangeListener(PropertyChangeListener listener);
-  void trigger();
 
   /**
-   * method to get all user listings
+   * Method responsible for returning an ArrayList of all Listings
+   * belonging to currently logged-in User
    *
-   * @return list of all user listings
+   * @return List of all user listings
    */
   ArrayList<Listing> getUserListings();
 
   /**
-   * method to delete a category
+   * Method responsible for deleting Category
    *
    * @param category Category name
    * @throws SQLException    if error in SQL
@@ -153,7 +154,7 @@ public interface MarketplaceModel
   void deleteCategory(String category) throws SQLException, RemoteException;
 
   /**
-   * method to create a category
+   * Method responsible for creating Category
    *
    * @param categoryName Category name
    * @throws SQLException    if error in SQL
@@ -162,18 +163,19 @@ public interface MarketplaceModel
   void createCategory(String categoryName) throws SQLException, RemoteException;
 
   /**
-   * method to delete item from wishlist
+   * Method responsible for deleting item from Wishlist
    *
-   * @param idListing Listing Id
+   * @param idListing Id of item to be removed from Wishlist
    * @throws SQLException    if error in SQL
    * @throws RemoteException if error in Server side
    */
-  void deleteWishlistItem(Integer idListing) throws SQLException, RemoteException;
+  void deleteWishlistItem(Integer idListing)
+      throws SQLException, RemoteException;
 
   /**
-   * method to add listing to wishlist
+   * Method responsible for adding item to Wishlist
    *
-   * @param idListing Listing id
+   * @param idListing Id of item to be added from Wishlist
    * @throws SQLException    if error in SQL
    * @throws RemoteException if error in Server side
    */
@@ -187,7 +189,7 @@ public interface MarketplaceModel
   ArrayList<Listing> getUserWishlist();
 
   /**
-   * method to set list of wishlist listings
+   * Method to set list of wishlist listings
    *
    * @param wishlist Hashmap with category and listings from wishlist listings
    */

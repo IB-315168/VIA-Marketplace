@@ -10,23 +10,17 @@ import java.io.IOException;
  * A factory pattern class used for opening different views in the system
  *
  * @author Rojus Paukste
- * @version 1.0 - April 2022
+ * @version 1.6 - May 2022
  */
 public class ViewFactory
 {
-  private ViewHandler viewHandler;
-  private ViewModelFactory viewModelFactory;
+  private final ViewHandler viewHandler;
+  private final ViewModelFactory viewModelFactory;
   private LoginViewController loginViewController;
   private ListingsViewController listingsViewController;
   private UserInformationViewController userInformationViewController;
   private ListingFormViewController listingFormViewController;
 
-  /**
-   * Constructor function for ViewFactory
-   *
-   * @param viewHandler
-   * @param viewModelFactory
-   */
   public ViewFactory(ViewHandler viewHandler, ViewModelFactory viewModelFactory)
   {
     this.viewHandler = viewHandler;
@@ -37,11 +31,6 @@ public class ViewFactory
     this.listingFormViewController = null;
   }
 
-  /**
-   * Function used for booting up LogInView and LogInViewController and returning the root of the controller
-   *
-   * @return
-   */
   public Region loadLogInView()
   {
     if (loginViewController == null)
@@ -64,11 +53,6 @@ public class ViewFactory
     return loginViewController.getRoot();
   }
 
-  /**
-   * Function used for booting up ListingsView and ListingsViewController and returning the root of the controller
-   *
-   * @return
-   */
   public Region loadListingsView()
   {
     if (listingsViewController == null)
@@ -91,11 +75,6 @@ public class ViewFactory
     return listingsViewController.getRoot();
   }
 
-  /**
-   * Function used for booting up UserInformationView and UserInformationViewController and returning the root of the controller
-   *
-   * @return
-   */
   public Region loadUserInformationView()
   {
     if (userInformationViewController == null)
@@ -117,11 +96,7 @@ public class ViewFactory
     userInformationViewController.reset();
     return userInformationViewController.getRoot();
   }
-  /**
-   * Function used for booting up ListingFormView and ListingFormViewController and returning the root of the controller
-   *
-   * @return
-   */
+
   public Region loadListingFormView()
   {
     if (listingFormViewController == null)

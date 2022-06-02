@@ -7,10 +7,7 @@ import com.sep2zg4.viamarket.servermodel.ReadWriteAccess;
 import com.sep2zg4.viamarket.servermodel.RemoteMarketplace;
 import dk.via.remote.observer.RemotePropertyChangeEvent;
 import dk.via.remote.observer.RemotePropertyChangeListener;
-import javafx.application.Platform;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -23,21 +20,21 @@ import java.sql.SQLException;
  * Communicator class for handling connection
  *
  * @author Igor Bulinski, Wojtek Rusinski
- * @version 1.0 - April 2022
+ * @version 2.2 - May 2022
  */
 public class ClientMarketplaceCommunicator extends UnicastRemoteObject
     implements RemotePropertyChangeListener<String>
 {
   private RemoteMarketplace communicator;
-  private MarketplaceModel model;
-  private String host;
-  private int port;
+  private final MarketplaceModel model;
+  private final String host;
+  private final int port;
   private RMIListingsReader reader;
   private ReadWriteAccess lock;
   private boolean connIsAlive;
 
   /**
-   * 2-argument constructor creating a ClientMarketplaceCommunicator object and establishing connection to the server
+   * 2-argument constructor creating a ClientMarketplaceCommunicator object
    *
    * @param host address of the server
    * @param port port of the server-app
@@ -80,7 +77,8 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject
   public User login(int username, String password)
       throws RemoteException, NotBoundException, SQLException
   {
-    if(!connIsAlive) {
+    if (!connIsAlive)
+    {
       try
       {
         connect();
@@ -101,7 +99,7 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject
    */
   public void close() throws RemoteException
   {
-    if(communicator != null)
+    if (communicator != null)
     {
       communicator.removeRemotePropertyChangeListener(this);
     }
@@ -157,12 +155,6 @@ public class ClientMarketplaceCommunicator extends UnicastRemoteObject
       throws SQLException, RemoteException
   {
     communicator.deleteCategory(category);
-  }
-
-
-  public void trigger() throws RemoteException
-  {
-    communicator.exampleMethod();
   }
 
   @Override public void propertyChange(RemotePropertyChangeEvent<String> evt)

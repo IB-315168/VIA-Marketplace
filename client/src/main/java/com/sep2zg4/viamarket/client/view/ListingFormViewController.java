@@ -1,7 +1,6 @@
 package com.sep2zg4.viamarket.client.view;
 
 import com.sep2zg4.viamarket.client.viewmodel.ListingFormViewModel;
-import com.sep2zg4.viamarket.client.viewmodel.ListingsViewModel;
 import com.sep2zg4.viamarket.model.Listing;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -9,13 +8,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
 
-import javafx.event.ActionEvent;
-
 import java.rmi.RemoteException;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Locale;
 
+/**
+ * Controller class for ListingsFormView.fxml
+ *
+ * @author Rojus Paukste
+ * @version 2.2 - May 2022
+ */
 public class ListingFormViewController
 {
   @FXML private TextField title;
@@ -24,7 +26,6 @@ public class ListingFormViewController
   @FXML private ToggleGroup condition;
   @FXML private ChoiceBox<String> category;
   @FXML private TextArea description;
-  @FXML private Button saveButton;
   @FXML private RadioButton conditionDefective;
   @FXML private RadioButton conditionUsed;
   @FXML private RadioButton conditionNew;
@@ -33,13 +34,6 @@ public class ListingFormViewController
   private ListingFormViewModel viewModel;
   private Region root;
 
-  /**
-   * A constructor/function of ListingFormViewController containing actions to be made by the system upon initialization
-   *
-   * @param viewHandler
-   * @param viewModel
-   * @param root
-   */
   public void init(ViewHandler viewHandler, ListingFormViewModel viewModel,
       Region root)
   {
@@ -55,57 +49,51 @@ public class ListingFormViewController
     this.title.textProperty().bindBidirectional(viewModel.getListingTitle());
     this.city.textProperty().bindBidirectional(viewModel.getListingCity());
     this.price.textProperty().bindBidirectional(viewModel.getListingPrice());
-    this.description.textProperty().bindBidirectional(
-        viewModel.getListingDescription());
-    this.condition.selectedToggleProperty().addListener(new ChangeListener<Toggle>()
-    {
-      @Override public void changed(
-          ObservableValue<? extends Toggle> observable, Toggle oldValue,
-          Toggle newValue)
-      {
+    this.description.textProperty()
+        .bindBidirectional(viewModel.getListingDescription());
+    this.condition.selectedToggleProperty()
+        .addListener(new ChangeListener<Toggle>()
+        {
+          @Override public void changed(
+              ObservableValue<? extends Toggle> observable, Toggle oldValue,
+              Toggle newValue)
+          {
 
-        viewModel.getListingCondition().setValue(newValue.getUserData().toString());
-      }
-    });
-    /*this.socialMedia.textProperty().bindBidirectional(viewModel.getListingSocialMedia());
-    this.username.textProperty().bindBidirectional(viewModel.getListingUsername());*/
+            viewModel.getListingCondition()
+                .setValue(newValue.getUserData().toString());
+          }
+        });
   }
 
-  /**
-   * A function used to save a listing and open the previous (UserInformation) window upon pushing a button on the screen
-   */
   @FXML public void save() throws SQLException, RemoteException
   {
-    if(viewModel.getSelectedUserListing() == null) {
+    if (viewModel.getSelectedUserListing() == null)
+    {
       viewModel.createListing(category.getSelectionModel().getSelectedItem());
     }
-    else {
+    else
+    {
       viewModel.updateListing(category.getSelectionModel().getSelectedItem());
     }
     viewHandler.closeView();
     viewHandler.openView(ViewHandler.USERINFO);
   }
-  /**
-   * A function used to open the previous window(ListingsView) upon pushing a button on the screen
-   */
+
   @FXML public void goBack()
   {
     viewHandler.closeView();
     viewHandler.openView(ViewHandler.LISTINGS);
   }
 
-  /**
-   * A function returning the root
-   *
-   * @return
-   */
   public Region getRoot()
   {
     return root;
   }
 
-  public void reset() {
-    if(viewModel.getSelectedUserListing() == null) {
+  public void reset()
+  {
+    if (viewModel.getSelectedUserListing() == null)
+    {
       category.setValue("");
       condition.selectToggle(conditionNew);
       title.setText("");
@@ -113,16 +101,19 @@ public class ListingFormViewController
       city.setText("");
       description.setText("");
     }
-    else {
+    else
+    {
       Listing listing = viewModel.getSelectedUserListing();
       category.setValue(listing.getCategoryName());
-      condition.selectToggle(switch (listing.getCondition().toLowerCase(Locale.ROOT)) {
-        case "new" -> conditionNew;
-        case "used" -> conditionUsed;
-        case "defective" -> conditionDefective;
-        default -> throw new IllegalStateException(
-            "Unexpected value: " + listing.getCondition());
-      });
+      condition.selectToggle(
+          switch (listing.getCondition().toLowerCase(Locale.ROOT))
+              {
+                case "new" -> conditionNew;
+                case "used" -> conditionUsed;
+                case "defective" -> conditionDefective;
+                default -> throw new IllegalStateException(
+                    "Unexpected value: " + listing.getCondition());
+              });
       title.setText(listing.getTitle());
       price.setText(String.valueOf(listing.getPrice()));
       city.setText(listing.getCity());

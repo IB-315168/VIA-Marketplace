@@ -14,68 +14,70 @@ import java.sql.SQLException;
  * A viewmodel for user information
  *
  * @author Wojtek Rusinski
- * @version 1.0 - April 2022
+ * @version 1.6 - May 2022
  */
 
 public class UserInformationViewModel
 {
-  private MarketplaceModel model;
-  private ObservableList<Listing> userListings;
-  private ObservableList<Listing> userWishlist;
-  private StringProperty fullname;
+  private final MarketplaceModel model;
+  private final ObservableList<Listing> userListings;
+  private final ObservableList<Listing> userWishlist;
+  private final StringProperty fullname;
 
-  /**
-   * Constructor for UserInformationViewModel taking Model as an argument
-   *
-   * @param model Model Manager reference
-   */
   public UserInformationViewModel(MarketplaceModel model)
   {
     this.model = model;
     userListings = FXCollections.observableList(model.getUserListings());
-    userWishlist =  FXCollections.observableList(model.getUserWishlist());
+    userWishlist = FXCollections.observableList(model.getUserWishlist());
     model.addPropertyChangeListener(evt -> setUserListings());
     model.addPropertyChangeListener(evt -> setUserWishlist());
     fullname = new SimpleStringProperty("");
   }
 
-  public void setCurrentSelectedUserListing(Listing listing) {
+  public void setCurrentSelectedUserListing(Listing listing)
+  {
     model.setCurrentSelectedUserListing(listing);
   }
-  public void setCurrentSelectedUserWishlistItem(Listing listing) {
-    //model.setCurrentSelectedUserWishlistItem(listing);
-  }
-  public void setUserListings() {
+
+  public void setUserListings()
+  {
     userListings.setAll(model.getUserListings());
   }
-  public void setUserWishlist() {
+
+  public void setUserWishlist()
+  {
     userWishlist.setAll(model.getUserWishlist());
   }
 
-  public void setFullname() {
-    fullname.setValue(model.getFullName());
+  public void setFullname()
+  {
+    fullname.setValue(model.getCurrentUser().getFullName());
   }
 
   public ObservableList<Listing> getUserListings()
   {
     return userListings;
   }
-  /** Method for getting wishlist**/
+
   public ObservableList<Listing> getUserWishlist()
   {
     return userWishlist;
   }
-  /** Method for deleting listing**/
-  public  void deleteListing(Listing listing) throws SQLException, RemoteException {
+
+  public void deleteListing(Listing listing)
+      throws SQLException, RemoteException
+  {
     model.deleteListing(listing);
   }
+
   public void deleteWishlistItem(Listing wishlist)
       throws SQLException, RemoteException
   {
     model.deleteWishlistItem(wishlist.getId());
   }
 
-  public StringProperty getFullName(){
+  public StringProperty getFullName()
+  {
     return fullname;
   }
 }

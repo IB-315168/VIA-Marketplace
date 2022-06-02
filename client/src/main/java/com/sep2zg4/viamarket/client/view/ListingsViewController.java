@@ -5,20 +5,16 @@ import com.sep2zg4.viamarket.model.Listing;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
 
-import java.nio.file.FileAlreadyExistsException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Optional;
 
 /**
  * Controller class for ListingsView.fxml
@@ -102,10 +98,10 @@ public class ListingsViewController
           {
             case "1":
               Collections.sort(viewModel.getListingsList(),
-                  (o1, o2) -> (int) (o2.getId() - o1.getId()));
+                  (o1, o2) -> o2.getId() - o1.getId());
               if (searchResults != null)
                 Collections.sort(searchResults,
-                    (o1, o2) -> (int) (o2.getId() - o1.getId()));
+                    (o1, o2) -> o2.getId() - o1.getId());
               break;
             case "2":
               Collections.sort(viewModel.getListingsList(),
@@ -239,7 +235,15 @@ public class ListingsViewController
   {
     Listing wishlistListing = listingsList.getSelectionModel()
         .getSelectedItem();
-    viewModel.addToWishlist(wishlistListing);
+
+    try
+    {
+      viewModel.addToWishlist(wishlistListing);
+    }
+    catch (SQLException | RemoteException e)
+    {
+      viewHandler.displayAlert(Alert.AlertType.ERROR, e.getMessage());
+    }
   }
 
   public Region getRoot()
@@ -249,14 +253,7 @@ public class ListingsViewController
 
   public void reset()
   {
-    if (viewModel.isModerator())
-    {
-      moderatorPanel.setVisible(true);
-    }
-    else
-    {
-      moderatorPanel.setVisible(false);
-    }
+    moderatorPanel.setVisible(viewModel.isModerator());
     viewModel.setUserType();
     clear();
   }
